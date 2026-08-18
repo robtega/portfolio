@@ -26,7 +26,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 
         body {
@@ -69,25 +68,7 @@
             color: var(--text);
         }
 
-        .logo-mark {
-            width: 38px;
-            height: 38px;
-            background: var(--white);
-            color: var(--black);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-serif);
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        .logo-name {
-            font-family: var(--font-serif);
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
+        .logo-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
 
         .logo-badge {
             font-family: var(--font-mono);
@@ -99,13 +80,10 @@
             border: 1px solid var(--border-strong);
             padding: 0.3rem 0.6rem;
             border-radius: 6px;
+            white-space: nowrap;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2.25rem;
-            align-items: center;
-        }
+        .nav-links { display: flex; gap: 2.25rem; align-items: center; }
 
         .nav-links a {
             color: var(--text-muted);
@@ -116,6 +94,24 @@
         }
 
         .nav-links a:hover { color: var(--text); }
+
+        .nav-right { display: flex; align-items: center; gap: 0.8rem; }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span { width: 20px; height: 2px; background: var(--text); transition: all 0.3s ease; }
+        .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         /* ============ BOTONES ============ */
         .btn {
@@ -133,27 +129,11 @@
             cursor: pointer;
         }
 
-        .btn-white {
-            background: var(--white);
-            color: var(--black);
-        }
+        .btn-white { background: var(--white); color: var(--black); }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
 
-        .btn-white:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
-        }
-
-        .btn-dark {
-            background: var(--surface);
-            border-color: var(--border-strong);
-            color: var(--text);
-        }
-
-        .btn-dark:hover {
-            background: var(--surface-2);
-            border-color: #4a4a4e;
-            transform: translateY(-2px);
-        }
+        .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+        .btn-dark:hover { background: var(--surface-2); border-color: #4a4a4e; transform: translateY(-2px); }
 
         .btn-small { padding: 0.6rem 1.3rem; border-radius: 10px; }
 
@@ -166,32 +146,12 @@
             justify-content: center;
             text-align: center;
             padding: 8rem 1.5rem 5rem;
-            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.88rem;
-            color: var(--text-soft);
-            border: 1px solid var(--border-strong);
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.5rem 1.2rem;
-            border-radius: 999px;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-badge .dot {
-            width: 7px;
-            height: 7px;
-            background: var(--text-soft);
-            border-radius: 50%;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.05), transparent 70%);
         }
 
         .hero h1 {
             font-family: var(--font-serif);
-            font-size: clamp(2.6rem, 6vw, 4.5rem);
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
             font-weight: 500;
             line-height: 1.15;
             letter-spacing: -0.01em;
@@ -203,26 +163,16 @@
 
         .hero p {
             color: var(--text-muted);
-            font-size: 1.15rem;
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
             line-height: 1.7;
             max-width: 720px;
             margin-bottom: 3rem;
         }
 
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
         /* ============ SECCIONES ============ */
-        section {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 6rem 1.5rem;
-        }
-
+        section { max-width: 1120px; margin: 0 auto; padding: 6rem 1.5rem; }
         .section-header { margin-bottom: 3.5rem; }
 
         .section-tag {
@@ -241,13 +191,9 @@
             margin-bottom: 0.75rem;
         }
 
-        .section-desc {
-            color: var(--text-muted);
-            max-width: 640px;
-            font-size: 1.05rem;
-        }
+        .section-desc { color: var(--text-muted); max-width: 640px; font-size: 1.05rem; }
 
-        /* ============ CARDS (Especialidades) ============ */
+        /* ============ CARDS ============ */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -262,10 +208,7 @@
             transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-strong);
-        }
+        .card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
 
         .card-icon {
             width: 44px;
@@ -280,26 +223,11 @@
             color: var(--text-soft);
         }
 
-        .card h3 {
-            font-family: var(--font-serif);
-            font-size: 1.3rem;
-            font-weight: 500;
-            margin-bottom: 0.7rem;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+        .card h3 { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; margin-bottom: 0.7rem; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* ============ VIDEOS ============ */
-        /* NUEVO: Filtros de categoría */
-        .video-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-bottom: 2.5rem;
-        }
+        .video-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
 
         .filter-pill {
             font-family: var(--font-sans);
@@ -314,15 +242,11 @@
             transition: all 0.25s ease;
         }
 
-        .filter-pill:hover {
-            background: var(--white);
-            color: var(--black);
-            border-color: var(--white);
-        }
+        .filter-pill:hover { background: var(--white); color: var(--black); border-color: var(--white); }
 
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
         }
 
@@ -337,17 +261,14 @@
             transition: all 0.3s ease;
         }
 
-        .video-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-strong);
-        }
+        .video-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
 
-        .video-thumb {
+        .video-thumb, .design-thumb {
             aspect-ratio: 16 / 9;
             background-color: #121213;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
             background-size: 24px 24px;
             display: flex;
             align-items: center;
@@ -355,7 +276,7 @@
             position: relative;
         }
 
-        .video-thumb span {
+        .video-thumb span, .design-thumb span {
             font-family: var(--font-mono);
             font-size: 0.75rem;
             letter-spacing: 0.1em;
@@ -380,12 +301,9 @@
             transition: all 0.3s ease;
         }
 
-        .video-card:hover .video-thumb::after {
-            opacity: 1;
-            transform: scale(1);
-        }
+        .video-card:hover .video-thumb::after { opacity: 1; transform: scale(1); }
 
-        .video-body { padding: 1.4rem; }
+        .video-body, .design-body { padding: 1.4rem; }
 
         .video-tag {
             display: inline-block;
@@ -401,24 +319,33 @@
             margin-bottom: 0.9rem;
         }
 
-        .video-body h3 {
-            font-family: var(--font-serif);
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+        .video-body h3, .design-body h3 { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .video-body p, .design-body p { color: var(--text-muted); font-size: 0.93rem; }
+
+        .view-all { text-align: center; margin-top: 3rem; }
+
+        /* ============ DISEÑO (teaser) ============ */
+        .design-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
         }
 
-        .video-body p {
-            color: var(--text-muted);
-            font-size: 0.93rem;
+        .design-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.3s ease;
         }
 
-        .view-all {
-            text-align: center;
-            margin-top: 3rem;
-        }
+        .design-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
+        .design-card .design-thumb { aspect-ratio: 1 / 1; }
 
-        /* ============ STACK (NUEVO) ============ */
+        /* ============ STACK ============ */
         .stack-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -433,74 +360,9 @@
             transition: all 0.3s ease;
         }
 
-        .stack-card:hover {
-            border-color: var(--border-strong);
-            transform: translateY(-3px);
-        }
-
-        .stack-card .name {
-            font-family: var(--font-mono);
-            font-size: 0.92rem;
-            color: var(--text);
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-
-        .stack-card .role {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-        }
-
-        /* ============ AUTOMATIZACIONES ============ */
-        .auto-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin: 1.5rem 0 2rem;
-        }
-
-        .chip {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-soft);
-            background: var(--surface-2);
-            border: 1px solid var(--border-strong);
-            padding: 0.45rem 0.9rem;
-            border-radius: 8px;
-        }
-
-        .code-container {
-            background: #111112;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 1.4rem;
-            border-bottom: 1px solid var(--border);
-            background: var(--surface);
-        }
-
-        .code-header span {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            color: var(--text-dim);
-        }
-
-        .code-block {
-            padding: 1.5rem;
-            overflow-x: auto;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            line-height: 1.7;
-            color: var(--text-soft);
-        }
-
-        .code-block .comment { color: var(--text-dim); }
+        .stack-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+        .stack-card .name { font-family: var(--font-mono); font-size: 0.92rem; color: var(--text); display: block; margin-bottom: 0.3rem; }
+        .stack-card .role { font-size: 0.8rem; color: var(--text-dim); }
 
         /* ============ CONTACTO ============ */
         .contact-box {
@@ -511,25 +373,9 @@
             text-align: center;
         }
 
-        .contact-box h3 {
-            font-family: var(--font-serif);
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-
-        .contact-box p {
-            color: var(--text-muted);
-            max-width: 560px;
-            margin: 0 auto 2.5rem;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        .contact-box h3 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500; margin-bottom: 1rem; }
+        .contact-box p { color: var(--text-muted); max-width: 560px; margin: 0 auto 2.5rem; }
+        .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
         /* ============ FOOTER ============ */
         footer {
@@ -543,14 +389,41 @@
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 900px) {
-            .nav-links { display: none; }
+            .menu-toggle { display: flex; }
+            .logo-badge { display: none; }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                display: none;
+                flex-direction: column;
+                gap: 0;
+                background: rgba(10, 10, 10, 0.97);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-bottom: 1px solid var(--border);
+                padding: 0.5rem 0 1rem;
+            }
+
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 0.9rem 2rem; width: 100%; text-align: center; font-size: 1rem; }
         }
 
         @media (max-width: 600px) {
-            .hero-btns { flex-direction: column; width: 100%; max-width: 320px; }
-            .btn { justify-content: center; }
-            .contact-box { padding: 3rem 1.5rem; }
             section { padding: 4.5rem 1.25rem; }
+            .hero { padding: 7rem 1.25rem 4rem; }
+            .hero-btns { flex-direction: column; width: 100%; max-width: 320px; }
+            .hero-btns .btn { justify-content: center; }
+            .contact-box { padding: 3rem 1.5rem; }
+            .stack-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-container { padding: 1rem 1.25rem; }
+        }
+
+        @media (max-width: 420px) {
+            .btn-small { padding: 0.5rem 1rem; font-size: 0.85rem; }
+            .stack-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         }
     </style>
 </head>
@@ -560,33 +433,36 @@
     <nav>
         <div class="nav-container">
             <a href="#" class="logo">
-                <div class="logo-mark">R</div>
                 <span class="logo-name">Robert</span>
                 <span class="logo-badge">Video Editor & Graphic Designer</span>
             </a>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="#especialidades">Especialidades</a>
-                <a href="#videos">Videos & Contenido</a>
-                <a href="#automatizaciones">Automatizaciones</a>
+                <a href="#videos">Videos</a>
+                <a href="#diseno">Diseño</a>
                 <a href="#contacto">Contacto</a>
             </div>
-            <a href="#contacto" class="btn btn-white btn-small">Hablemos</a>
+            <div class="nav-right">
+                <a href="#contacto" class="btn btn-white btn-small">Hablemos</a>
+                <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
     <!-- Hero -->
     <header class="hero">
-        <div class="hero-badge"><span class="dot"></span> Disponible para proyectos y colaboraciones</div>
-        <h1>Creación de contenido, <em>edición de impacto</em> & automatización inteligente.</h1>
-        <p>Unifico postproducción audiovisual, diseño gráfico de alta retención y desarrollo de herramientas en Python (vibe coding) para optimizar flujos de trabajo y crear piezas que conectan.</p>
+        <h1>Creación de contenido, <em>edición de impacto</em> & diseño que detiene el scroll.</h1>
+        <p>Editor de video y diseñador gráfico: postproducción de alta retención, miniaturas orientadas al CTR y piezas para redes que conectan con tu audiencia.</p>
         <div class="hero-btns">
             <a href="videos.html?categoria=todos" class="btn btn-white">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 Ver Proyectos Audiovisuales
             </a>
-            <a href="#automatizaciones" class="btn btn-dark">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                Herramientas & Scripts
+            <a href="diseno.html?categoria=todos" class="btn btn-dark">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                Ver Trabajo de Diseño
             </a>
         </div>
     </header>
@@ -614,13 +490,6 @@
             </div>
             <div class="card">
                 <div class="card-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                </div>
-                <h3>Vibe Coding & Python</h3>
-                <p>Desarrollo de scripts y aplicaciones de escritorio para automatizar tareas repetitivas y acelerar la producción.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                 </div>
                 <h3>Guiones & Estrategia</h3>
@@ -637,7 +506,6 @@
             <p class="section-desc">Muestras de edición, narrativa visual y videos producidos para plataformas digitales. Elige un formato para ver el trabajo completo.</p>
         </div>
 
-        <!-- NUEVO: Botones de formato que llevan a la galería inmersiva -->
         <div class="video-filters">
             <a href="videos.html?categoria=todos" class="filter-pill">Todos</a>
             <a href="videos.html?categoria=short-form" class="filter-pill">Short-Form</a>
@@ -672,7 +540,55 @@
         </div>
     </section>
 
-    <!-- NUEVO: Stack Tecnológico -->
+    <!-- Diseño (teaser) -->
+    <section id="diseno">
+        <div class="section-header">
+            <span class="section-tag">// Diseño & Social Media</span>
+            <h2 class="section-title">Diseño que detiene el scroll</h2>
+            <p class="section-desc">Miniaturas de alto CTR, carruseles y piezas para redes. Elige una categoría para ver la galería completa.</p>
+        </div>
+
+        <div class="design-grid">
+            <a href="diseno.html?categoria=thumbs-yt" class="design-card">
+                <div class="design-thumb"><span>THUMBNAILS YOUTUBE</span></div>
+                <div class="design-body">
+                    <span class="video-tag">YouTube</span>
+                    <h3>Miniaturas de alto CTR</h3>
+                    <p>Diseño de miniaturas orientadas a clics y retención.</p>
+                </div>
+            </a>
+            <a href="diseno.html?categoria=thumbs-ia" class="design-card">
+                <div class="design-thumb"><span>THUMBNAILS IA</span></div>
+                <div class="design-body">
+                    <span class="video-tag">Instagram</span>
+                    <h3>Thumbnails con IA</h3>
+                    <p>Miniaturas para Instagram creadas con inteligencia artificial.</p>
+                </div>
+            </a>
+            <a href="diseno.html?categoria=carruseles" class="design-card">
+                <div class="design-thumb"><span>CARRUSELES</span></div>
+                <div class="design-body">
+                    <span class="video-tag">Carruseles</span>
+                    <h3>Carruseles que cuentan</h3>
+                    <p>Secuencias visuales con narrativa y ritmo para redes.</p>
+                </div>
+            </a>
+            <a href="diseno.html?categoria=social" class="design-card">
+                <div class="design-thumb"><span>SOCIAL MEDIA</span></div>
+                <div class="design-body">
+                    <span class="video-tag">Social Media</span>
+                    <h3>Piezas para redes</h3>
+                    <p>Arte digital consistente para marcas y creadores.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="view-all">
+            <a href="diseno.html?categoria=todos" class="btn btn-white">Ver Galería de Diseño →</a>
+        </div>
+    </section>
+
+    <!-- Stack Tecnológico -->
     <section id="stack">
         <div class="section-header">
             <span class="section-tag">// Stack Tecnológico</span>
@@ -689,53 +605,12 @@
         </div>
     </section>
 
-    <!-- Automatizaciones -->
-    <section id="automatizaciones">
-        <div class="section-header">
-            <span class="section-tag">// Vibe Coding & Automatización</span>
-            <h2 class="section-title">Herramientas desarrolladas en Python</h2>
-        </div>
-
-        <div class="card">
-            <p>Desarrollo herramientas personalizadas para eliminar cuellos de botella en la producción de contenido: desde procesadores de archivos y organizadores de recursos hasta interfaces gráficas locales.</p>
-
-            <div class="auto-chips">
-                <span class="chip">Interfaces limpias (PyWebView / Tkinter)</span>
-                <span class="chip">Automatización de archivos & renders</span>
-                <span class="chip">Scripts de consumo de APIs externas</span>
-            </div>
-
-            <div class="code-container">
-                <div class="code-header">
-                    <span>automation_tool.py</span>
-                    <span>Python 3.11</span>
-                </div>
-                <pre class="code-block"><code><span class="comment"># Herramienta de automatización de workflow audiovisual</span>
-import os
-import pywebview
-
-class WorkflowAutomation:
-    def organize_assets(self, project_path):
-        folders = ["01_RAW", "02_AUDIO", "03_GRAPHICS", "04_EXPORTS"]
-        for folder in folders:
-            os.makedirs(os.path.join(project_path, folder), exist_ok=True)
-        return "Estructura lista."
-
-<span class="comment"># Iniciando interfaz nativa</span>
-if __name__ == '__main__':
-    api = WorkflowAutomation()
-    webview.create_window('Automation Hub', html='&lt;h1&gt;Procesador&lt;/h1&gt;', js_api=api)
-    webview.start()</code></pre>
-            </div>
-        </div>
-    </section>
-
     <!-- Contacto -->
     <section id="contacto">
         <div class="contact-box">
             <span class="section-tag">// Contacto</span>
             <h3>¿Tienes un proyecto en mente?</h3>
-            <p>Ya sea para edición de video, desarrollo de herramientas personalizadas o creación de estrategia audiovisual, conversemos.</p>
+            <p>Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.</p>
             <div class="contact-links">
                 <a href="https://linkedin.com" class="btn btn-dark" target="_blank">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -749,9 +624,26 @@ if __name__ == '__main__':
         </div>
     </section>
 
-    <footer>
-        © 2026 Robert — Video Editor & Vibe Coder
-    </footer>
+    <footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
+
+    <script>
+        const toggle = document.getElementById("menu-toggle");
+        const links = document.getElementById("nav-links");
+
+        toggle.addEventListener("click", () => {
+            const open = links.classList.toggle("open");
+            toggle.classList.toggle("open", open);
+            toggle.setAttribute("aria-expanded", open);
+        });
+
+        links.querySelectorAll("a").forEach(a => {
+            a.addEventListener("click", () => {
+                links.classList.remove("open");
+                toggle.classList.remove("open");
+                toggle.setAttribute("aria-expanded", "false");
+            });
+        });
+    </script>
 
 </body>
 </html>
