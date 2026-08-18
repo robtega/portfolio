@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio | Videos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #6366f1;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* Fondo animado sutil */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-10%, 10%); }
+        }
+
+        /* Header / Navegación */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.7);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.5rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .back-btn {
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+        }
+        .page-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            text-transform: capitalize;
+        }
+        .page-title span {
+            color: var(--accent);
+        }
+        .filter-pills {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .pill {
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .pill:hover, .pill.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Grid Inmersivo */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 5% 2rem;
+        }
+        .hero-section h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            text-transform: capitalize;
+        }
+        .hero-section p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 2rem 5% 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .video-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .video-card:nth-child(1) { animation-delay: 0.1s; }
+        .video-card:nth-child(2) { animation-delay: 0.2s; }
+        .video-card:nth-child(3) { animation-delay: 0.3s; }
+        .video-card:nth-child(4) { animation-delay: 0.4s; }
+        .video-card:nth-child(5) { animation-delay: 0.5s; }
+        .video-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .thumb-container {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #000;
+        }
+        .thumb-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .video-card:hover .thumb-video {
+            transform: scale(1.08);
+        }
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+        .play-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-icon::before {
+            content: '';
+            border-left: 18px solid var(--accent);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+        .video-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .video-info p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .video-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: #13131a;
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @media (min-width: 768px) {
+            .modal-content {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        .modal-video-wrap {
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+        .modal-video-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .modal-info {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .modal-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .modal-info p {
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+        .close-modal:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--text-dim);
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <a href="index.html" class="back-btn">
+            <span>←</span> Volver al inicio
+        </a>
+        <div class="page-title">Categoría: <span id="cat-title">Todos</span></div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-section">
+        <h1 id="cat-hero">Portafolio Audiovisual</h1>
+        <p>Explora mi trabajo filtrado por formato. Haz clic en cualquier pieza para ver el caso de estudio completo.</p>
+    </section>
+
+    <!-- FILTROS -->
+    <div style="display: flex; justify-content: center; padding: 0 5%;">
+        <div class="filter-pills">
+            <a href="?categoria=todos" class="pill" data-cat="todos">Todos</a>
+            <a href="?categoria=short-form" class="pill" data-cat="short-form">Short-Form</a>
+            <a href="?categoria=long-form" class="pill" data-cat="long-form">Long-Form</a>
+            <a href="?categoria=vsl" class="pill" data-cat="vsl">VSL</a>
+            <a href="?categoria=podcast" class="pill" data-cat="podcast">Podcast</a>
+            <a href="?categoria=saas" class="pill" data-cat="saas">SaaS</a>
+            <a href="?categoria=ads" class="pill" data-cat="ads">Ads</a>
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <main class="video-grid" id="videoGrid">
+        <!-- Los videos se inyectan dinámicamente con JS -->
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="modal-video-wrap" id="modalVideo"></div>
+            <div class="modal-info">
+                <span class="video-tag" id="modalTag"></span>
+                <h3 id="modalTitle"></h3>
+                <p id="modalDesc"></p>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ============================================
+// 📚 BASE DE DATOS DE TUS VIDEOS
+// Aquí agregarás tus videos. Solo edita este bloque.
+// ============================================
+const videosDatabase = [
+    {
+        id: 1,
+        title: "Gancho Viral para Marca de Tech",
+        category: "short-form",
+        thumb: "https://assets.mixkit.co/videos/4881/4881-720.mp4", // Video demo (reemplazar con el tuyo .mp4)
+        vimeo: "824862119", // ID del video de Vimeo (el número en la URL)
+        // Si es YouTube usa: youtube: "VIDEO_ID"
+        desc: "Edición dinámica de 45s diseñada para maximizar retención en Reels y TikTok. Uso de motion graphics, sound design agresivo y cortes al beat."
+    },
+    {
+        id: 2,
+        title: "VSL para Lanzamiento de SaaS",
+        category: "vsl",
+        thumb: "https://assets.mixkit.co/videos/4414/4414-720.mp4",
+        vimeo: "347119871",
+        desc: "Video Sales Letter de 3 minutos. Estrategia narrativa enfocada en dolor/solución, integración de B-roll y gráficos animados en After Effects."
+    },
+    {
+        id: 3,
+        title: "Episodio Podcast — Entrevista Fundadores",
+        category: "podcast",
+        thumb: "https://assets.mixkit.co/videos/4820/4820-720.mp4",
+        vimeo: "727971905",
+        desc: "Postproducción completa de audio y video. Multi-cámara, corrección de color y edición para mantener el ritmo conversacional sin perder autenticidad."
+    },
+    {
+        id: 4,
+        title: "Anuncio Performance — E-commerce",
+        category: "ads",
+        thumb: "https://assets.mixkit.co/videos/34487/34487-720.mp4",
+        vimeo: "521338573",
+        desc: "Ad creativo de 30s para Meta Ads. A/B testing de hooks, optimización de primeros 3 segundos y CTA claros."
+    },
+    {
+        id: 5,
+        title: "Documental Corto — SaaS Fintech",
+        category: "saas",
+        thumb: "https://assets.mixkit.co/videos/4783/4783-720.mp4",
+        vimeo: "458721904",
+        desc: "Historia de marca enfocada en el usuario. Edición emocional, color grading cinematográfico y diseño sonoro inmersivo."
+    },
+    {
+        id: 6,
+        title: "Tutorial Técnico Long-Form",
+        category: "long-form",
+        thumb: "https://assets.mixkit.co/videos/4321/4321-720.mp4",
+        vimeo: "425678123",
+        desc: "Video de 12 minutos con tutoriales paso a paso. Edición estructurada con capítulos, gráficos explicativos y ritmo didáctico."
+    }
+];
+
+// ============================================
+// ⚙️ LÓGICA DE LA APLICACIÓN
+// ============================================
+
+// 1. Leer la categoría desde la URL
+const urlParams = new URLSearchParams(window.location.search);
+const currentCat = urlParams.get('categoria') || 'todos';
+
+// 2. Actualizar títulos dinámicos
+const catNames = {
+    'todos': 'Todos los Proyectos',
+    'short-form': 'Short-Form Content',
+    'long-form': 'Long-Form Content',
+    'vsl': 'Video Sales Letters (VSL)',
+    'podcast': 'Edición de Podcasts',
+    'saas': 'Videos para SaaS',
+    'ads': 'Anuncios & Performance'
+};
+document.getElementById('cat-title').textContent = catNames[currentCat] || currentCat;
+document.getElementById('cat-hero').textContent = catNames[currentCat] || 'Portafolio Audiovisual';
+
+// 3. Marcar el filtro activo
+document.querySelectorAll('.pill').forEach(pill => {
+    if(pill.dataset.cat === currentCat) pill.classList.add('active');
+});
+
+// 4. Renderizar videos filtrados
+const grid = document.getElementById('videoGrid');
+const filtered = currentCat === 'todos' 
+    ? videosDatabase 
+    : videosDatabase.filter(v => v.category === currentCat);
+
+if(filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state">
+        <h3>Aún no hay videos en esta categoría</h3>
+        <p>Pronto subiré más contenido. Mientras tanto, explora <a href="?categoria=todos" style="color: var(--accent)">todos los proyectos</a>.</p>
+    </div>`;
+} else {
+    filtered.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.onclick = () => openModal(video);
+        card.innerHTML = `
+            <div class="thumb-container">
+                <video class="thumb-video" muted loop playsinline autoplay 
+                       src="${video.thumb}" 
+                       onmouseover="this.play()" 
+                       onmouseout="this.pause()"></video>
+                <div class="play-overlay">
+                    <div class="play-icon"></div>
+                </div>
+            </div>
+            <div class="video-info">
+                <span class="video-tag">${catNames[video.category]}</span>
+                <h3>${video.title}</h3>
+                <p>${video.desc.substring(0, 80)}...</p>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// 5. Modal: Abrir y Cerrar
+function openModal(video) {
+    const modal = document.getElementById('videoModal');
+    document.getElementById('modalTitle').textContent = video.title;
+    document.getElementById('modalDesc').textContent = video.desc;
+    document.getElementById('modalTag').textContent = catNames[video.category];
+    
+    // Detectar si es Vimeo o YouTube
+    let embedSrc = '';
+    if(video.vimeo) {
+        embedSrc = `https://player.vimeo.com/video/${video.vimeo}?autoplay=1&color=6366f1`;
+    } else if(video.youtube) {
+        embedSrc = `https://www.youtube.com/embed/${video.youtube}?autoplay=1&rel=0`;
+    }
+    
+    document.getElementById('modalVideo').innerHTML = `<iframe src="${embedSrc}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const modal = document.getElementById('videoModal');
+    modal.classList.remove('active');
+    document.getElementById('modalVideo').innerHTML = ''; // Detiene el video
+    document.body.style.overflow = '';
+}
+
+// Cerrar modal con click fuera
+document.getElementById('videoModal').addEventListener('click', (e) => {
+    if(e.target.id === 'videoModal') closeModal();
+});
+
+// Cerrar modal con tecla ESC
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
