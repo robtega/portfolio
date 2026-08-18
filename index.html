@@ -1,381 +1,757 @@
 <!DOCTYPE html>
-<html lang="es" class="dark scroll-smooth overflow-x-hidden">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robert — Portfolio & Vibe Coding</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        mono: {
-                            accent: '#ffffff',
-                            glow: 'rgba(255, 255, 255, 0.15)',
-                            dark: '#050507',
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['Newsreader', 'Georgia', 'serif'],
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Custom Glass & Glow Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* Prevención estricta de scroll horizontal */
-        html, body {
-            max-width: 100%;
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141415;
+            --surface-2: #1a1a1c;
+            --border: #232325;
+            --border-strong: #333336;
+            --text: #f5f5f5;
+            --text-soft: #d4d4d4;
+            --text-muted: #9b9ba3;
+            --text-dim: #6f6f76;
+            --white: #fafafa;
+            --black: #0a0a0a;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Source Serif 4', Georgia, serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050507; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+        ::selection { background: var(--white); color: var(--black); }
 
-        .glass-panel {
-            background: rgba(18, 18, 22, 0.65);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+        /* ============ NAVBAR ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            gap: 1rem;
         }
 
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.22);
-            background: rgba(255, 255, 255, 0.05);
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .logo-name {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .logo-badge {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.25rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+
+        /* ============ BOTONES ============ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.9rem 1.6rem;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-dark {
+            background: var(--surface);
+            border-color: var(--border-strong);
+            color: var(--text);
+        }
+
+        .btn-dark:hover {
+            background: var(--surface-2);
+            border-color: #4a4a4e;
             transform: translateY(-2px);
         }
 
-        .ambient-glow-top {
+        .btn-small { padding: 0.6rem 1.3rem; border-radius: 10px; }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 1.5rem 5rem;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--text-soft);
+            border: 1px solid var(--border-strong);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1.2rem;
+            border-radius: 999px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-badge .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--text-soft);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.6rem, 6vw, 4.5rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            max-width: 900px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 em { font-style: italic; }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1.7;
+            max-width: 720px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* ============ SECCIONES ============ */
+        section {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 6rem 1.5rem;
+        }
+
+        .section-header { margin-bottom: 3.5rem; }
+
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            max-width: 640px;
+            font-size: 1.05rem;
+        }
+
+        /* ============ CARDS (Especialidades) ============ */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-strong);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.4rem;
+            color: var(--text-soft);
+        }
+
+        .card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 0.7rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ============ VIDEOS ============ */
+        /* NUEVO: Filtros de categoría */
+        .video-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .filter-pill {
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-soft);
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            padding: 0.55rem 1.2rem;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .filter-pill:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .video-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-strong);
+        }
+
+        .video-thumb {
+            aspect-ratio: 16 / 9;
+            background-color: #121213;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-thumb span {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+
+        .video-thumb::after {
+            content: '▶';
             position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 800px;
-            height: 400px;
-            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.07) 0%, rgba(0, 0, 0, 0) 75%);
-            pointer-events: none;
-            z-index: 0;
+            width: 56px;
+            height: 56px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            padding-left: 4px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover .video-thumb::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .video-body { padding: 1.4rem; }
+
+        .video-tag {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            margin-bottom: 0.9rem;
+        }
+
+        .video-body h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-body p {
+            color: var(--text-muted);
+            font-size: 0.93rem;
+        }
+
+        .view-all {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* ============ STACK (NUEVO) ============ */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .stack-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.3rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .stack-card:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-3px);
+        }
+
+        .stack-card .name {
+            font-family: var(--font-mono);
+            font-size: 0.92rem;
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .stack-card .role {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* ============ AUTOMATIZACIONES ============ */
+        .auto-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .chip {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+        }
+
+        .code-container {
+            background: #111112;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.4rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .code-header span {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        .code-block {
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: var(--text-soft);
+        }
+
+        .code-block .comment { color: var(--text-dim); }
+
+        /* ============ CONTACTO ============ */
+        .contact-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4.5rem 2rem;
+            text-align: center;
+        }
+
+        .contact-box h3 {
+            font-family: var(--font-serif);
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .contact-box p {
+            color: var(--text-muted);
+            max-width: 560px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-btns { flex-direction: column; width: 100%; max-width: 320px; }
+            .btn { justify-content: center; }
+            .contact-box { padding: 3rem 1.5rem; }
+            section { padding: 4.5rem 1.25rem; }
         }
     </style>
 </head>
-<body class="bg-[#050507] text-zinc-100 font-sans antialiased selection:bg-white selection:text-black relative min-h-screen w-full overflow-x-hidden">
+<body>
 
-    <!-- Ambient Light Accent Container (Blanco/Plata neutro) -->
-    <div class="absolute inset-x-0 top-0 overflow-hidden pointer-events-none h-96 z-0">
-        <div class="ambient-glow-top"></div>
-    </div>
-
-    <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 glass-panel border-b border-white/10 px-4 sm:px-6 py-3.5 w-full">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <!-- Brand Logo / Name -->
-            <a href="#" class="flex items-center gap-2.5 group shrink-0">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-stone-200 to-white flex items-center justify-center text-black font-serif font-bold text-base shadow-md group-hover:scale-105 transition-transform">
-                    R
-                </div>
-                <span class="font-serif text-base sm:text-lg font-medium tracking-tight text-white">Robert</span>
-                <span class="text-[9px] sm:text-[10px] font-mono uppercase px-1.5 sm:px-2 py-0.5 rounded bg-white/10 text-zinc-300 border border-white/15 whitespace-nowrap">Vibe Coder</span>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-mark">R</div>
+                <span class="logo-name">Robert</span>
+                <span class="logo-badge">Vibe Coder</span>
             </a>
-
-            <!-- Nav Links -->
-            <div class="hidden md:flex items-center gap-6 text-xs text-zinc-400 font-medium">
-                <a href="#especialidades" class="hover:text-white transition-colors">Especialidades</a>
-                <a href="#videos" class="hover:text-white transition-colors">Videos & Contenido</a>
-                <a href="#automatizaciones" class="hover:text-white transition-colors">Automatizaciones</a>
-                <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
+            <div class="nav-links">
+                <a href="#especialidades">Especialidades</a>
+                <a href="#videos">Videos & Contenido</a>
+                <a href="#automatizaciones">Automatizaciones</a>
+                <a href="#contacto">Contacto</a>
             </div>
-
-            <!-- CTA -->
-            <a href="#contacto" class="px-3.5 sm:px-4 py-2 rounded-xl bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-all shadow-lg hover:shadow-white/10 shrink-0">
-                Hablemos
-            </a>
+            <a href="#contacto" class="btn btn-white btn-small">Hablemos</a>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <header class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-12 sm:pb-16 text-center space-y-5 sm:space-y-6 w-full">
-        <!-- Status Pill -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-card border border-white/10 text-[11px] sm:text-xs text-zinc-300 max-w-full">
-            <span class="w-2 h-2 rounded-full bg-white animate-pulse shrink-0"></span>
-            <span class="truncate">Disponible para proyectos y colaboraciones</span>
-        </div>
-
-        <!-- Headline -->
-        <h1 class="text-3xl sm:text-5xl md:text-6xl font-serif font-light text-white leading-[1.18] sm:leading-[1.15] tracking-tight">
-            Creación de contenido, <span class="italic font-normal text-zinc-300">edición de impacto</span> & automatización inteligente.
-        </h1>
-
-        <!-- Subtitle -->
-        <p class="text-sm sm:text-lg text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
-            Unifico postproducción audiovisual, diseño gráfico de alta retención y desarrollo de herramientas en Python (vibe coding) para optimizar flujos de trabajo y crear piezas que conectan.
-        </p>
-
-        <!-- CTAs & Social Links -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full max-w-md mx-auto sm:max-w-none">
-            <a href="#videos" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white text-black font-semibold text-xs sm:text-sm hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-lg">
-                <i data-lucide="play" class="w-4 h-4 fill-black"></i>
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-badge"><span class="dot"></span> Disponible para proyectos y colaboraciones</div>
+        <h1>Creación de contenido, <em>edición de impacto</em> & automatización inteligente.</h1>
+        <p>Unifico postproducción audiovisual, diseño gráfico de alta retención y desarrollo de herramientas en Python (vibe coding) para optimizar flujos de trabajo y crear piezas que conectan.</p>
+        <div class="hero-btns">
+            <a href="videos.html?categoria=todos" class="btn btn-white">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 Ver Proyectos Audiovisuales
             </a>
-            <a href="#automatizaciones" class="w-full sm:w-auto px-5 py-2.5 rounded-xl glass-card text-zinc-200 hover:text-white font-medium text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
-                <i data-lucide="terminal" class="w-4 h-4 text-white"></i>
+            <a href="#automatizaciones" class="btn btn-dark">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
                 Herramientas & Scripts
             </a>
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 space-y-16 sm:space-y-24 pb-16 sm:pb-20 w-full overflow-hidden">
+    <!-- Especialidades -->
+    <section id="especialidades">
+        <div class="section-header">
+            <span class="section-tag">// Áreas de Enfoque</span>
+            <h2 class="section-title">Lo que llevo a la mesa</h2>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                </div>
+                <h3>Edición & Postproducción</h3>
+                <p>Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+                <h3>Diseño Gráfico & Branding</h3>
+                <p>Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <h3>Vibe Coding & Python</h3>
+                <p>Desarrollo de scripts y aplicaciones de escritorio para automatizar tareas repetitivas y acelerar la producción.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                </div>
+                <h3>Guiones & Estrategia</h3>
+                <p>Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes.</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- 1. ESPECIALIDADES / PILLARS -->
-        <section id="especialidades" class="space-y-6 sm:space-y-8 w-full">
-            <div class="border-b border-white/10 pb-4">
-                <h2 class="text-xs font-mono text-zinc-400 uppercase tracking-wider mb-1">// Áreas de Enfoque</h2>
-                <h3 class="text-xl sm:text-2xl font-serif text-white">Lo que llevo a la mesa</h3>
+    <!-- Videos & Contenido -->
+    <section id="videos">
+        <div class="section-header">
+            <span class="section-tag">// Portafolio Audiovisual</span>
+            <h2 class="section-title">Videos destacados y edición</h2>
+            <p class="section-desc">Muestras de edición, narrativa visual y videos producidos para plataformas digitales. Elige un formato para ver el trabajo completo.</p>
+        </div>
+
+        <!-- NUEVO: Botones de formato que llevan a la galería inmersiva -->
+        <div class="video-filters">
+            <a href="videos.html?categoria=todos" class="filter-pill">Todos</a>
+            <a href="videos.html?categoria=short-form" class="filter-pill">Short-Form</a>
+            <a href="videos.html?categoria=long-form" class="filter-pill">Long-Form</a>
+            <a href="videos.html?categoria=vsl" class="filter-pill">VSL</a>
+            <a href="videos.html?categoria=podcast" class="filter-pill">Podcast</a>
+            <a href="videos.html?categoria=saas" class="filter-pill">SaaS</a>
+            <a href="videos.html?categoria=ads" class="filter-pill">Ads</a>
+        </div>
+
+        <div class="video-grid">
+            <a href="videos.html?categoria=todos" class="video-card">
+                <div class="video-thumb"><span>VISTA PREVIA</span></div>
+                <div class="video-body">
+                    <span class="video-tag">YouTube</span>
+                    <h3>Título de tu Video Principal</h3>
+                    <p>Explicación breve de la edición, concepto, ritmo narrativo o el objetivo alcanzado en este video.</p>
+                </div>
+            </a>
+            <a href="videos.html?categoria=todos" class="video-card">
+                <div class="video-thumb"><span>VISTA PREVIA</span></div>
+                <div class="video-body">
+                    <span class="video-tag">Estrategia</span>
+                    <h3>Caso de Estudio / Retención</h3>
+                    <p>Detalles sobre la estrategia de retención utilizada, corte de ritmo o efectos aplicados en postproducción.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="view-all">
+            <a href="videos.html?categoria=todos" class="btn btn-white">Ver Galería Completa →</a>
+        </div>
+    </section>
+
+    <!-- NUEVO: Stack Tecnológico -->
+    <section id="stack">
+        <div class="section-header">
+            <span class="section-tag">// Stack Tecnológico</span>
+            <h2 class="section-title">Herramientas que domino</h2>
+        </div>
+        <div class="stack-grid">
+            <div class="stack-card"><span class="name">Premiere Pro</span><span class="role">Edición de video</span></div>
+            <div class="stack-card"><span class="name">After Effects</span><span class="role">Motion & VFX</span></div>
+            <div class="stack-card"><span class="name">Photoshop</span><span class="role">Retoque & Thumbnails</span></div>
+            <div class="stack-card"><span class="name">Illustrator</span><span class="role">Branding & Vectores</span></div>
+            <div class="stack-card"><span class="name">Python</span><span class="role">Automatización</span></div>
+            <div class="stack-card"><span class="name">Notion</span><span class="role">Docs & Sistemas</span></div>
+            <div class="stack-card"><span class="name">ClickUp</span><span class="role">Gestión de proyectos</span></div>
+        </div>
+    </section>
+
+    <!-- Automatizaciones -->
+    <section id="automatizaciones">
+        <div class="section-header">
+            <span class="section-tag">// Vibe Coding & Automatización</span>
+            <h2 class="section-title">Herramientas desarrolladas en Python</h2>
+        </div>
+
+        <div class="card">
+            <p>Desarrollo herramientas personalizadas para eliminar cuellos de botella en la producción de contenido: desde procesadores de archivos y organizadores de recursos hasta interfaces gráficas locales.</p>
+
+            <div class="auto-chips">
+                <span class="chip">Interfaces limpias (PyWebView / Tkinter)</span>
+                <span class="chip">Automatización de archivos & renders</span>
+                <span class="chip">Scripts de consumo de APIs externas</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 w-full">
-                <!-- Card 1 -->
-                <div class="glass-card p-5 rounded-2xl space-y-3 min-w-0">
-                    <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <i data-lucide="video" class="w-5 h-5"></i>
-                    </div>
-                    <h4 class="text-sm font-semibold text-white">Edición & Postproducción</h4>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador.
-                    </p>
+            <div class="code-container">
+                <div class="code-header">
+                    <span>automation_tool.py</span>
+                    <span>Python 3.11</span>
                 </div>
+                <pre class="code-block"><code><span class="comment"># Herramienta de automatización de workflow audiovisual</span>
+import os
+import pywebview
 
-                <!-- Card 2 -->
-                <div class="glass-card p-5 rounded-2xl space-y-3 min-w-0">
-                    <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <i data-lucide="layout" class="w-5 h-5"></i>
-                    </div>
-                    <h4 class="text-sm font-semibold text-white">Diseño Gráfico & Branding</h4>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético.
-                    </p>
-                </div>
+class WorkflowAutomation:
+    def organize_assets(self, project_path):
+        folders = ["01_RAW", "02_AUDIO", "03_GRAPHICS", "04_EXPORTS"]
+        for folder in folders:
+            os.makedirs(os.path.join(project_path, folder), exist_ok=True)
+        return "Estructura lista."
 
-                <!-- Card 3 -->
-                <div class="glass-card p-5 rounded-2xl space-y-3 min-w-0">
-                    <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <i data-lucide="cpu" class="w-5 h-5"></i>
-                    </div>
-                    <h4 class="text-sm font-semibold text-white">Vibe Coding & Python</h4>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Desarrollo de scripts y aplicaciones de escritorio para automatizar tareas repetitivas y acelerar la producción.
-                    </p>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="glass-card p-5 rounded-2xl space-y-3 min-w-0">
-                    <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <i data-lucide="file-text" class="w-5 h-5"></i>
-                    </div>
-                    <h4 class="text-sm font-semibold text-white">Guiones & Estrategia</h4>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. SECCIÓN DE VIDEOS & CONTENIDO -->
-        <section id="videos" class="space-y-6 sm:space-y-8 w-full">
-            <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-4 gap-2">
-                <div>
-                    <h2 class="text-xs font-mono text-zinc-400 uppercase tracking-wider mb-1">// Portafolio Audiovisual</h2>
-                    <h3 class="text-xl sm:text-2xl font-serif text-white">Videos destacados y edición</h3>
-                </div>
-                <p class="text-xs text-zinc-400 max-w-xs">
-                    Muestras de edición, narrativa visual y videos producidos para plataformas digitales.
-                </p>
-            </div>
-
-            <!-- Video Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full">
-                
-                <!-- VIDEO 1 -->
-                <div class="glass-card rounded-2xl overflow-hidden border border-white/10 space-y-4 p-3.5 sm:p-4 min-w-0">
-                    <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5">
-                        <iframe 
-                            class="w-full h-full"
-                            src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" 
-                            title="Reproductor de Video" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <div class="space-y-1.5">
-                        <div class="flex items-center justify-between gap-2">
-                            <h4 class="text-xs sm:text-sm font-semibold text-white truncate">Título de tu Video Principal</h4>
-                            <span class="text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-zinc-300 shrink-0">YouTube</span>
-                        </div>
-                        <p class="text-xs text-zinc-400">
-                            Explicación breve de la edición, concepto, ritmo narrativo o el objetivo alcanzado en este video.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- VIDEO 2 -->
-                <div class="glass-card rounded-2xl overflow-hidden border border-white/10 space-y-4 p-3.5 sm:p-4 min-w-0">
-                    <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5">
-                        <iframe 
-                            class="w-full h-full"
-                            src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" 
-                            title="Reproductor de Video" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <div class="space-y-1.5">
-                        <div class="flex items-center justify-between gap-2">
-                            <h4 class="text-xs sm:text-sm font-semibold text-white truncate">Caso de Estudio / Retención</h4>
-                            <span class="text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-zinc-300 shrink-0">Estrategia</span>
-                        </div>
-                        <p class="text-xs text-zinc-400">
-                            Detalles sobre la estrategia de retención utilizada, corte de ritmo o efectos aplicados en postproducción.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 3. HERRAMIENTAS & AUTOMATIZACIONES (VIBE CODING) -->
-        <section id="automatizaciones" class="space-y-6 sm:space-y-8 w-full">
-            <div class="border-b border-white/10 pb-4">
-                <h2 class="text-xs font-mono text-zinc-400 uppercase tracking-wider mb-1">// Vibe Coding & Automatización</h2>
-                <h3 class="text-xl sm:text-2xl font-serif text-white">Herramientas desarrolladas en Python</h3>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start w-full">
-                
-                <!-- Explicación -->
-                <div class="space-y-4 lg:col-span-1">
-                    <p class="text-xs text-zinc-300 leading-relaxed">
-                        Desarrollo herramientas personalizadas para eliminar cuellos de botella en la producción de contenido: desde procesadores de archivos y organizadores de recursos hasta interfaces gráficas locales.
-                    </p>
-
-                    <div class="space-y-2 pt-1">
-                        <div class="flex items-center gap-2 text-xs text-zinc-400">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-zinc-200 shrink-0"></i>
-                            <span>Interfaces limpias (PyWebView / Tkinter)</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs text-zinc-400">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-zinc-200 shrink-0"></i>
-                            <span>Automatización de archivos & renders</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs text-zinc-400">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-zinc-200 shrink-0"></i>
-                            <span>Scripts de consumo de APIs externas</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bloque Estilo Editor de Código / Terminal -->
-                <div class="lg:col-span-2 glass-panel p-3.5 sm:p-5 rounded-2xl border border-white/10 space-y-4 w-full min-w-0">
-                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
-                            <div class="w-3 h-3 rounded-full bg-zinc-600"></div>
-                            <div class="w-3 h-3 rounded-full bg-zinc-500"></div>
-                            <span class="text-xs font-mono text-zinc-400 ml-1.5 truncate">automation_tool.py</span>
-                        </div>
-                        <span class="text-[10px] font-mono text-zinc-500 shrink-0">Python 3.11</span>
-                    </div>
-
-                    <!-- Muestra de Código estilo Monocromo -->
-                    <div class="w-full overflow-x-auto rounded-xl bg-black/60 border border-white/10 p-3">
-                        <pre class="font-mono text-[11px] sm:text-xs text-zinc-300 leading-relaxed max-w-full"><code><span class="text-white font-semibold">import</span> os
-<span class="text-white font-semibold">import</span> pywebview
-
-<span class="text-zinc-500"># Herramienta de automatización de workflow audiovisual</span>
-<span class="text-white font-semibold">class</span> <span class="text-zinc-100">WorkflowAutomation</span>:
-    <span class="text-white font-semibold">def</span> <span class="text-zinc-200">organize_assets</span>(self, project_path):
-        folders = [<span class="text-zinc-400">"01_RAW"</span>, <span class="text-zinc-400">"02_AUDIO"</span>, <span class="text-zinc-400">"03_GRAPHICS"</span>, <span class="text-zinc-400">"04_EXPORTS"</span>]
-        <span class="text-white font-semibold">for</span> folder <span class="text-white font-semibold">in</span> folders:
-            os.makedirs(os.path.join(project_path, folder), exist_ok=<span class="text-zinc-200">True</span>)
-        <span class="text-white font-semibold">return</span> <span class="text-zinc-400">"Estructura lista."</span>
-
-<span class="text-zinc-500"># Iniciando interfaz nativa</span>
-<span class="text-white font-semibold">if</span> __name__ == <span class="text-zinc-400">'__main__'</span>:
+<span class="comment"># Iniciando interfaz nativa</span>
+if __name__ == '__main__':
     api = WorkflowAutomation()
-    webview.create_window(<span class="text-zinc-400">'Automation Hub'</span>, html=<span class="text-zinc-400">'&lt;h1&gt;Procesador&lt;/h1&gt;'</span>, js_api=api)
+    webview.create_window('Automation Hub', html='&lt;h1&gt;Procesador&lt;/h1&gt;', js_api=api)
     webview.start()</code></pre>
-                    </div>
-                </div>
-
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- 4. CONTACTO & FOOTER -->
-        <section id="contacto" class="glass-panel p-6 sm:p-12 rounded-3xl border border-white/15 text-center space-y-6 relative overflow-hidden w-full">
-            <div class="max-w-xl mx-auto space-y-3">
-                <h2 class="text-2xl sm:text-3xl font-serif text-white">¿Tienes un proyecto en mente?</h2>
-                <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                    Ya sea para edición de video, desarrollo de herramientas personalizadas o creación de estrategia audiovisual, conversemos.
-                </p>
-            </div>
-
-            <!-- Social Badges / Links (Solo LinkedIn, Instagram, Email en Blanco/Negro) -->
-            <div class="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-2 w-full max-w-md mx-auto">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-4 py-2.5 rounded-xl glass-card text-xs font-medium text-zinc-200 hover:text-white flex items-center justify-center gap-2">
-                    <i data-lucide="linkedin" class="w-4 h-4 text-white"></i>
+    <!-- Contacto -->
+    <section id="contacto">
+        <div class="contact-box">
+            <span class="section-tag">// Contacto</span>
+            <h3>¿Tienes un proyecto en mente?</h3>
+            <p>Ya sea para edición de video, desarrollo de herramientas personalizadas o creación de estrategia audiovisual, conversemos.</p>
+            <div class="contact-links">
+                <a href="https://linkedin.com" class="btn btn-dark" target="_blank">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     LinkedIn
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-4 py-2.5 rounded-xl glass-card text-xs font-medium text-zinc-200 hover:text-white flex items-center justify-center gap-2">
-                    <i data-lucide="instagram" class="w-4 h-4 text-white"></i>
+                <a href="https://instagram.com" class="btn btn-dark" target="_blank">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     Instagram
                 </a>
-                <a href="mailto:tu-email@correo.com" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white text-black font-semibold text-xs hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-lg">
-                    <i data-lucide="mail" class="w-4 h-4"></i>
-                    Enviar un correo
-                </a>
             </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-white/10 py-6 sm:py-8 text-center text-xs text-zinc-500 w-full">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>© 2026 Robert</p>
-            <p class="font-mono text-[10px] sm:text-[11px]">Video Editor & Vibe Coder</p>
         </div>
+    </section>
+
+    <footer>
+        © 2026 Robert — Video Editor & Vibe Coder
     </footer>
 
-    <!-- LUCIDE ICONS INITIALIZATION -->
-    <script>
-        lucide.createIcons();
-    </script>
 </body>
 </html>
