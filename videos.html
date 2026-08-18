@@ -438,8 +438,12 @@
            · tipo:      "vimeo" o "youtube"
            · videoId:   Vimeo → https://vimeo.com/123456789 = "123456789"
                         YouTube → https://youtu.be/ABC123   = "ABC123"
-           · thumb:     URL de la miniatura (imagen). Déjalo en "" para
-                        el fondo de cuadrícula.
+           · thumb:     DÉJALO EN "" y la página usa automáticamente
+                        un frame del propio video.
+                        Solo úsalo si quieres una imagen personalizada
+                        (ej. un short vertical recortado por ti):
+                        sube la imagen a una carpeta /img en tu repo
+                        y pon thumb: "img/mi-short.jpg"
            · hover:     URL de un GIF o MP4 corto para el efecto
                         "preview en movimiento" al pasar el mouse.
            ========================================================= */
@@ -448,7 +452,7 @@
                 titulo: "Short-Form 01 — Ejemplo",
                 categoria: "short-form",
                 tipo: "vimeo",
-                videoId: "1218345311",
+                videoId: "76979871",
                 thumb: "",
                 hover: "",
                 descripcion: "Sustituye este proyecto por el tuyo editando el array VIDEOS."
@@ -460,7 +464,7 @@
                 videoId: "76979871",
                 thumb: "",
                 hover: "",
-                descripcion: "Copia y pega este bloque por cada video nuevo que agregues."
+                descripcion: "Copia y pega este bloque por cada video nuevo."
             },
             {
                 titulo: "Long-Form 01 — Ejemplo",
@@ -469,7 +473,7 @@
                 videoId: "ScMzIvxBSi4",
                 thumb: "",
                 hover: "",
-                descripcion: "Puedes mezclar videos de Vimeo y YouTube sin problema."
+                descripcion: "En YouTube la miniatura se carga sola automáticamente."
             },
             {
                 titulo: "VSL 01 — Ejemplo",
@@ -478,7 +482,7 @@
                 videoId: "76979871",
                 thumb: "",
                 hover: "",
-                descripcion: "Video de ventas de alta conversión."
+                descripcion: "En Vimeo, elige tu frame favorito en Settings → Thumbnail."
             },
             {
                 titulo: "Podcast 01 — Ejemplo",
@@ -487,7 +491,7 @@
                 videoId: "76979871",
                 thumb: "",
                 hover: "",
-                descripcion: "Corte de episodio con ritmo narrativo."
+                descripcion: "La página jala ese frame automáticamente desde Vimeo."
             },
             {
                 titulo: "SaaS 01 — Ejemplo",
@@ -550,6 +554,26 @@
             }
         }
 
+        /* ---- Miniatura: frame del propio video ---- */
+        function thumbBaseHTML(v) {
+            // 1) Imagen personalizada (opcional)
+            if (v.thumb) {
+                return '<img class="thumb-base" src="' + v.thumb + '" alt="">';
+            }
+            // 2) YouTube: miniatura automática
+            if (v.tipo === "youtube") {
+                return '<img class="thumb-base" src="https://i.ytimg.com/vi/' + v.videoId + '/mqdefault.jpg" alt="">';
+            }
+            // 3) Vimeo: frame elegido por ti en Vimeo (vía oEmbed)
+            return '<img class="thumb-base" data-vimeo="' + v.videoId + '" alt="" style="opacity:0;transition:opacity .4s ease">';
+        }
+
+        function hoverHTML(v) {
+            return /\.mp4|\.webm/i.test(v.hover)
+                ? '<video class="thumb-media" src="' + v.hover + '" muted loop playsinline preload="none"></video>'
+                : '<img class="thumb-media" src="' + v.hover + '" alt="">';
+        }
+
         /* ---- Grid de videos ---- */
         function pintarGrid() {
             const lista = current === "todos"
@@ -571,18 +595,11 @@
                 card.className = "video-card";
                 card.style.animationDelay = (i * 0.06) + "s";
 
-                let thumbHTML = "";
-                if (v.thumb) thumbHTML += '<img class="thumb-base" src="' + v.thumb + '" alt="">';
-                else thumbHTML += "<span>" + CATEGORIAS[v.categoria] + "</span>";
-
-                if (v.hover) {
-                    thumbHTML += /\.mp4|\.webm/i.test(v.hover)
-                        ? '<video class="thumb-media" src="' + v.hover + '" muted loop playsinline preload="none"></video>'
-                        : '<img class="thumb-media" src="' + v.hover + '" alt="">';
-                }
-
                 card.innerHTML =
-                    '<div class="video-thumb">' + thumbHTML +
+                    '<div class="video-thumb">' +
+                        '<span>' + CATEGORIAS[v.categoria] + '</span>' +
+                        thumbBaseHTML(v) +
+                        (v.hover ? hoverHTML(v) : '') +
                         '<div class="play">▶</div>' +
                     '</div>' +
                     '<div class="video-body">' +
@@ -601,6 +618,26 @@
                 }
 
                 grid.appendChild(card);
+            });
+
+            cargarThumbsVimeo();
+        }
+
+        /* ---- Pide a Vimeo el frame que elegiste como portada ---- */
+        function cargarThumbsVimeo() {
+            grid.querySelectorAll("img[data-vimeo]").forEach(async img => {
+                try {
+                    const url = "https://vimeo.com/api/oembed.json?url=" +
+                        encodeURIComponent("https://vimeo.com/" + img.dataset.vimeo);
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    if (data.thumbnail_url) {
+                        img.onload = () => { img.style.opacity = 1; };
+                        img.src = data.thumbnail_url;
+                    }
+                } catch (e) {
+                    /* Si falla, queda el fondo de cuadrícula como respaldo */
+                }
             });
         }
 
@@ -641,6 +678,6 @@
         pintarFiltros();
         pintarGrid();
     </script>
-
+    
 </body>
 </html>
