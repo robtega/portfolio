@@ -38,7 +38,6 @@
 
         ::selection { background: var(--white); color: var(--black); }
 
-        /* ============ NAVBAR ============ */
         nav {
             position: fixed;
             top: 0;
@@ -60,28 +59,7 @@
             gap: 1rem;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--text);
-        }
-
-        .logo-mark {
-            width: 38px;
-            height: 38px;
-            background: var(--white);
-            color: var(--black);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-serif);
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); }
         .logo-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
 
         .logo-badge {
@@ -94,9 +72,9 @@
             border: 1px solid var(--border-strong);
             padding: 0.3rem 0.6rem;
             border-radius: 6px;
+            white-space: nowrap;
         }
 
-        /* ============ BOTONES ============ */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -112,15 +90,10 @@
             font-family: var(--font-sans);
         }
 
-        .btn-white { background: var(--white); color: var(--black); }
-        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
-
         .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
         .btn-dark:hover { background: var(--surface-2); border-color: #4a4a4e; transform: translateY(-2px); }
-
         .btn-small { padding: 0.6rem 1.3rem; border-radius: 10px; font-size: 0.88rem; }
 
-        /* ============ HERO DE PÁGINA ============ */
         .page-hero {
             padding: 10rem 1.5rem 3rem;
             text-align: center;
@@ -146,22 +119,9 @@
 
         .page-hero h1 em { font-style: italic; }
 
-        .count {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-bottom: 2.5rem;
-        }
+        .count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2.5rem; }
 
-        /* ============ FILTROS ============ */
-        .video-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            justify-content: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .video-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; max-width: 800px; margin: 0 auto; }
 
         .filter-pill {
             font-family: var(--font-sans);
@@ -177,19 +137,9 @@
         }
 
         .filter-pill:hover { border-color: #4a4a4e; transform: translateY(-1px); }
+        .filter-pill.active { background: var(--white); color: var(--black); border-color: var(--white); }
 
-        .filter-pill.active {
-            background: var(--white);
-            color: var(--black);
-            border-color: var(--white);
-        }
-
-        /* ============ GRID DE VIDEOS ============ */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 1.5rem 6rem;
-        }
+        main { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
 
         .video-grid {
             display: grid;
@@ -207,10 +157,7 @@
             animation: fadeIn 0.4s ease both;
         }
 
-        .video-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-strong);
-        }
+        .video-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -239,19 +186,8 @@
             text-transform: uppercase;
         }
 
-        .thumb-base, .thumb-media {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .thumb-media {
-            opacity: 0;
-            transition: opacity 0.35s ease;
-        }
-
+        .thumb-base, .thumb-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .thumb-media { opacity: 0; transition: opacity 0.35s ease; }
         .video-card:hover .thumb-media { opacity: 1; }
 
         .play {
@@ -290,13 +226,7 @@
             margin-bottom: 0.9rem;
         }
 
-        .video-body h3 {
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
+        .video-body h3 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem; }
         .video-body p { color: var(--text-muted); font-size: 0.92rem; }
 
         .empty {
@@ -344,13 +274,7 @@
             gap: 1.5rem;
         }
 
-        .modal-info h3 {
-            font-family: var(--font-serif);
-            font-size: 1.4rem;
-            font-weight: 500;
-            margin: 0.8rem 0 0.5rem;
-        }
-
+        .modal-info h3 { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 500; margin: 0.8rem 0 0.5rem; }
         .modal-info p { color: var(--text-muted); font-size: 0.95rem; }
 
         .modal-close {
@@ -368,7 +292,19 @@
 
         .modal-close:hover { background: var(--white); color: var(--black); }
 
-        /* ============ FOOTER ============ */
+        /*  MODAL PANTALLA COMPLETA EN MÓVIL */
+        @media (max-width: 768px) {
+            .modal { padding: 0; }
+            .modal-content {
+                width: 100%;
+                height: 100%;
+                max-height: 100%;
+                border-radius: 0;
+                border: none;
+            }
+            .modal-info { padding: 1.2rem 1.2rem 2rem; }
+        }
+
         footer {
             border-top: 1px solid var(--border);
             padding: 2.5rem 1.5rem;
@@ -380,17 +316,15 @@
 
         @media (max-width: 600px) {
             .logo-badge { display: none; }
-            .modal-info { flex-direction: column-reverse; }
+            .nav-container { padding: 1rem 1.25rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-mark">R</div>
                 <span class="logo-name">Robert</span>
                 <span class="logo-badge">Video Editor & Graphic Designer</span>
             </a>
@@ -398,7 +332,6 @@
         </div>
     </nav>
 
-    <!-- Encabezado -->
     <header class="page-hero">
         <span class="section-tag">// Portafolio Audiovisual</span>
         <h1 id="page-title">Proyectos <em>audiovisuales</em></h1>
@@ -406,7 +339,6 @@
         <div class="video-filters" id="filters"></div>
     </header>
 
-    <!-- Galería -->
     <main>
         <div class="video-grid" id="grid"></div>
         <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
@@ -414,7 +346,6 @@
 
     <footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
 
-    <!-- Modal de video -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <div class="modal-video" id="modal-video"></div>
@@ -432,85 +363,22 @@
     <script>
         /* =========================================================
            👇 EDITA AQUÍ TUS VIDEOS REALES
-           ---------------------------------------------------------
            · categoria: "short-form" | "long-form" | "vsl" |
                         "podcast" | "saas" | "ads"
            · tipo:      "vimeo" o "youtube"
            · videoId:   Vimeo → https://vimeo.com/123456789 = "123456789"
                         YouTube → https://youtu.be/ABC123   = "ABC123"
-           · thumb:     DÉJALO EN "" y la página usa automáticamente
-                        un frame del propio video.
-                        Solo úsalo si quieres una imagen personalizada
-                        (ej. un short vertical recortado por ti):
-                        sube la imagen a una carpeta /img en tu repo
-                        y pon thumb: "img/mi-short.jpg"
-           · hover:     URL de un GIF o MP4 corto para el efecto
-                        "preview en movimiento" al pasar el mouse.
+           · thumb:     "" = usa un frame del propio video automáticamente.
+           · hover:     URL de un GIF o MP4 corto para el preview al pasar el mouse.
            ========================================================= */
         const VIDEOS = [
-            {
-                titulo: "Business & Mindset",
-                categoria: "short-form",
-                tipo: "vimeo",
-                videoId: "1218345311",
-                thumb: "",
-                hover: "",
-                descripcion: "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head."
-            },
-            {
-                titulo: "Finanzas & Estilo Dual",
-                categoria: "short-form",
-                tipo: "vimeo",
-                videoId: "1219288477",
-                thumb: "",
-                hover: "",
-                descripcion: "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes."
-            },
-            {
-                titulo: "Long-Form 01 — Ejemplo",
-                categoria: "long-form",
-                tipo: "youtube",
-                videoId: "ScMzIvxBSi4",
-                thumb: "",
-                hover: "",
-                descripcion: "En YouTube la miniatura se carga sola automáticamente."
-            },
-            {
-                titulo: "VSL 01 — Ejemplo",
-                categoria: "vsl",
-                tipo: "vimeo",
-                videoId: "76979871",
-                thumb: "",
-                hover: "",
-                descripcion: "En Vimeo, elige tu frame favorito en Settings → Thumbnail."
-            },
-            {
-                titulo: "Podcast 01 — Ejemplo",
-                categoria: "podcast",
-                tipo: "vimeo",
-                videoId: "76979871",
-                thumb: "",
-                hover: "",
-                descripcion: "La página jala ese frame automáticamente desde Vimeo."
-            },
-            {
-                titulo: "SaaS 01 — Ejemplo",
-                categoria: "saas",
-                tipo: "vimeo",
-                videoId: "76979871",
-                thumb: "",
-                hover: "",
-                descripcion: "Video de producto para software."
-            },
-            {
-                titulo: "AI Generated UGC Ad",
-                categoria: "ads",
-                tipo: "vimeo",
-                videoId: "1219288461",
-                thumb: "",
-                hover: "",
-                descripcion: "Edición comercial de alto impacto utilizando assets e hiperrealismo generado por IA, combinando cortes rápidos y subtítulos dinámicos."
-            }
+            { titulo: "Short-Form 01 — Ejemplo", categoria: "short-form", tipo: "vimeo", videoId: "76979871", thumb: "", hover: "", descripcion: "Sustituye este proyecto por el tuyo editando el array VIDEOS." },
+            { titulo: "Short-Form 02 — Ejemplo", categoria: "short-form", tipo: "vimeo", videoId: "76979871", thumb: "", hover: "", descripcion: "Copia y pega este bloque por cada video nuevo." },
+            { titulo: "Long-Form 01 — Ejemplo", categoria: "long-form", tipo: "youtube", videoId: "ScMzIvxBSi4", thumb: "", hover: "", descripcion: "En YouTube la miniatura se carga sola automáticamente." },
+            { titulo: "VSL 01 — Ejemplo", categoria: "vsl", tipo: "vimeo", videoId: "76979871", thumb: "", hover: "", descripcion: "En Vimeo, elige tu frame favorito en Settings → Thumbnail." },
+            { titulo: "Podcast 01 — Ejemplo", categoria: "podcast", tipo: "vimeo", videoId: "76979871", thumb: "", hover: "", descripcion: "La página jala ese frame automáticamente desde Vimeo." },
+            { titulo: "SaaS 01 — Ejemplo", categoria: "saas", tipo: "vimeo", videoId: "76979871", thumb: "", hover: "", descripcion: "Video de producto para software." },
+            { titulo: "Ads 01 — Ejemplo", categoria: "ads", tipo: "vimeo", videoId: "76979871", thumb: "", hover: "", descripcion: "Anuncio orientado a conversión." }
         ];
 
         const CATEGORIAS = {
@@ -537,7 +405,6 @@
             return CATEGORIAS[p] ? p : "todos";
         }
 
-        /* ---- Píldoras de filtro ---- */
         function pintarFiltros() {
             filtersBox.innerHTML = "";
             for (const key in CATEGORIAS) {
@@ -554,17 +421,9 @@
             }
         }
 
-        /* ---- Miniatura: frame del propio video ---- */
         function thumbBaseHTML(v) {
-            // 1) Imagen personalizada (opcional)
-            if (v.thumb) {
-                return '<img class="thumb-base" src="' + v.thumb + '" alt="">';
-            }
-            // 2) YouTube: miniatura automática
-            if (v.tipo === "youtube") {
-                return '<img class="thumb-base" src="https://i.ytimg.com/vi/' + v.videoId + '/mqdefault.jpg" alt="">';
-            }
-            // 3) Vimeo: frame elegido por ti en Vimeo (vía oEmbed)
+            if (v.thumb) return '<img class="thumb-base" src="' + v.thumb + '" alt="">';
+            if (v.tipo === "youtube") return '<img class="thumb-base" src="https://i.ytimg.com/vi/' + v.videoId + '/mqdefault.jpg" alt="">';
             return '<img class="thumb-base" data-vimeo="' + v.videoId + '" alt="" style="opacity:0;transition:opacity .4s ease">';
         }
 
@@ -574,18 +433,14 @@
                 : '<img class="thumb-media" src="' + v.hover + '" alt="">';
         }
 
-        /* ---- Grid de videos ---- */
         function pintarGrid() {
-            const lista = current === "todos"
-                ? VIDEOS
-                : VIDEOS.filter(v => v.categoria === current);
+            const lista = current === "todos" ? VIDEOS : VIDEOS.filter(v => v.categoria === current);
 
             pageTitle.innerHTML = current === "todos"
                 ? "Proyectos <em>audiovisuales</em>"
                 : "Proyectos <em>" + CATEGORIAS[current] + "</em>";
 
-            pageCount.textContent = "// " + String(lista.length).padStart(2, "0") +
-                (lista.length === 1 ? " proyecto" : " proyectos");
+            pageCount.textContent = "// " + String(lista.length).padStart(2, "0") + (lista.length === 1 ? " proyecto" : " proyectos");
 
             empty.style.display = lista.length ? "none" : "block";
             grid.innerHTML = "";
@@ -610,7 +465,6 @@
 
                 card.onclick = () => abrirModal(v);
 
-                /* Efecto hover tipo GIF (si hay MP4) */
                 const vid = card.querySelector("video.thumb-media");
                 if (vid) {
                     card.addEventListener("mouseenter", () => vid.play().catch(() => {}));
@@ -623,25 +477,20 @@
             cargarThumbsVimeo();
         }
 
-        /* ---- Pide a Vimeo el frame que elegiste como portada ---- */
         function cargarThumbsVimeo() {
             grid.querySelectorAll("img[data-vimeo]").forEach(async img => {
                 try {
-                    const url = "https://vimeo.com/api/oembed.json?url=" +
-                        encodeURIComponent("https://vimeo.com/" + img.dataset.vimeo);
+                    const url = "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent("https://vimeo.com/" + img.dataset.vimeo);
                     const res = await fetch(url);
                     const data = await res.json();
                     if (data.thumbnail_url) {
                         img.onload = () => { img.style.opacity = 1; };
                         img.src = data.thumbnail_url;
                     }
-                } catch (e) {
-                    /* Si falla, queda el fondo de cuadrícula como respaldo */
-                }
+                } catch (e) {}
             });
         }
 
-        /* ---- Modal ---- */
         function abrirModal(v) {
             const src = v.tipo === "youtube"
                 ? "https://www.youtube.com/embed/" + v.videoId + "?autoplay=1"
@@ -667,17 +516,15 @@
         modal.onclick = e => { if (e.target === modal) cerrarModal(); };
         document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
 
-        /* ---- Botón atrás del navegador ---- */
         window.addEventListener("popstate", () => {
             current = leerCategoria();
             pintarFiltros();
             pintarGrid();
         });
 
-        /* ---- Inicio ---- */
         pintarFiltros();
         pintarGrid();
     </script>
-    
+
 </body>
 </html>
