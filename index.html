@@ -274,6 +274,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
 
         .video-thumb span, .design-thumb span {
@@ -343,7 +344,20 @@
         }
 
         .design-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
-        .design-card .design-thumb { aspect-ratio: 1 / 1; }
+
+        /* Portadas en formato PORTRAIT 4:5 */
+        .design-card .design-thumb { aspect-ratio: 4 / 5; }
+
+        .design-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .design-card:hover .design-thumb img { transform: scale(1.05); }
 
         /* ============ STACK ============ */
         .stack-grid {
@@ -540,7 +554,7 @@
         </div>
     </section>
 
-    <!-- Diseño (teaser) -->
+    <!-- Diseño (teaser con portadas) -->
     <section id="diseno">
         <div class="section-header">
             <span class="section-tag">// Diseño & Social Media</span>
@@ -550,7 +564,10 @@
 
         <div class="design-grid">
             <a href="diseno.html?categoria=thumbs-yt" class="design-card">
-                <div class="design-thumb"><span>THUMBNAILS YOUTUBE</span></div>
+                <div class="design-thumb">
+                    <span>THUMBNAILS YOUTUBE</span>
+                    <img src="img/portada-yt.jpg" alt="Thumbnails YouTube" onerror="this.style.display='none'">
+                </div>
                 <div class="design-body">
                     <span class="video-tag">YouTube</span>
                     <h3>Miniaturas de alto CTR</h3>
@@ -558,7 +575,10 @@
                 </div>
             </a>
             <a href="diseno.html?categoria=thumbs-ia" class="design-card">
-                <div class="design-thumb"><span>THUMBNAILS IA</span></div>
+                <div class="design-thumb">
+                    <span>THUMBNAILS IA</span>
+                    <img src="img/portada-ia.jpg" alt="Thumbnails con IA" onerror="this.style.display='none'">
+                </div>
                 <div class="design-body">
                     <span class="video-tag">Instagram</span>
                     <h3>Thumbnails con IA</h3>
@@ -566,7 +586,10 @@
                 </div>
             </a>
             <a href="diseno.html?categoria=carruseles" class="design-card">
-                <div class="design-thumb"><span>CARRUSELES</span></div>
+                <div class="design-thumb">
+                    <span>CARRUSELES</span>
+                    <img src="img/portada-carrusel.jpg" alt="Carruseles" onerror="this.style.display='none'">
+                </div>
                 <div class="design-body">
                     <span class="video-tag">Carruseles</span>
                     <h3>Carruseles que cuentan</h3>
@@ -574,7 +597,10 @@
                 </div>
             </a>
             <a href="diseno.html?categoria=social" class="design-card">
-                <div class="design-thumb"><span>SOCIAL MEDIA</span></div>
+                <div class="design-thumb">
+                    <span>SOCIAL MEDIA</span>
+                    <img src="img/portada-social.jpg" alt="Social Media" onerror="this.style.display='none'">
+                </div>
                 <div class="design-body">
                     <span class="video-tag">Social Media</span>
                     <h3>Piezas para redes</h3>
