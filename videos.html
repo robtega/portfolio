@@ -3,524 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio | Videos</title>
+    <title>Videos — Robert</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0f;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent: #6366f1;
-            --text: #f1f5f9;
-            --text-dim: #94a3b8;
+            --bg: #0a0a0a;
+            --surface: #141415;
+            --surface-2: #1a1a1c;
+            --border: #232325;
+            --border-strong: #333336;
+            --text: #f5f5f5;
+            --text-soft: #d4d4d4;
+            --text-muted: #9b9ba3;
+            --text-dim: #6f6f76;
+            --white: #fafafa;
+            --black: #0a0a0a;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Source Serif 4', Georgia, serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
         body {
-            background: var(--bg);
+            background-color: var(--bg);
             color: var(--text);
-            min-height: 100vh;
+            font-family: var(--font-sans);
+            line-height: 1.6;
             overflow-x: hidden;
         }
-        /* Fondo animado sutil */
-        body::before {
-            content: '';
+
+        ::selection { background: var(--white); color: var(--black); }
+
+        /* ============ NAVBAR ============ */
+        nav {
             position: fixed;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite alternate;
-            z-index: -1;
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-10%, 10%); }
-        }
-
-        /* Header / Navegación */
-        .nav {
-            position: sticky;
             top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
             z-index: 100;
-            backdrop-filter: blur(20px);
-            background: rgba(10, 10, 15, 0.7);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1.5rem 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .back-btn {
-            color: var(--text);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: 100px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(-3px);
-        }
-        .page-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            text-transform: capitalize;
-        }
-        .page-title span {
-            color: var(--accent);
-        }
-        .filter-pills {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .pill {
-            padding: 0.5rem 1rem;
-            border-radius: 100px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .pill:hover, .pill.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
         }
 
-        /* Grid Inmersivo */
-        .hero-section {
-            text-align: center;
-            padding: 4rem 5% 2rem;
-        }
-        .hero-section h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 1rem;
-            text-transform: capitalize;
-        }
-        .hero-section p {
-            color: var(--text-dim);
-            max-width: 600px;
+        .nav-container {
+            max-width: 1200px;
             margin: 0 auto;
-            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .logo-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
+
+        .logo-badge {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        /* ============ BOTONES ============ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.9rem 1.6rem;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-family: var(--font-sans);
+        }
+
+        .btn-white { background: var(--white); color: var(--black); }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
+
+        .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+        .btn-dark:hover { background: var(--surface-2); border-color: #4a4a4e; transform: translateY(-2px); }
+
+        .btn-small { padding: 0.6rem 1.3rem; border-radius: 10px; font-size: 0.88rem; }
+
+        /* ============ HERO DE PÁGINA ============ */
+        .page-hero {
+            padding: 10rem 1.5rem 3rem;
+            text-align: center;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.05), transparent 70%);
+        }
+
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .page-hero h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 500;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .page-hero h1 em { font-style: italic; }
+
+        .count {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+        }
+
+        /* ============ FILTROS ============ */
+        .video-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .filter-pill {
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-soft);
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            padding: 0.55rem 1.2rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .filter-pill:hover { border-color: #4a4a4e; transform: translateY(-1px); }
+
+        .filter-pill.active {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+
+        /* ============ GRID DE VIDEOS ============ */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 6rem;
         }
 
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            padding: 2rem 5% 5rem;
-            max-width: 1400px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         .video-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            animation: fadeInUp 0.6s ease backwards;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease both;
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .video-card:nth-child(1) { animation-delay: 0.1s; }
-        .video-card:nth-child(2) { animation-delay: 0.2s; }
-        .video-card:nth-child(3) { animation-delay: 0.3s; }
-        .video-card:nth-child(4) { animation-delay: 0.4s; }
-        .video-card:nth-child(5) { animation-delay: 0.5s; }
-        .video-card:nth-child(6) { animation-delay: 0.6s; }
 
         .video-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-4px);
+            border-color: var(--border-strong);
         }
 
-        .thumb-container {
-            position: relative;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            background: #000;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-        .thumb-video {
+
+        .video-thumb {
+            aspect-ratio: 16 / 9;
+            background-color: #121213;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumb > span {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .thumb-base, .thumb-media {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
         }
-        .video-card:hover .thumb-video {
-            transform: scale(1.08);
-        }
-        .play-overlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
+
+        .thumb-media {
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.35s ease;
         }
-        .video-card:hover .play-overlay {
-            opacity: 1;
-        }
-        .play-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.95);
+
+        .video-card:hover .thumb-media { opacity: 1; }
+
+        .play {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            background: var(--white);
+            color: var(--black);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .play-icon::before {
-            content: '';
-            border-left: 18px solid var(--accent);
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
-            margin-left: 5px;
+            font-size: 1.1rem;
+            padding-left: 4px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            z-index: 2;
         }
 
-        .video-info {
-            padding: 1.5rem;
-        }
-        .video-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .video-info p {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
+        .video-card:hover .play { opacity: 1; transform: scale(1); }
+
+        .video-body { padding: 1.4rem; }
+
         .video-tag {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--accent);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            margin-bottom: 0.9rem;
         }
 
-        /* Modal */
+        .video-body h3 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-body p { color: var(--text-muted); font-size: 0.92rem; }
+
+        .empty {
+            text-align: center;
+            padding: 5rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* ============ MODAL ============ */
         .modal {
-            display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(5, 5, 5, 0.88);
             backdrop-filter: blur(10px);
-            z-index: 1000;
-            justify-content: center;
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 200;
+            display: none;
             align-items: center;
-            padding: 2rem;
-        }
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .modal-content {
-            background: #13131a;
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            max-width: 1000px;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr;
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @media (min-width: 768px) {
-            .modal-content {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
-        .modal-video-wrap {
-            aspect-ratio: 16 / 9;
-            background: #000;
-        }
-        .modal-video-wrap iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .modal-info {
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
-        }
-        .modal-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .modal-info p {
-            color: var(--text-dim);
-            line-height: 1.7;
-        }
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s;
-        }
-        .close-modal:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(90deg);
+            padding: 1.5rem;
         }
 
-        .empty-state {
+        .modal.open { display: flex; }
+
+        .modal-content {
+            width: min(960px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 16px;
+            animation: fadeIn 0.3s ease both;
+        }
+
+        .modal-video { aspect-ratio: 16 / 9; background: #000; }
+        .modal-video iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+        .modal-info {
+            padding: 1.5rem 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .modal-info h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin: 0.8rem 0 0.5rem;
+        }
+
+        .modal-info p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .modal-close {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .modal-close:hover { background: var(--white); color: var(--black); }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 1.5rem;
             text-align: center;
-            padding: 5rem 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
             color: var(--text-dim);
-            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 600px) {
+            .logo-badge { display: none; }
+            .modal-info { flex-direction: column-reverse; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
-    <nav class="nav">
-        <a href="index.html" class="back-btn">
-            <span>←</span> Volver al inicio
-        </a>
-        <div class="page-title">Categoría: <span id="cat-title">Todos</span></div>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-mark">R</div>
+                <span class="logo-name">Robert</span>
+                <span class="logo-badge">Vibe Coder</span>
+            </a>
+            <a href="index.html" class="btn btn-dark btn-small">← Volver al inicio</a>
+        </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero-section">
-        <h1 id="cat-hero">Portafolio Audiovisual</h1>
-        <p>Explora mi trabajo filtrado por formato. Haz clic en cualquier pieza para ver el caso de estudio completo.</p>
-    </section>
+    <!-- Encabezado -->
+    <header class="page-hero">
+        <span class="section-tag">// Portafolio Audiovisual</span>
+        <h1 id="page-title">Proyectos <em>audiovisuales</em></h1>
+        <p class="count" id="page-count"></p>
+        <div class="video-filters" id="filters"></div>
+    </header>
 
-    <!-- FILTROS -->
-    <div style="display: flex; justify-content: center; padding: 0 5%;">
-        <div class="filter-pills">
-            <a href="?categoria=todos" class="pill" data-cat="todos">Todos</a>
-            <a href="?categoria=short-form" class="pill" data-cat="short-form">Short-Form</a>
-            <a href="?categoria=long-form" class="pill" data-cat="long-form">Long-Form</a>
-            <a href="?categoria=vsl" class="pill" data-cat="vsl">VSL</a>
-            <a href="?categoria=podcast" class="pill" data-cat="podcast">Podcast</a>
-            <a href="?categoria=saas" class="pill" data-cat="saas">SaaS</a>
-            <a href="?categoria=ads" class="pill" data-cat="ads">Ads</a>
-        </div>
-    </div>
-
-    <!-- GRID -->
-    <main class="video-grid" id="videoGrid">
-        <!-- Los videos se inyectan dinámicamente con JS -->
+    <!-- Galería -->
+    <main>
+        <div class="video-grid" id="grid"></div>
+        <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
     </main>
 
-    <!-- MODAL -->
-    <div class="modal" id="videoModal">
+    <footer>© 2026 Robert — Video Editor & Vibe Coder</footer>
+
+    <!-- Modal de video -->
+    <div class="modal" id="modal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">×</button>
-            <div class="modal-video-wrap" id="modalVideo"></div>
+            <div class="modal-video" id="modal-video"></div>
             <div class="modal-info">
-                <span class="video-tag" id="modalTag"></span>
-                <h3 id="modalTitle"></h3>
-                <p id="modalDesc"></p>
+                <div>
+                    <span class="video-tag" id="modal-tag"></span>
+                    <h3 id="modal-title"></h3>
+                    <p id="modal-desc"></p>
+                </div>
+                <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
             </div>
         </div>
     </div>
 
-<script>
-// ============================================
-// 📚 BASE DE DATOS DE TUS VIDEOS
-// Aquí agregarás tus videos. Solo edita este bloque.
-// ============================================
-const videosDatabase = [
-    {
-        id: 1,
-        title: "Gancho Viral para Marca de Tech",
-        category: "short-form",
-        thumb: "https://assets.mixkit.co/videos/4881/4881-720.mp4", // Video demo (reemplazar con el tuyo .mp4)
-        vimeo: "824862119", // ID del video de Vimeo (el número en la URL)
-        // Si es YouTube usa: youtube: "VIDEO_ID"
-        desc: "Edición dinámica de 45s diseñada para maximizar retención en Reels y TikTok. Uso de motion graphics, sound design agresivo y cortes al beat."
-    },
-    {
-        id: 2,
-        title: "VSL para Lanzamiento de SaaS",
-        category: "vsl",
-        thumb: "https://assets.mixkit.co/videos/4414/4414-720.mp4",
-        vimeo: "347119871",
-        desc: "Video Sales Letter de 3 minutos. Estrategia narrativa enfocada en dolor/solución, integración de B-roll y gráficos animados en After Effects."
-    },
-    {
-        id: 3,
-        title: "Episodio Podcast — Entrevista Fundadores",
-        category: "podcast",
-        thumb: "https://assets.mixkit.co/videos/4820/4820-720.mp4",
-        vimeo: "727971905",
-        desc: "Postproducción completa de audio y video. Multi-cámara, corrección de color y edición para mantener el ritmo conversacional sin perder autenticidad."
-    },
-    {
-        id: 4,
-        title: "Anuncio Performance — E-commerce",
-        category: "ads",
-        thumb: "https://assets.mixkit.co/videos/34487/34487-720.mp4",
-        vimeo: "521338573",
-        desc: "Ad creativo de 30s para Meta Ads. A/B testing de hooks, optimización de primeros 3 segundos y CTA claros."
-    },
-    {
-        id: 5,
-        title: "Documental Corto — SaaS Fintech",
-        category: "saas",
-        thumb: "https://assets.mixkit.co/videos/4783/4783-720.mp4",
-        vimeo: "458721904",
-        desc: "Historia de marca enfocada en el usuario. Edición emocional, color grading cinematográfico y diseño sonoro inmersivo."
-    },
-    {
-        id: 6,
-        title: "Tutorial Técnico Long-Form",
-        category: "long-form",
-        thumb: "https://assets.mixkit.co/videos/4321/4321-720.mp4",
-        vimeo: "425678123",
-        desc: "Video de 12 minutos con tutoriales paso a paso. Edición estructurada con capítulos, gráficos explicativos y ritmo didáctico."
-    }
-];
+    <script>
+        /* =========================================================
+           👇 EDITA AQUÍ TUS VIDEOS REALES
+           ---------------------------------------------------------
+           · categoria: "short-form" | "long-form" | "vsl" |
+                        "podcast" | "saas" | "ads"
+           · tipo:      "vimeo" o "youtube"
+           · videoId:   Vimeo → https://vimeo.com/123456789 = "123456789"
+                        YouTube → https://youtu.be/ABC123   = "ABC123"
+           · thumb:     URL de la miniatura (imagen). Déjalo en "" para
+                        el fondo de cuadrícula.
+           · hover:     URL de un GIF o MP4 corto para el efecto
+                        "preview en movimiento" al pasar el mouse.
+           ========================================================= */
+        const VIDEOS = [
+            {
+                titulo: "Short-Form 01 — Ejemplo",
+                categoria: "short-form",
+                tipo: "vimeo",
+                videoId: "76979871",
+                thumb: "",
+                hover: "",
+                descripcion: "Sustituye este proyecto por el tuyo editando el array VIDEOS."
+            },
+            {
+                titulo: "Short-Form 02 — Ejemplo",
+                categoria: "short-form",
+                tipo: "vimeo",
+                videoId: "76979871",
+                thumb: "",
+                hover: "",
+                descripcion: "Copia y pega este bloque por cada video nuevo que agregues."
+            },
+            {
+                titulo: "Long-Form 01 — Ejemplo",
+                categoria: "long-form",
+                tipo: "youtube",
+                videoId: "ScMzIvxBSi4",
+                thumb: "",
+                hover: "",
+                descripcion: "Puedes mezclar videos de Vimeo y YouTube sin problema."
+            },
+            {
+                titulo: "VSL 01 — Ejemplo",
+                categoria: "vsl",
+                tipo: "vimeo",
+                videoId: "76979871",
+                thumb: "",
+                hover: "",
+                descripcion: "Video de ventas de alta conversión."
+            },
+            {
+                titulo: "Podcast 01 — Ejemplo",
+                categoria: "podcast",
+                tipo: "vimeo",
+                videoId: "76979871",
+                thumb: "",
+                hover: "",
+                descripcion: "Corte de episodio con ritmo narrativo."
+            },
+            {
+                titulo: "SaaS 01 — Ejemplo",
+                categoria: "saas",
+                tipo: "vimeo",
+                videoId: "76979871",
+                thumb: "",
+                hover: "",
+                descripcion: "Video de producto para software."
+            },
+            {
+                titulo: "Ads 01 — Ejemplo",
+                categoria: "ads",
+                tipo: "vimeo",
+                videoId: "76979871",
+                thumb: "",
+                hover: "",
+                descripcion: "Anuncio orientado a conversión."
+            }
+        ];
 
-// ============================================
-// ⚙️ LÓGICA DE LA APLICACIÓN
-// ============================================
+        const CATEGORIAS = {
+            "todos": "Todos",
+            "short-form": "Short-Form",
+            "long-form": "Long-Form",
+            "vsl": "VSL",
+            "podcast": "Podcast",
+            "saas": "SaaS",
+            "ads": "Ads"
+        };
 
-// 1. Leer la categoría desde la URL
-const urlParams = new URLSearchParams(window.location.search);
-const currentCat = urlParams.get('categoria') || 'todos';
+        const grid = document.getElementById("grid");
+        const empty = document.getElementById("empty");
+        const filtersBox = document.getElementById("filters");
+        const pageTitle = document.getElementById("page-title");
+        const pageCount = document.getElementById("page-count");
+        const modal = document.getElementById("modal");
 
-// 2. Actualizar títulos dinámicos
-const catNames = {
-    'todos': 'Todos los Proyectos',
-    'short-form': 'Short-Form Content',
-    'long-form': 'Long-Form Content',
-    'vsl': 'Video Sales Letters (VSL)',
-    'podcast': 'Edición de Podcasts',
-    'saas': 'Videos para SaaS',
-    'ads': 'Anuncios & Performance'
-};
-document.getElementById('cat-title').textContent = catNames[currentCat] || currentCat;
-document.getElementById('cat-hero').textContent = catNames[currentCat] || 'Portafolio Audiovisual';
+        let current = leerCategoria();
 
-// 3. Marcar el filtro activo
-document.querySelectorAll('.pill').forEach(pill => {
-    if(pill.dataset.cat === currentCat) pill.classList.add('active');
-});
+        function leerCategoria() {
+            const p = new URLSearchParams(window.location.search).get("categoria");
+            return CATEGORIAS[p] ? p : "todos";
+        }
 
-// 4. Renderizar videos filtrados
-const grid = document.getElementById('videoGrid');
-const filtered = currentCat === 'todos' 
-    ? videosDatabase 
-    : videosDatabase.filter(v => v.category === currentCat);
+        /* ---- Píldoras de filtro ---- */
+        function pintarFiltros() {
+            filtersBox.innerHTML = "";
+            for (const key in CATEGORIAS) {
+                const b = document.createElement("button");
+                b.className = "filter-pill" + (key === current ? " active" : "");
+                b.textContent = CATEGORIAS[key];
+                b.onclick = () => {
+                    current = key;
+                    history.pushState(null, "", "?categoria=" + key);
+                    pintarFiltros();
+                    pintarGrid();
+                };
+                filtersBox.appendChild(b);
+            }
+        }
 
-if(filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state">
-        <h3>Aún no hay videos en esta categoría</h3>
-        <p>Pronto subiré más contenido. Mientras tanto, explora <a href="?categoria=todos" style="color: var(--accent)">todos los proyectos</a>.</p>
-    </div>`;
-} else {
-    filtered.forEach(video => {
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.onclick = () => openModal(video);
-        card.innerHTML = `
-            <div class="thumb-container">
-                <video class="thumb-video" muted loop playsinline autoplay 
-                       src="${video.thumb}" 
-                       onmouseover="this.play()" 
-                       onmouseout="this.pause()"></video>
-                <div class="play-overlay">
-                    <div class="play-icon"></div>
-                </div>
-            </div>
-            <div class="video-info">
-                <span class="video-tag">${catNames[video.category]}</span>
-                <h3>${video.title}</h3>
-                <p>${video.desc.substring(0, 80)}...</p>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
+        /* ---- Grid de videos ---- */
+        function pintarGrid() {
+            const lista = current === "todos"
+                ? VIDEOS
+                : VIDEOS.filter(v => v.categoria === current);
 
-// 5. Modal: Abrir y Cerrar
-function openModal(video) {
-    const modal = document.getElementById('videoModal');
-    document.getElementById('modalTitle').textContent = video.title;
-    document.getElementById('modalDesc').textContent = video.desc;
-    document.getElementById('modalTag').textContent = catNames[video.category];
-    
-    // Detectar si es Vimeo o YouTube
-    let embedSrc = '';
-    if(video.vimeo) {
-        embedSrc = `https://player.vimeo.com/video/${video.vimeo}?autoplay=1&color=6366f1`;
-    } else if(video.youtube) {
-        embedSrc = `https://www.youtube.com/embed/${video.youtube}?autoplay=1&rel=0`;
-    }
-    
-    document.getElementById('modalVideo').innerHTML = `<iframe src="${embedSrc}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
+            pageTitle.innerHTML = current === "todos"
+                ? "Proyectos <em>audiovisuales</em>"
+                : "Proyectos <em>" + CATEGORIAS[current] + "</em>";
 
-function closeModal() {
-    const modal = document.getElementById('videoModal');
-    modal.classList.remove('active');
-    document.getElementById('modalVideo').innerHTML = ''; // Detiene el video
-    document.body.style.overflow = '';
-}
+            pageCount.textContent = "// " + String(lista.length).padStart(2, "0") +
+                (lista.length === 1 ? " proyecto" : " proyectos");
 
-// Cerrar modal con click fuera
-document.getElementById('videoModal').addEventListener('click', (e) => {
-    if(e.target.id === 'videoModal') closeModal();
-});
+            empty.style.display = lista.length ? "none" : "block";
+            grid.innerHTML = "";
 
-// Cerrar modal con tecla ESC
-document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') closeModal();
-});
-</script>
+            lista.forEach((v, i) => {
+                const card = document.createElement("article");
+                card.className = "video-card";
+                card.style.animationDelay = (i * 0.06) + "s";
+
+                let thumbHTML = "";
+                if (v.thumb) thumbHTML += '<img class="thumb-base" src="' + v.thumb + '" alt="">';
+                else thumbHTML += "<span>" + CATEGORIAS[v.categoria] + "</span>";
+
+                if (v.hover) {
+                    thumbHTML += /\.mp4|\.webm/i.test(v.hover)
+                        ? '<video class="thumb-media" src="' + v.hover + '" muted loop playsinline preload="none"></video>'
+                        : '<img class="thumb-media" src="' + v.hover + '" alt="">';
+                }
+
+                card.innerHTML =
+                    '<div class="video-thumb">' + thumbHTML +
+                        '<div class="play">▶</div>' +
+                    '</div>' +
+                    '<div class="video-body">' +
+                        '<span class="video-tag">' + CATEGORIAS[v.categoria] + '</span>' +
+                        '<h3>' + v.titulo + '</h3>' +
+                        '<p>' + v.descripcion + '</p>' +
+                    '</div>';
+
+                card.onclick = () => abrirModal(v);
+
+                /* Efecto hover tipo GIF (si hay MP4) */
+                const vid = card.querySelector("video.thumb-media");
+                if (vid) {
+                    card.addEventListener("mouseenter", () => vid.play().catch(() => {}));
+                    card.addEventListener("mouseleave", () => vid.pause());
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        /* ---- Modal ---- */
+        function abrirModal(v) {
+            const src = v.tipo === "youtube"
+                ? "https://www.youtube.com/embed/" + v.videoId + "?autoplay=1"
+                : "https://player.vimeo.com/video/" + v.videoId + "?autoplay=1";
+
+            document.getElementById("modal-video").innerHTML =
+                '<iframe src="' + src + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+            document.getElementById("modal-tag").textContent = CATEGORIAS[v.categoria];
+            document.getElementById("modal-title").textContent = v.titulo;
+            document.getElementById("modal-desc").textContent = v.descripcion;
+
+            modal.classList.add("open");
+            document.body.style.overflow = "hidden";
+        }
+
+        function cerrarModal() {
+            modal.classList.remove("open");
+            document.getElementById("modal-video").innerHTML = "";
+            document.body.style.overflow = "";
+        }
+
+        document.getElementById("modal-close").onclick = cerrarModal;
+        modal.onclick = e => { if (e.target === modal) cerrarModal(); };
+        document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
+
+        /* ---- Botón atrás del navegador ---- */
+        window.addEventListener("popstate", () => {
+            current = leerCategoria();
+            pintarFiltros();
+            pintarGrid();
+        });
+
+        /* ---- Inicio ---- */
+        pintarFiltros();
+        pintarGrid();
+    </script>
 
 </body>
 </html>
