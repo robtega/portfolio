@@ -292,29 +292,38 @@
 
         .modal-close:hover { background: var(--white); color: var(--black); }
 
-        /*  MODAL PANTALLA COMPLETA EN MÓVIL */
+        /*  MODAL PANTALLA COMPLETA EN MÓVIL
+            El video crece para ocupar todo el alto disponible,
+            así los videos verticales (9:16) se ven grandes y los
+            horizontales (16:9) a ancho completo.                  */
         @media (max-width: 768px) {
-            .modal { 
-                padding: 0; 
-                align-items: stretch;
-                justify-content: stretch;
-            }
+            .modal { padding: 0; }
+
             .modal-content {
-                width: 100vw;
-                height: 100vh;
-                max-height: 100vh;
+                width: 100%;
+                height: 100%;
+                max-height: 100%;
                 border-radius: 0;
                 border: none;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            /* El reproductor se lleva todo el espacio libre (mínimo 55% de la pantalla) */
+            .modal-video {
+                flex: 1 1 auto;
+                min-height: 55vh;
+                aspect-ratio: auto;
+            }
+
+            /* La info se compacta abajo; si la descripción es larga, scrollea ella sola */
+            .modal-info {
+                flex: 0 0 auto;
+                max-height: 45vh;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-            }
-            .modal-info { 
-                padding: 1.2rem 1.2rem 2rem; 
-                flex-direction: column;
-            }
-            .modal-close {
-                align-self: flex-end;
-                margin-bottom: 1rem;
+                padding: 1.2rem 1.2rem 2rem;
             }
         }
 
