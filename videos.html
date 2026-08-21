@@ -294,15 +294,28 @@
 
         /*  MODAL PANTALLA COMPLETA EN MÓVIL */
         @media (max-width: 768px) {
-            .modal { padding: 0; }
+            .modal { 
+                padding: 0; 
+                align-items: stretch;
+                justify-content: stretch;
+            }
             .modal-content {
-                width: 100%;
-                height: 100%;
-                max-height: 100%;
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
                 border-radius: 0;
                 border: none;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
-            .modal-info { padding: 1.2rem 1.2rem 2rem; }
+            .modal-info { 
+                padding: 1.2rem 1.2rem 2rem; 
+                flex-direction: column;
+            }
+            .modal-close {
+                align-self: flex-end;
+                margin-bottom: 1rem;
+            }
         }
 
         footer {
@@ -382,7 +395,6 @@
         ];
 
         const CATEGORIAS = {
-            "todos": "Todos",
             "short-form": "Short-Form",
             "long-form": "Long-Form",
             "vsl": "VSL",
@@ -402,7 +414,8 @@
 
         function leerCategoria() {
             const p = new URLSearchParams(window.location.search).get("categoria");
-            return CATEGORIAS[p] ? p : "todos";
+            if (CATEGORIAS[p]) return p;
+            return Object.keys(CATEGORIAS)[0];
         }
 
         function pintarFiltros() {
@@ -434,11 +447,9 @@
         }
 
         function pintarGrid() {
-            const lista = current === "todos" ? VIDEOS : VIDEOS.filter(v => v.categoria === current);
+            const lista = VIDEOS.filter(v => v.categoria === current);
 
-            pageTitle.innerHTML = current === "todos"
-                ? "Proyectos <em>audiovisuales</em>"
-                : "Proyectos <em>" + CATEGORIAS[current] + "</em>";
+            pageTitle.innerHTML = "Proyectos <em>" + CATEGORIAS[current] + "</em>";
 
             pageCount.textContent = "// " + String(lista.length).padStart(2, "0") + (lista.length === 1 ? " proyecto" : " proyectos");
 
