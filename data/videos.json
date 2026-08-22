@@ -17,14 +17,15 @@
       "descripcion": "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head."
     },
     {
-      "titulo": "Finanzas",
+      "titulo": "Coach de Finanzas",
       "categoria": [
         "short-form"
       ],
       "video": "https://vimeo.com/1219288477",
       "thumb": "",
       "hover": "",
-      "descripcion": "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes."
+      "descripcion": "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes.",
+      "destacado": false
     },
     {
       "titulo": "Podcast — La Historia de Aurelio",
@@ -35,17 +36,8 @@
       "video": "https://www.youtube.com/watch?v=bSUGpEIaEmg",
       "thumb": "",
       "hover": "",
-      "descripcion": "Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio."
-    },
-    {
-      "titulo": "Long-Form 02",
-      "categoria": [
-        "long-form"
-      ],
-      "video": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
-      "thumb": "",
-      "hover": "",
-      "descripcion": "Video de muestra: reemplázalo o elimínalo desde el panel."
+      "descripcion": "Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio.",
+      "destacado": true
     },
     {
       "titulo": "AI Generated UGC Ad",
