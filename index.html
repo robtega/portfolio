@@ -284,14 +284,17 @@
             color: var(--text-dim);
         }
 
-        /* Frame real del video (se carga desde Vimeo, igual que en la galería) */
+        /* Portada personalizada del video (misma lógica que la sección Diseño) */
         .video-thumb img {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s ease;
         }
+
+        .video-card:hover .video-thumb img { transform: scale(1.05); }
 
         .video-thumb::after {
             content: '▶';
@@ -543,7 +546,7 @@
             <a href="videos.html?categoria=short-form" class="video-card">
                 <div class="video-thumb">
                     <span>SHORT-FORM</span>
-                    <img data-vimeo="1219288477" alt="" style="opacity:0;transition:opacity .4s ease">
+                    <img src="img/portada-finanzas.jpg" alt="Finanzas & Estilo Dual" loading="lazy" onerror="this.style.display='none'">
                 </div>
                 <div class="video-body">
                     <span class="video-tag">Short-Form</span>
@@ -554,7 +557,7 @@
             <a href="videos.html?categoria=ads" class="video-card">
                 <div class="video-thumb">
                     <span>ADS · AI</span>
-                    <img data-vimeo="1219288461" alt="" style="opacity:0;transition:opacity .4s ease">
+                    <img src="img/portada-ugc-ia.jpg" alt="AI Generated UGC Ad" loading="lazy" onerror="this.style.display='none'">
                 </div>
                 <div class="video-body">
                     <span class="video-tag">Ads</span>
@@ -653,7 +656,7 @@
             <h3>¿Tienes un proyecto en mente?</h3>
             <p>Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.</p>
             <div class="contact-links">
-                <a href="https://www.linkedin.com/in/robtega" class="btn btn-dark" target="_blank">
+                <a href="https://linkedin.com/in/robtega/" class="btn btn-dark" target="_blank">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     LinkedIn
                 </a>
@@ -683,19 +686,6 @@
                 toggle.classList.remove("open");
                 toggle.setAttribute("aria-expanded", "false");
             });
-        });
-
-        /* Miniaturas reales de Vimeo (mismo sistema que la galería) */
-        document.querySelectorAll(".video-thumb img[data-vimeo]").forEach(async img => {
-            try {
-                const url = "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent("https://vimeo.com/" + img.dataset.vimeo);
-                const res = await fetch(url);
-                const data = await res.json();
-                if (data.thumbnail_url) {
-                    img.onload = () => { img.style.opacity = 1; };
-                    img.src = data.thumbnail_url;
-                }
-            } catch (e) {}
         });
     </script>
 
