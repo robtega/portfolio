@@ -25,7 +25,7 @@
       "thumb": "",
       "hover": "",
       "descripcion": "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes.",
-      "destacado": false
+      "destacado": true
     },
     {
       "titulo": "Podcast — La Historia de Aurelio",
@@ -47,7 +47,8 @@
       "video": "https://vimeo.com/1219288461",
       "thumb": "",
       "hover": "",
-      "descripcion": "Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro."
+      "descripcion": "Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro.",
+      "destacado": true
     }
   ]
 }
