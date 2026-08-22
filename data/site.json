@@ -6,29 +6,87 @@
     "sub": "Editor de video y diseñador gráfico: postproducción de alta retención, miniaturas orientadas al CTR y piezas para redes que conectan con tu audiencia."
   },
   "especialidades": [
-    { "titulo": "Edición & Postproducción", "descripcion": "Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador." },
-    { "titulo": "Diseño Gráfico & Branding", "descripcion": "Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético." },
-    { "titulo": "Guiones & Estrategia", "descripcion": "Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes." }
+    {
+      "titulo": "Edición & Postproducción",
+      "descripcion": "Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador."
+    },
+    {
+      "titulo": "Diseño Gráfico & Branding",
+      "descripcion": "Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético."
+    },
+    {
+      "titulo": "Guiones & Estrategia",
+      "descripcion": "Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes."
+    }
   ],
   "diseno": [
-    { "etiqueta": "THUMBNAILS YOUTUBE", "tag": "YouTube", "titulo": "Miniaturas de alto CTR", "descripcion": "Diseño de miniaturas orientadas a clics y retención.", "img": "img/portada-yt.jpg", "link": "diseno.html?categoria=thumbs-yt" },
-    { "etiqueta": "THUMBNAILS IA", "tag": "Instagram", "titulo": "Thumbnails con IA", "descripcion": "Miniaturas para Instagram creadas con inteligencia artificial.", "img": "img/portada-ia.jpg", "link": "diseno.html?categoria=thumbs-ia" },
-    { "etiqueta": "CARRUSELES", "tag": "Carruseles", "titulo": "Carruseles que cuentan", "descripcion": "Secuencias visuales con narrativa y ritmo para redes.", "img": "img/portada-carrusel.jpg", "link": "diseno.html?categoria=carruseles" },
-    { "etiqueta": "SOCIAL MEDIA", "tag": "Social Media", "titulo": "Piezas para redes", "descripcion": "Arte digital consistente para marcas y creadores.", "img": "img/portada-social.jpg", "link": "diseno.html?categoria=social" }
+    {
+      "etiqueta": "THUMBNAILS YOUTUBE",
+      "tag": "YouTube",
+      "titulo": "Miniaturas de alto CTR",
+      "descripcion": "Diseño de miniaturas orientadas a clics y retención.",
+      "img": "img/portada-yt.jpg",
+      "link": "diseno.html?categoria=thumbs-yt"
+    },
+    {
+      "etiqueta": "THUMBNAILS IA",
+      "tag": "Instagram",
+      "titulo": "Thumbnails con IA",
+      "descripcion": "Miniaturas para Instagram creadas con inteligencia artificial.",
+      "img": "img/portada-ia.jpg",
+      "link": "diseno.html?categoria=thumbs-ia"
+    },
+    {
+      "etiqueta": "CARRUSELES",
+      "tag": "Carruseles",
+      "titulo": "Carruseles que cuentan",
+      "descripcion": "Secuencias visuales con narrativa y ritmo para redes.",
+      "img": "img/portada-carrusel.jpg",
+      "link": "diseno.html?categoria=carruseles"
+    },
+    {
+      "etiqueta": "SOCIAL MEDIA",
+      "tag": "Social Media",
+      "titulo": "Piezas para redes",
+      "descripcion": "Arte digital consistente para marcas y creadores.",
+      "img": "img/portada-social.jpg",
+      "link": "diseno.html?categoria=social"
+    }
   ],
   "stack": [
-    { "nombre": "Premiere Pro", "rol": "Edición de video" },
-    { "nombre": "After Effects", "rol": "Motion & VFX" },
-    { "nombre": "Photoshop", "rol": "Retoque & Thumbnails" },
-    { "nombre": "Illustrator", "rol": "Branding & Vectores" },
-    { "nombre": "Python", "rol": "Automatización" },
-    { "nombre": "Notion", "rol": "Docs & Sistemas" },
-    { "nombre": "ClickUp", "rol": "Gestión de proyectos" }
+    {
+      "nombre": "Premiere Pro",
+      "rol": "Edición de video"
+    },
+    {
+      "nombre": "After Effects",
+      "rol": "Motion & VFX"
+    },
+    {
+      "nombre": "Photoshop",
+      "rol": "Retoque & Thumbnails"
+    },
+    {
+      "nombre": "Illustrator",
+      "rol": "Branding & Vectores"
+    },
+    {
+      "nombre": "Python",
+      "rol": "Automatización"
+    },
+    {
+      "nombre": "Notion",
+      "rol": "Docs & Sistemas"
+    },
+    {
+      "nombre": "ClickUp",
+      "rol": "Gestión de proyectos"
+    }
   ],
   "contacto": {
     "titulo": "¿Tienes un proyecto en mente?",
-    "descripcion": "Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.",
-    "linkedin": "https://linkedin.com",
-    "instagram": "https://instagram.com"
+    "descripcion": "Ya sea para edición de video, diseño o creación de tu estrategia en redes, escríbeme.",
+    "linkedin": "https://www.linkedin.com/in/robtega/",
+    "instagram": "https://www.instagram.com/yhampiert"
   }
 }
