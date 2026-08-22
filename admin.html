@@ -102,6 +102,7 @@
             <div class="actions">
                 <button class="btn btn-dark" onclick="cargar()">Recargar</button>
                 <button class="btn btn-dark" onclick="backup()">Descargar copias</button>
+                <button class="btn btn-dark" onclick="restaurar()">↺ Restaurar</button>
                 <button class="btn btn-white" onclick="publicar()">⬆ Publicar cambios</button>
             </div>
         </div>
@@ -439,6 +440,17 @@
     }
 
     function addStack() { SITE.stack.push({ nombre: "Herramienta", rol: "Rol" }); renderStack(); }
+
+    /* ---------- RESTAURAR TODO ---------- */
+    function restaurar() {
+        if (!confirm("¿Restaurar TODO el contenido (videos, categorías e inicio) a los valores originales?\n\nEsto reemplaza lo que haya cargado en el panel. Después pulsa ⬆ Publicar para aplicarlo al sitio.")) return;
+        DATA = defVideos();
+        SITE = defSite();
+        renderCats();
+        renderList();
+        renderSiteEditor();
+        status("✔ Contenido restaurado en el panel. Pulsa ⬆ Publicar para aplicarlo al sitio.");
+    }
 
     /* ---------- PUBLICAR (ambos archivos) ---------- */
     function putFile(path, sha, obj) {
