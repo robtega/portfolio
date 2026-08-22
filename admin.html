@@ -40,12 +40,21 @@
     .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
     .btn-dark:hover { background: var(--surface-2); }
     .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .chip { display: inline-flex; align-items: center; gap: .5rem; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 999px; padding: .4rem .9rem; font-size: .85rem; color: var(--text-soft); }
+    .chip { display: inline-flex; align-items: center; gap: .5rem; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 999px; padding: .4rem .9rem; font-size: .85rem; color: var(--text-soft); white-space: nowrap; }
     .chip button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: .8rem; }
     .chip button:hover { color: #ff6b6b; }
     .chip button:disabled { opacity: .3; cursor: not-allowed; }
-    .checks { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: .2rem; }
-    .checks label { display: flex; align-items: center; gap: .45rem; margin: 0; font-family: var(--font-sans); font-size: .88rem; color: var(--text-soft); text-transform: none; letter-spacing: 0; }
+
+    /* Pills seleccionables (categorías dentro de cada video) */
+    button.chip { cursor: pointer; font-family: var(--font-sans); transition: all .2s ease; }
+    button.chip:hover { border-color: #4a4a4e; }
+    button.chip.on { background: var(--white); color: var(--black); border-color: var(--white); font-weight: 600; }
+
+    /* Botón estrella (destacado en el inicio) */
+    .star { display: inline-flex; align-items: center; gap: .5rem; background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text-dim); border-radius: 999px; padding: .4rem .9rem; font-size: .85rem; cursor: pointer; font-family: var(--font-sans); white-space: nowrap; transition: all .2s ease; margin-top: .7rem; }
+    .star:hover { border-color: #4a4a4e; color: var(--text-soft); }
+    .star.on { background: var(--white); color: var(--black); border-color: var(--white); font-weight: 600; }
+
     .vhead { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .4rem; }
     .vhead strong { font-family: var(--font-serif); font-weight: 500; font-size: 1.1rem; }
     .del { background: none; border: 1px solid var(--border-strong); color: var(--text-muted); border-radius: 8px; padding: .35rem .7rem; cursor: pointer; font-size: .8rem; }
@@ -316,16 +325,18 @@
         DATA.videos.forEach((v, i) => {
             const el = document.createElement("div");
             el.className = "box";
-            let checks = "";
+
+            let chips = "";
             for (const k in DATA.categorias) {
-                checks += '<label><input type="checkbox" data-c="' + k + '" data-i="' + i + '" ' + (cats(v).includes(k) ? "checked" : "") + "> " + esc(DATA.categorias[k]) + "</label>";
+                chips += '<button type="button" class="chip cat-chip' + (cats(v).includes(k) ? " on" : "") + '" data-c="' + k + '" data-i="' + i + '">' + esc(DATA.categorias[k]) + '</button>';
             }
+
             el.innerHTML =
                 '<div class="vhead"><strong>' + esc(v.titulo || "Sin título") + '</strong><button class="del" data-i="' + i + '">Eliminar</button></div>' +
                 '<div class="row"><div><label>Título</label><input data-f="titulo" data-i="' + i + '" value="' + esc(v.titulo) + '"></div>' +
                 '<div><label>Link del video (pégalo tal cual)</label><input data-f="video" data-i="' + i + '" value="' + esc(v.video) + '" placeholder="https://youtube.com/watch?v=… o https://vimeo.com/…"></div></div>' +
-                '<label>Categorías</label><div class="checks">' + checks + '</div>' +
-                '<div class="checks" style="margin-top:.6rem;"><label><input type="checkbox" data-star data-i="' + i + '" ' + (v.destacado ? "checked" : "") + "> ★ Destacado en el inicio</label></div>" +
+                '<label>Categorías — toca para activar / desactivar</label><div class="chips">' + chips + '</div>' +
+                '<button type="button" class="star' + (v.destacado ? " on" : "") + '" data-star data-i="' + i + '">' + (v.destacado ? "★" : "☆") + '&nbsp;Destacado en el inicio</button>' +
                 '<label>Descripción</label><textarea data-f="descripcion" data-i="' + i + '">' + esc(v.descripcion) + '</textarea>' +
                 '<div class="row"><div><label>Portada propia (opcional)</label><input data-f="thumb" data-i="' + i + '" value="' + esc(v.thumb) + '" placeholder="img/portada.jpg o URL"></div>' +
                 '<div><label>Hover preview (opcional)</label><input data-f="hover" data-i="' + i + '" value="' + esc(v.hover) + '" placeholder="URL de GIF o MP4"></div></div>';
@@ -335,18 +346,30 @@
         box.querySelectorAll("input[data-f], textarea[data-f]").forEach(inp => {
             inp.addEventListener("input", () => { DATA.videos[inp.dataset.i][inp.dataset.f] = inp.value; });
         });
-        box.querySelectorAll("input[data-c]").forEach(cb => {
-            cb.addEventListener("change", () => {
-                const v = DATA.videos[cb.dataset.i];
+
+        /* Pills de categorías: un toque enciende/apaga */
+        box.querySelectorAll(".cat-chip").forEach(b => {
+            b.onclick = () => {
+                const v = DATA.videos[+b.dataset.i];
                 let arr = cats(v).slice();
-                if (cb.checked) { if (!arr.includes(cb.dataset.c)) arr.push(cb.dataset.c); }
-                else arr = arr.filter(c => c !== cb.dataset.c);
+                const k = b.dataset.c;
+                if (arr.includes(k)) arr = arr.filter(c => c !== k);
+                else arr.push(k);
                 v.categoria = arr;
-            });
+                b.classList.toggle("on", arr.includes(k));
+            };
         });
-        box.querySelectorAll("input[data-star]").forEach(cb => {
-            cb.addEventListener("change", () => { DATA.videos[cb.dataset.i].destacado = cb.checked; });
+
+        /* Botón estrella: un toque destaca / des-destaca */
+        box.querySelectorAll("[data-star]").forEach(b => {
+            b.onclick = () => {
+                const v = DATA.videos[+b.dataset.i];
+                v.destacado = !v.destacado;
+                b.classList.toggle("on", v.destacado);
+                b.innerHTML = (v.destacado ? "★" : "☆") + "&nbsp;Destacado en el inicio";
+            };
         });
+
         box.querySelectorAll(".del").forEach(b => {
             b.onclick = () => {
                 if (confirm("¿Eliminar este video?")) {
