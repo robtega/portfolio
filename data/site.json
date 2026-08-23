@@ -1,9 +1,9 @@
 {
   "hero": {
-    "pre": "Creación de contenido, ",
-    "enfasis": "edición de impacto",
-    "post": " & diseño que detiene el scroll.",
-    "sub": "Editor de video y diseñador gráfico: postproducción de alta retención, miniaturas orientadas al CTR y piezas para redes que conectan con tu audiencia."
+    "pre": "Creación de contenidos,",
+    "enfasis": "edición de video",
+    "post": " & diseños que venden.",
+    "sub": "Editor de video y diseñador gráfico: postproducción, miniaturas y piezas para redes que conectan con tu audiencia."
   },
   "especialidades": [
     {
@@ -23,16 +23,16 @@
     {
       "etiqueta": "THUMBNAILS YOUTUBE",
       "tag": "YouTube",
-      "titulo": "Miniaturas de alto CTR",
-      "descripcion": "Diseño de miniaturas orientadas a clics y retención.",
+      "titulo": "Miniaturas Premium",
+      "descripcion": "Aumenta tus clics con miniaturas llamativas.",
       "img": "img/portada-yt.jpg",
       "link": "diseno.html?categoria=thumbs-yt"
     },
     {
       "etiqueta": "THUMBNAILS IA",
       "tag": "Instagram",
-      "titulo": "Thumbnails con IA",
-      "descripcion": "Miniaturas para Instagram creadas con inteligencia artificial.",
+      "titulo": "Thumbnails para Instagram",
+      "descripcion": "Miniaturas para Instagram, de la mano de herramientas de IA.",
       "img": "img/portada-ia.jpg",
       "link": "diseno.html?categoria=thumbs-ia"
     },
