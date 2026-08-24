@@ -87,7 +87,6 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 .reels-frame { position:relative; height:100%; aspect-ratio:9/16; max-width:100vw; background:#000; overflow:hidden; }
 .reels-media { position:absolute; inset:0; }
 .reels-media iframe { width:100%; height:100%; border:0; display:block; }
-/* Las capas no bloquean los clics del player; solo sus botones son clicables */
 .reels-top,.reels-caption,.reels-arrows,.reels-hint { pointer-events:none; }
 .reels-top .reels-btn,.reels-arrows .reels-btn,.reels-side .reels-btn,.reels-mute { pointer-events:auto; }
 .reels-top { position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:.9rem 1rem; background:linear-gradient(rgba(0,0,0,.65),transparent); z-index:5; }
@@ -100,7 +99,22 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 .reels-side { display:flex; align-items:center; gap:.6rem; flex-shrink:0; }
 .reels-mute { display:inline-flex; align-items:center; gap:.5rem; background:rgba(20,20,21,.8); border:1px solid var(--border-strong); border-radius:999px; color:var(--text); font-family:var(--font-sans); font-weight:600; font-size:.78rem; padding:.55rem .95rem; cursor:pointer; transition:all .25s ease; white-space:nowrap; }
 .reels-mute:hover { background:var(--white); color:var(--black); }
-.reels-hint { position:absolute; left:50%; bottom:6.2rem; transform:translateX(-50%) translateY(6px); background:rgba(20,20,21,.92); border:1px solid var(--border-strong); color:var(--text-soft); font-family:var(--font-mono); font-size:.72rem; letter-spacing:.04em; padding:.5rem .9rem; border-radius:999px; opacity:0; transition:all .35s ease; z-index:5; max-width:90%; text-align:center; }
+/* Aviso de sonido: con aire, legible y elegante */
+.reels-hint {
+  position:absolute; left:50%; bottom:6.4rem;
+  transform:translateX(-50%) translateY(8px);
+  background:rgba(10,10,10,.85);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--border-strong);
+  color:var(--text-soft);
+  font-family:var(--font-mono); font-size:.72rem; letter-spacing:.03em; line-height:1.8;
+  padding:.9rem 1.5rem;
+  border-radius:16px;
+  max-width:min(86%,300px);
+  text-align:center;
+  box-shadow:0 10px 35px rgba(0,0,0,.5);
+  opacity:0; transition:all .35s ease; z-index:5;
+}
 .reels-hint.show { opacity:1; transform:translateX(-50%) translateY(0); }
 .reels-panel { position:absolute; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--border-strong); border-radius:20px 20px 0 0; padding:1.4rem 1.3rem 1.8rem; z-index:6; max-height:60%; overflow-y:auto; -webkit-overflow-scrolling:touch; transform:translateY(100%); transition:transform .3s ease; }
 .reels-panel.open { transform:translateY(0); }
@@ -382,7 +396,9 @@ function pintarReels() {
     revisarThumbsYT(media);
     reelsPlayer=null; muteBtn.style.display="none"; hideHint();
   } else {
-    media.innerHTML='<iframe id="reels-iframe" src="https://player.vimeo.com/video/'+v._id+'?autoplay=1&muted=1&playsinline=1" title="Reproductor de video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    /* controls=0 + loop=1: player limpio tipo Reels, sin banner nativo de
+      "dejar de silenciar"; el audio se maneja con nuestro botón de abajo. */
+    media.innerHTML='<iframe id="reels-iframe" src="https://player.vimeo.com/video/'+v._id+'?autoplay=1&muted=1&playsinline=1&controls=0&loop=1" title="Reproductor de video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
     reelsPlayer=(window.Vimeo)?new Vimeo.Player(document.getElementById("reels-iframe")):null;
     muteBtn.style.display="inline-flex"; setMuteUI(true); showHint();
   }
