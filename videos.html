@@ -49,8 +49,7 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 .video-card:hover .thumb-media { opacity:1; }
 .play { position:absolute; width:56px; height:56px; background:var(--white); color:var(--black); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; padding-left:4px; opacity:0; transform:scale(.8); transition:all .3s ease; z-index:2; }
 .video-card:hover .play { opacity:1; transform:scale(1); }
-.v-overlay { position:absolute; left:0; right:0; bottom:0; padding:3rem .9rem .9rem; background:linear-gradient(transparent,rgba(0,0,0,.88)); z-index:2; text-align:left; }
-.v-overlay .video-tag { margin-bottom:.5rem; }
+.v-overlay { position:absolute; left:0; right:0; bottom:0; padding:3rem .9rem 1rem; background:linear-gradient(transparent,rgba(0,0,0,.88)); z-index:2; text-align:left; }
 .v-overlay h3 { font-family:var(--font-serif); font-size:1.02rem; font-weight:500; line-height:1.3; color:var(--white); }
 .video-body { padding:1.4rem; }
 .video-tag { display:inline-block; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.25rem .6rem; border-radius:6px; margin-bottom:.9rem; }
@@ -94,12 +93,10 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 .reels-btn { width:40px; height:40px; flex-shrink:0; background:rgba(20,20,21,.8); border:1px solid var(--border-strong); border-radius:10px; color:var(--text); font-size:1rem; cursor:pointer; transition:all .25s ease; }
 .reels-btn:hover { background:var(--white); color:var(--black); }
 .reels-caption { position:absolute; left:0; right:0; bottom:0; padding:3.5rem 1rem 1.1rem; background:linear-gradient(transparent,rgba(0,0,0,.92)); z-index:4; display:flex; align-items:flex-end; justify-content:space-between; gap:.75rem; }
-.reels-caption .video-tag { margin-bottom:.5rem; }
 .reels-caption h3 { font-family:var(--font-serif); font-size:1.1rem; font-weight:500; line-height:1.3; color:var(--white); }
 .reels-side { display:flex; align-items:center; gap:.6rem; flex-shrink:0; }
 .reels-mute { display:inline-flex; align-items:center; gap:.5rem; background:rgba(20,20,21,.8); border:1px solid var(--border-strong); border-radius:999px; color:var(--text); font-family:var(--font-sans); font-weight:600; font-size:.78rem; padding:.55rem .95rem; cursor:pointer; transition:all .25s ease; white-space:nowrap; }
 .reels-mute:hover { background:var(--white); color:var(--black); }
-/* Aviso de sonido: con aire, legible y elegante */
 .reels-hint {
   position:absolute; left:50%; bottom:6.4rem;
   transform:translateX(-50%) translateY(8px);
@@ -177,7 +174,6 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
       </div>
       <div class="reels-caption">
         <div>
-          <span class="video-tag" id="reels-tag"></span>
           <h3 id="reels-title"></h3>
         </div>
         <div class="reels-side">
@@ -185,7 +181,7 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
           <button class="reels-btn" id="reels-info" aria-label="Ver descripción">ⓘ</button>
         </div>
       </div>
-      <div class="reels-hint" id="reels-hint">Video silenciado para que se reproduzca solo — actívalo con «Quitar silencio»</div>
+      <div class="reels-hint" id="reels-hint">Activa el sonido en el botón "Quitar silencio"</div>
       <div class="reels-panel" id="reels-panel">
         <div class="reels-panel-head">
           <span class="video-tag" id="reels-panel-tag"></span>
@@ -300,12 +296,14 @@ function pintarGrid() {
     card.className="video-card "+(vertical?"v":"h");
     card.style.animationDelay=(i*0.06)+"s";
     if (vertical) {
+      /* Verticales: solo el título sobre el degradado, sin etiqueta */
       card.innerHTML =
         '<div class="video-thumb tall">'+thumbBaseHTML(v)+(v.hover?hoverHTML(v):'')+
         '<div class="play">▶</div>'+
-        '<div class="v-overlay"><span class="video-tag">'+catLabel(v)+'</span><h3>'+v.titulo+'</h3></div></div>';
+        '<div class="v-overlay"><h3>'+v.titulo+'</h3></div></div>';
       card.onclick=()=>abrirReels(listaV, listaV.indexOf(v));
     } else {
+      /* Horizontales: conservan etiqueta + cuerpo de texto */
       card.innerHTML =
         '<div class="video-thumb"><span>'+catLabel(v)+'</span>'+thumbBaseHTML(v)+(v.hover?hoverHTML(v):'')+
         '<div class="play">▶</div></div>'+
@@ -396,14 +394,11 @@ function pintarReels() {
     revisarThumbsYT(media);
     reelsPlayer=null; muteBtn.style.display="none"; hideHint();
   } else {
-    /* controls=0 + loop=1: player limpio tipo Reels, sin banner nativo de
-      "dejar de silenciar"; el audio se maneja con nuestro botón de abajo. */
     media.innerHTML='<iframe id="reels-iframe" src="https://player.vimeo.com/video/'+v._id+'?autoplay=1&muted=1&playsinline=1&controls=0&loop=1" title="Reproductor de video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
     reelsPlayer=(window.Vimeo)?new Vimeo.Player(document.getElementById("reels-iframe")):null;
     muteBtn.style.display="inline-flex"; setMuteUI(true); showHint();
   }
   document.getElementById("reels-count").textContent=String(reelsIdx+1).padStart(2,"0")+" / "+String(reelsLista.length).padStart(2,"0");
-  document.getElementById("reels-tag").textContent=catLabel(v);
   document.getElementById("reels-title").textContent=v.titulo;
   document.getElementById("reels-panel-tag").textContent=catLabel(v);
   document.getElementById("reels-panel-title").textContent=v.titulo;
