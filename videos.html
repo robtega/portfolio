@@ -141,10 +141,22 @@
 
         main { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
 
+        /* ============ GRID MIXTO (verticales 9:16 + horizontales 16:9) ============ */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            grid-auto-flow: dense;
+        }
+
+        .video-card.h { grid-column: 1 / -1; }
+
+        @media (min-width: 700px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+                gap: 1.25rem;
+            }
+            .video-card.h { grid-column: span 2; }
         }
 
         .video-card {
@@ -178,6 +190,8 @@
             overflow: hidden;
         }
 
+        .video-thumb.tall { aspect-ratio: 9 / 16; }
+
         .video-thumb > span {
             font-family: var(--font-mono);
             font-size: 0.72rem;
@@ -210,6 +224,25 @@
 
         .video-card:hover .play { opacity: 1; transform: scale(1); }
 
+        /* Overlay inferior para cards verticales (estilo Reels) */
+        .v-overlay {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            padding: 3rem 0.9rem 0.9rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.88));
+            z-index: 2;
+            text-align: left;
+        }
+
+        .v-overlay .video-tag { margin-bottom: 0.5rem; }
+        .v-overlay h3 {
+            font-family: var(--font-serif);
+            font-size: 1.02rem;
+            font-weight: 500;
+            line-height: 1.3;
+            color: var(--white);
+        }
+
         .video-body { padding: 1.4rem; }
 
         .video-tag {
@@ -237,7 +270,7 @@
             color: var(--text-dim);
         }
 
-        /* ============ MODAL ============ */
+        /* ============ MODAL (videos horizontales) ============ */
         .modal {
             position: fixed;
             inset: 0;
@@ -266,7 +299,6 @@
         .modal-video { aspect-ratio: 16 / 9; background: #000; position: relative; overflow: hidden; }
         .modal-video iframe { width: 100%; height: 100%; border: 0; display: block; }
 
-        /* YouTube: miniatura de fondo + botón que abre en YouTube */
         .yt-fallback {
             position: absolute;
             inset: 0;
@@ -347,7 +379,6 @@
 
         .modal-close:hover { background: var(--white); color: var(--black); }
 
-        /*  MODAL PANTALLA COMPLETA EN MÓVIL */
         @media (max-width: 768px) {
             .modal { padding: 0; }
 
@@ -376,6 +407,123 @@
                 padding: 1.2rem 1.2rem 2rem;
             }
         }
+
+        /* ============ MODO REELS (visor vertical inmersivo) ============ */
+        .reels {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 300;
+            display: none;
+        }
+
+        .reels.open { display: block; }
+
+        .reels-stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reels-frame {
+            position: relative;
+            height: 100%;
+            aspect-ratio: 9 / 16;
+            max-width: 100vw;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .reels-media { position: absolute; inset: 0; }
+        .reels-media iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+        .reels-top {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 1rem;
+            background: linear-gradient(rgba(0,0,0,0.65), transparent);
+            z-index: 5;
+        }
+
+        .reels-count {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            color: var(--text-soft);
+        }
+
+        .reels-btn {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background: rgba(20, 20, 21, 0.8);
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .reels-btn:hover { background: var(--white); color: var(--black); }
+
+        .reels-caption {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            padding: 3.5rem 1rem 1.1rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.92));
+            z-index: 4;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .reels-caption .video-tag { margin-bottom: 0.5rem; }
+        .reels-caption h3 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 500;
+            line-height: 1.3;
+            color: var(--white);
+        }
+
+        .reels-panel {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border-strong);
+            border-radius: 20px 20px 0 0;
+            padding: 1.4rem 1.3rem 1.8rem;
+            z-index: 6;
+            max-height: 60%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .reels-panel.open { transform: translateY(0); }
+        .reels-panel h3 { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; margin: 0.7rem 0 0.5rem; }
+        .reels-panel p { color: var(--text-muted); font-size: 0.93rem; }
+
+        .reels-arrows {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            z-index: 5;
+        }
+
+        @media (hover: none) { .reels-arrows { display: none; } }
 
         footer {
             border-top: 1px solid var(--border);
@@ -418,6 +566,7 @@
 
     <footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
 
+    <!-- Modal para videos horizontales (16:9) -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <div class="modal-video" id="modal-video"></div>
@@ -433,30 +582,62 @@
         </div>
     </div>
 
+    <!-- Modo Reels (visor vertical 9:16) -->
+    <div class="reels" id="reels">
+        <div class="reels-stage">
+            <div class="reels-frame">
+                <div class="reels-media" id="reels-media"></div>
+
+                <div class="reels-top">
+                    <span class="reels-count" id="reels-count"></span>
+                    <button class="reels-btn" id="reels-close" aria-label="Salir">✕</button>
+                </div>
+
+                <div class="reels-caption">
+                    <div>
+                        <span class="video-tag" id="reels-tag"></span>
+                        <h3 id="reels-title"></h3>
+                    </div>
+                    <button class="reels-btn" id="reels-info" aria-label="Ver descripción">ⓘ</button>
+                </div>
+
+                <div class="reels-panel" id="reels-panel">
+                    <span class="video-tag" id="reels-panel-tag"></span>
+                    <h3 id="reels-panel-title"></h3>
+                    <p id="reels-panel-desc"></p>
+                    <a id="reels-panel-link" class="modal-link" target="_blank" rel="noopener" style="display:none;"></a>
+                </div>
+
+                <div class="reels-arrows">
+                    <button class="reels-btn" id="reels-prev" aria-label="Anterior">↑</button>
+                    <button class="reels-btn" id="reels-next" aria-label="Siguiente">↓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         /* =========================================================
-           📦 DATOS: esta página carga su contenido desde
-           data/videos.json (el archivo que edita tu Panel de
-           Contenido en admin.html). Si ese archivo no existe,
-           usa los datos de respaldo (VIDEOS_FALLBACK) de abajo.
+           📦 DATOS: se cargan desde data/videos.json (panel admin).
+           Si no existe, usa VIDEOS_FALLBACK.
 
-           Formato de cada video:
-           · video: link tal cual de YouTube o Vimeo (el sistema
-             detecta la plataforma y extrae el ID solo).
-           · categoria: una ("short-form") o varias
-             (["long-form", "podcast"]).
-           · thumb: "" = frame automático · o ruta/URL de portada propia.
-           · hover: URL de GIF/MP4 para el preview al pasar el mouse.
+           · video: link tal cual de YouTube o Vimeo.
+           · categoria: una o varias (["long-form", "podcast"]).
+           · formato: "9:16" (vertical, abre en Modo Reels) o
+             "16:9" (horizontal, abre en el modal). Si falta,
+             se infiere: short-form/ads → 9:16, resto → 16:9.
+           · thumb: "" = frame automático · o ruta/URL propia.
+           · hover: URL de GIF/MP4 para el preview.
            ========================================================= */
 
         let VIDEOS = [];
         const VIDEOS_FALLBACK = [
-            { titulo: "Business & Mindset", categoria: "short-form", video: "https://vimeo.com/1218345311", thumb: "", hover: "", descripcion: "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head." },
-            { titulo: "Finanzas & Estilo Dual", categoria: "short-form", video: "https://vimeo.com/1219288477", thumb: "", hover: "", descripcion: "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes." },
-            { titulo: "Podcast — La Historia de Aurelio", categoria: ["long-form", "podcast"], video: "https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb: "", hover: "", descripcion: "Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio." },
+            { titulo: "Business & Mindset", categoria: "short-form", formato: "9:16", video: "https://vimeo.com/1218345311", thumb: "", hover: "", descripcion: "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head." },
+            { titulo: "Finanzas & Estilo Dual", categoria: "short-form", formato: "9:16", video: "https://vimeo.com/1219288477", thumb: "", hover: "", descripcion: "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes." },
+            { titulo: "Podcast — La Historia de Aurelio", categoria: ["long-form", "podcast"], formato: "16:9", video: "https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb: "", hover: "", descripcion: "Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio." },
             /* ⚠️ Video de muestra — reemplázalo o bórralo desde el panel: */
-            { titulo: "Long-Form 02", categoria: "long-form", video: "https://www.youtube.com/watch?v=ScMzIvxBSi4", thumb: "", hover: "", descripcion: "En YouTube la miniatura se carga sola automáticamente." },
-            { titulo: "AI Generated UGC Ad", categoria: "ads", video: "https://vimeo.com/1219288461", thumb: "", hover: "", descripcion: "Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro." }
+            { titulo: "Long-Form 02", categoria: "long-form", formato: "16:9", video: "https://www.youtube.com/watch?v=ScMzIvxBSi4", thumb: "", hover: "", descripcion: "En YouTube la miniatura se carga sola automáticamente." },
+            { titulo: "AI Generated UGC Ad", categoria: "ads", formato: "9:16", video: "https://vimeo.com/1219288461", thumb: "", hover: "", descripcion: "Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro." }
         ];
 
         let CATEGORIAS = {};
@@ -465,8 +646,6 @@
             "long-form": "Long-Form",
             "podcast": "Podcast",
             "ads": "Ads"
-            // "vsl": "VSL",
-            // "saas": "SaaS"
         };
 
         /* Detecta plataforma y extrae el ID automáticamente */
@@ -497,7 +676,6 @@
             return { tipo, id };
         }
 
-        /* Categorías de un video (admite string o array) */
         function catsDe(v) {
             return Array.isArray(v.categoria) ? v.categoria : [v.categoria];
         }
@@ -506,12 +684,19 @@
             return catsDe(v).map(c => CATEGORIAS[c] || c).join(" · ");
         }
 
+        /* Formato del video: manual si existe; si no, se infiere */
+        function fmtDe(v) {
+            if (v.formato) return v.formato;
+            return catsDe(v).some(c => c === "short-form" || c === "ads") ? "9:16" : "16:9";
+        }
+
         const grid = document.getElementById("grid");
         const empty = document.getElementById("empty");
         const filtersBox = document.getElementById("filters");
         const pageTitle = document.getElementById("page-title");
         const pageCount = document.getElementById("page-count");
         const modal = document.getElementById("modal");
+        const reels = document.getElementById("reels");
 
         let current = leerCategoria();
 
@@ -543,7 +728,6 @@
             return '<img class="thumb-base" data-vimeo="' + v._id + '" alt="" style="opacity:0;transition:opacity .4s ease">';
         }
 
-        /* Calidad de miniatura YouTube: maxres (720p) si existe, hqdefault si no */
         function revisarThumbsYT(container) {
             container.querySelectorAll("img[data-yt]").forEach(img => {
                 const cambiar = () => {
@@ -572,6 +756,7 @@
 
         function pintarGrid() {
             const lista = VIDEOS.filter(v => catsDe(v).includes(current));
+            const listaV = lista.filter(v => fmtDe(v) === "9:16");
 
             pageTitle.innerHTML = "Proyectos <em>" + (CATEGORIAS[current] || "") + "</em>";
 
@@ -582,23 +767,39 @@
 
             lista.forEach((v, i) => {
                 const card = document.createElement("article");
-                card.className = "video-card";
+                const vertical = fmtDe(v) === "9:16";
+                card.className = "video-card " + (vertical ? "v" : "h");
                 card.style.animationDelay = (i * 0.06) + "s";
 
-                card.innerHTML =
-                    '<div class="video-thumb">' +
-                        '<span>' + catLabel(v) + '</span>' +
-                        thumbBaseHTML(v) +
-                        (v.hover ? hoverHTML(v) : '') +
-                        '<div class="play">▶</div>' +
-                    '</div>' +
-                    '<div class="video-body">' +
-                        '<span class="video-tag">' + catLabel(v) + '</span>' +
-                        '<h3>' + v.titulo + '</h3>' +
-                        '<p>' + v.descripcion + '</p>' +
-                    '</div>';
-
-                card.onclick = () => abrirModal(v);
+                if (vertical) {
+                    /* Card vertical 9:16 con overlay estilo Reels */
+                    card.innerHTML =
+                        '<div class="video-thumb tall">' +
+                            thumbBaseHTML(v) +
+                            (v.hover ? hoverHTML(v) : '') +
+                            '<div class="play">▶</div>' +
+                            '<div class="v-overlay">' +
+                                '<span class="video-tag">' + catLabel(v) + '</span>' +
+                                '<h3>' + v.titulo + '</h3>' +
+                            '</div>' +
+                        '</div>';
+                    card.onclick = () => abrirReels(listaV, listaV.indexOf(v));
+                } else {
+                    /* Card horizontal 16:9 con cuerpo de texto */
+                    card.innerHTML =
+                        '<div class="video-thumb">' +
+                            '<span>' + catLabel(v) + '</span>' +
+                            thumbBaseHTML(v) +
+                            (v.hover ? hoverHTML(v) : '') +
+                            '<div class="play">▶</div>' +
+                        '</div>' +
+                        '<div class="video-body">' +
+                            '<span class="video-tag">' + catLabel(v) + '</span>' +
+                            '<h3>' + v.titulo + '</h3>' +
+                            '<p>' + v.descripcion + '</p>' +
+                        '</div>';
+                    card.onclick = () => abrirModal(v);
+                }
 
                 const vid = card.querySelector("video.thumb-media");
                 if (vid) {
@@ -627,12 +828,12 @@
             });
         }
 
+        /* ============ MODAL (horizontales) ============ */
         function abrirModal(v) {
             const box = document.getElementById("modal-video");
             const link = document.getElementById("modal-link");
 
             if (v._tipo === "youtube") {
-                /* YouTube: miniatura HD + botón que abre el video en YouTube */
                 box.innerHTML =
                     '<a class="yt-fallback" href="https://www.youtube.com/watch?v=' + v._id + '" target="_blank" rel="noopener">' +
                         '<img data-yt="' + v._id + '" src="https://i.ytimg.com/vi/' + v._id + '/maxresdefault.jpg" alt="">' +
@@ -641,7 +842,6 @@
                 revisarThumbsYT(box);
                 link.style.display = "none";
             } else {
-                /* Vimeo: reproductor embebido */
                 box.innerHTML =
                     '<iframe src="https://player.vimeo.com/video/' + v._id + '?autoplay=1&muted=1" title="Reproductor de video" frameborder="0" ' +
                     'allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
@@ -664,9 +864,104 @@
             document.body.style.overflow = "";
         }
 
+        /* ============ MODO REELS (verticales) ============ */
+        let reelsLista = [], reelsIdx = 0;
+
+        function abrirReels(lista, idx) {
+            reelsLista = lista;
+            reelsIdx = idx;
+            reels.classList.add("open");
+            document.body.style.overflow = "hidden";
+            pintarReels();
+        }
+
+        function cerrarReels() {
+            reels.classList.remove("open");
+            document.getElementById("reels-media").innerHTML = "";
+            document.getElementById("reels-panel").classList.remove("open");
+            document.body.style.overflow = "";
+        }
+
+        function reelsNav(d) {
+            const n = reelsIdx + d;
+            if (n < 0 || n >= reelsLista.length) return;
+            reelsIdx = n;
+            pintarReels();
+        }
+
+        function pintarReels() {
+            const v = reelsLista[reelsIdx];
+            const media = document.getElementById("reels-media");
+
+            if (v._tipo === "youtube") {
+                media.innerHTML =
+                    '<a class="yt-fallback" href="https://www.youtube.com/watch?v=' + v._id + '" target="_blank" rel="noopener">' +
+                        '<img data-yt="' + v._id + '" src="https://i.ytimg.com/vi/' + v._id + '/maxresdefault.jpg" alt="">' +
+                        '<span class="yt-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Mirar en YouTube</span>' +
+                    '</a>';
+                revisarThumbsYT(media);
+            } else {
+                media.innerHTML =
+                    '<iframe src="https://player.vimeo.com/video/' + v._id + '?autoplay=1&muted=1&playsinline=1" title="Reproductor de video" frameborder="0" ' +
+                    'allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+            }
+
+            document.getElementById("reels-count").textContent =
+                String(reelsIdx + 1).padStart(2, "0") + " / " + String(reelsLista.length).padStart(2, "0");
+            document.getElementById("reels-tag").textContent = catLabel(v);
+            document.getElementById("reels-title").textContent = v.titulo;
+
+            document.getElementById("reels-panel-tag").textContent = catLabel(v);
+            document.getElementById("reels-panel-title").textContent = v.titulo;
+            document.getElementById("reels-panel-desc").textContent = v.descripcion;
+
+            const plink = document.getElementById("reels-panel-link");
+            plink.href = v._tipo === "youtube" ? "https://www.youtube.com/watch?v=" + v._id : "https://vimeo.com/" + v._id;
+            plink.textContent = v._tipo === "youtube" ? "Mirar en YouTube ↗" : "Mirar en Vimeo ↗";
+            plink.style.display = "inline-block";
+
+            document.getElementById("reels-panel").classList.remove("open");
+        }
+
+        document.getElementById("reels-close").onclick = cerrarReels;
+        document.getElementById("reels-prev").onclick = () => reelsNav(-1);
+        document.getElementById("reels-next").onclick = () => reelsNav(1);
+        document.getElementById("reels-info").onclick = () => {
+            document.getElementById("reels-panel").classList.toggle("open");
+        };
+
+        /* Swipe táctil */
+        let tY = null;
+        reels.addEventListener("touchstart", e => { tY = e.touches[0].clientY; }, { passive: true });
+        reels.addEventListener("touchend", e => {
+            if (tY === null) return;
+            const d = tY - e.changedTouches[0].clientY;
+            if (Math.abs(d) > 50) reelsNav(d > 0 ? 1 : -1);
+            tY = null;
+        }, { passive: true });
+
+        /* Rueda del mouse (con pausa anti-spam) */
+        let wheelLock = 0;
+        reels.addEventListener("wheel", e => {
+            const now = Date.now();
+            if (now - wheelLock < 600) return;
+            wheelLock = now;
+            reelsNav(e.deltaY > 0 ? 1 : -1);
+        }, { passive: true });
+
+        /* Teclado y cierre global */
         document.getElementById("modal-close").onclick = cerrarModal;
         modal.onclick = e => { if (e.target === modal) cerrarModal(); };
-        document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
+
+        document.addEventListener("keydown", e => {
+            if (reels.classList.contains("open")) {
+                if (e.key === "Escape") cerrarReels();
+                if (e.key === "ArrowDown") { e.preventDefault(); reelsNav(1); }
+                if (e.key === "ArrowUp") { e.preventDefault(); reelsNav(-1); }
+            } else if (e.key === "Escape") {
+                cerrarModal();
+            }
+        });
 
         window.addEventListener("popstate", () => {
             current = leerCategoria();
