@@ -8,12 +8,24 @@
   },
   "videos": [
     {
+      "titulo": "Psicología & Mindset",
+      "categoria": [
+        "short-form"
+      ],
+      "formato": "9:16",
+      "video": "https://vimeo.com/1219693845",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Edición limpia y elegante para psicología y bienestar emocional. Combina plano de set con B-roll conceptual, diseño de sonido inmersivo y un subtitulado sobrio de estilo editorial."
+    },
+    {
       "titulo": "Finance Coach",
       "categoria": [
         "short-form"
       ],
       "formato": "9:16",
-      "video": "",
+      "video": "https://vimeo.com/1219694173",
       "thumb": "",
       "hover": "",
       "destacado": false,
