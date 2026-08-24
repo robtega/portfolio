@@ -8,6 +8,18 @@
   },
   "videos": [
     {
+      "titulo": "Meta Ads & Digital Product",
+      "categoria": [
+        "ads"
+      ],
+      "formato": "9:16",
+      "video": "https://vimeo.com/1219693644",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Anuncio para la venta de cursos digitales en Meta Ads. Combina visuales de Pinterest, voz en off de IA, subtitulado dinámico y un CTA enfocado a la venta."
+    },
+    {
       "titulo": "Health & Fitness Content",
       "categoria": [
         "short-form"
