@@ -7,6 +7,28 @@
   },
   "videos": [
     {
+      "titulo": "High-Ticket & Consulting",
+      "categoria": [
+        "short-form"
+      ],
+      "video": "https://vimeo.com/1219693643",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Edición minimalista de estética premium para marca personal. Tipografía limpia y resaltado. Ritmo dinámico y zoom enfocado a retención. B-roll y CTA para embudo de captación por medio de Manychat."
+    },
+    {
+      "titulo": "VSL Corto de E-commerce",
+      "categoria": [
+        "ads"
+      ],
+      "video": "https://vimeo.com/1219694124",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Edición de VSL corto para Meta Ads, con gráficos, B-roll, subtitulos dinámicos y CTA para embudo de ventas."
+    },
+    {
       "titulo": "Coach Business",
       "categoria": [
         "short-form"
