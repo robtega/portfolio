@@ -8,6 +8,18 @@
   },
   "videos": [
     {
+      "titulo": "REEL COMERCIAL",
+      "categoria": [
+        "short-form"
+      ],
+      "formato": "9:16",
+      "video": "https://vimeo.com/1219693642",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Reel de producto para e-commerce: encuadre orgánico en depósito, tomas B-roll de estantería, subtítulos resaltados con acento de color y ritmo enfocado en beneficios clave."
+    },
+    {
       "titulo": "Meta Ads & Digital Product",
       "categoria": [
         "ads"
