@@ -8,6 +8,18 @@
   },
   "videos": [
     {
+      "titulo": "Health & Fitness Content",
+      "categoria": [
+        "short-form"
+      ],
+      "formato": "9:16",
+      "video": "https://vimeo.com/1219693912",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Reel para marca personal de fitness: cortes limpios, apoyos visuales con íconos gráficos, textos destacados de alto contraste y estructura enfocada en venta de asesorías."
+    },
+    {
       "titulo": "Psicología & Mindset",
       "categoria": [
         "short-form"
