@@ -3,7 +3,8 @@
     "short-form": "Short-Form",
     "long-form": "Long-Form",
     "podcast": "Podcast",
-    "ads": "Ads"
+    "ads": "Ads",
+    "vsl": "VSL"
   },
   "videos": [
     {
@@ -31,7 +32,8 @@
     {
       "titulo": "VSL Corto de E-commerce",
       "categoria": [
-        "ads"
+        "ads",
+        "vsl"
       ],
       "video": "https://vimeo.com/1219694124",
       "thumb": "",
