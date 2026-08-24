@@ -8,6 +8,18 @@
   },
   "videos": [
     {
+      "titulo": "Finance Coach",
+      "categoria": [
+        "short-form"
+      ],
+      "formato": "9:16",
+      "video": "",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Edición dinámica estilo Leo Cavs: ritmo dopamínico, split-screen con B-roll conceptual y ganchos visuales."
+    },
+    {
       "titulo": "Enfocada en UGC y Belleza",
       "categoria": [
         "short-form"
