@@ -45,7 +45,7 @@
     .chip button:hover { color: #ff6b6b; }
     .chip button:disabled { opacity: .3; cursor: not-allowed; }
 
-    /* Pills seleccionables (categorías dentro de cada video) */
+    /* Pills seleccionables (categorías y formato dentro de cada video) */
     button.chip { cursor: pointer; font-family: var(--font-sans); transition: all .2s ease; }
     button.chip:hover { border-color: #4a4a4e; }
     button.chip.on { background: var(--white); color: var(--black); border-color: var(--white); font-weight: 600; }
@@ -201,16 +201,17 @@
     const b64dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
     const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
     const cats = v => Array.isArray(v.categoria) ? v.categoria : [v.categoria];
+    const fmtDe = v => v.formato || (cats(v).some(c => c === "short-form" || c === "ads") ? "9:16" : "16:9");
     const status = t => { $("#status").textContent = t; };
 
     function defVideos() {
         return {
             categorias: { "short-form": "Short-Form", "long-form": "Long-Form", "podcast": "Podcast", "ads": "Ads" },
             videos: [
-                { titulo: "Business & Mindset", categoria: ["short-form"], video: "https://vimeo.com/1218345311", thumb: "", hover: "", destacado: false, descripcion: "Edición dinámica orientada a la retención de audiencia." },
-                { titulo: "Finanzas & Estilo Dual", categoria: ["short-form"], video: "https://vimeo.com/1219288477", thumb: "", hover: "", destacado: true, descripcion: "Edición dinámica con división de pantalla." },
-                { titulo: "Podcast — La Historia de Aurelio", categoria: ["long-form", "podcast"], video: "https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb: "", hover: "", destacado: false, descripcion: "Edición de formato largo para podcast." },
-                { titulo: "AI Generated UGC Ad", categoria: ["ads"], video: "https://vimeo.com/1219288461", thumb: "", hover: "", destacado: true, descripcion: "Anuncio orientado a conversión." }
+                { titulo: "Business & Mindset", categoria: ["short-form"], formato: "9:16", video: "https://vimeo.com/1218345311", thumb: "", hover: "", destacado: false, descripcion: "Edición dinámica orientada a la retención de audiencia." },
+                { titulo: "Finanzas & Estilo Dual", categoria: ["short-form"], formato: "9:16", video: "https://vimeo.com/1219288477", thumb: "", hover: "", destacado: true, descripcion: "Edición dinámica con división de pantalla." },
+                { titulo: "Podcast — La Historia de Aurelio", categoria: ["long-form", "podcast"], formato: "16:9", video: "https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb: "", hover: "", destacado: false, descripcion: "Edición de formato largo para podcast." },
+                { titulo: "AI Generated UGC Ad", categoria: ["ads"], formato: "9:16", video: "https://vimeo.com/1219288461", thumb: "", hover: "", destacado: true, descripcion: "Anuncio orientado a conversión." }
             ]
         };
     }
@@ -315,7 +316,7 @@
     /* ---------- VIDEOS ---------- */
     function addVideo() {
         const primera = Object.keys(DATA.categorias)[0];
-        DATA.videos.unshift({ titulo: "Nuevo video", categoria: primera ? [primera] : [], video: "", thumb: "", hover: "", destacado: false, descripcion: "" });
+        DATA.videos.unshift({ titulo: "Nuevo video", categoria: primera ? [primera] : [], formato: "9:16", video: "", thumb: "", hover: "", destacado: false, descripcion: "" });
         renderList();
         status("Video agregado arriba. Complétalo y ⬆ Publicar.");
     }
@@ -325,17 +326,19 @@
         DATA.videos.forEach((v, i) => {
             const el = document.createElement("div");
             el.className = "box";
-
             let chips = "";
             for (const k in DATA.categorias) {
                 chips += '<button type="button" class="chip cat-chip' + (cats(v).includes(k) ? " on" : "") + '" data-c="' + k + '" data-i="' + i + '">' + esc(DATA.categorias[k]) + '</button>';
             }
-
             el.innerHTML =
                 '<div class="vhead"><strong>' + esc(v.titulo || "Sin título") + '</strong><button class="del" data-i="' + i + '">Eliminar</button></div>' +
                 '<div class="row"><div><label>Título</label><input data-f="titulo" data-i="' + i + '" value="' + esc(v.titulo) + '"></div>' +
                 '<div><label>Link del video (pégalo tal cual)</label><input data-f="video" data-i="' + i + '" value="' + esc(v.video) + '" placeholder="https://youtube.com/watch?v=… o https://vimeo.com/…"></div></div>' +
                 '<label>Categorías — toca para activar / desactivar</label><div class="chips">' + chips + '</div>' +
+                '<label>Formato</label><div class="chips">' +
+                    '<button type="button" class="chip fmt-chip' + (fmtDe(v) === "9:16" ? " on" : "") + '" data-fmt="9:16" data-i="' + i + '">9:16 · Vertical</button>' +
+                    '<button type="button" class="chip fmt-chip' + (fmtDe(v) === "16:9" ? " on" : "") + '" data-fmt="16:9" data-i="' + i + '">16:9 · Horizontal</button>' +
+                '</div>' +
                 '<button type="button" class="star' + (v.destacado ? " on" : "") + '" data-star data-i="' + i + '">' + (v.destacado ? "★" : "☆") + '&nbsp;Destacado en el inicio</button>' +
                 '<label>Descripción</label><textarea data-f="descripcion" data-i="' + i + '">' + esc(v.descripcion) + '</textarea>' +
                 '<div class="row"><div><label>Portada propia (opcional)</label><input data-f="thumb" data-i="' + i + '" value="' + esc(v.thumb) + '" placeholder="img/portada.jpg o URL"></div>' +
@@ -347,7 +350,7 @@
             inp.addEventListener("input", () => { DATA.videos[inp.dataset.i][inp.dataset.f] = inp.value; });
         });
 
-        /* Pills de categorías: un toque enciende/apaga */
+        /* Pills de categorías */
         box.querySelectorAll(".cat-chip").forEach(b => {
             b.onclick = () => {
                 const v = DATA.videos[+b.dataset.i];
@@ -360,7 +363,16 @@
             };
         });
 
-        /* Botón estrella: un toque destaca / des-destaca */
+        /* Pills de formato */
+        box.querySelectorAll(".fmt-chip").forEach(b => {
+            b.onclick = () => {
+                const v = DATA.videos[+b.dataset.i];
+                v.formato = b.dataset.fmt;
+                box.querySelectorAll('.fmt-chip[data-i="' + b.dataset.i + '"]').forEach(x => x.classList.toggle("on", x.dataset.fmt === v.formato));
+            };
+        });
+
+        /* Botón estrella */
         box.querySelectorAll("[data-star]").forEach(b => {
             b.onclick = () => {
                 const v = DATA.videos[+b.dataset.i];
