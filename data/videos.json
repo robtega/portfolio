@@ -7,6 +7,17 @@
   },
   "videos": [
     {
+      "titulo": "Enfocada en UGC y Belleza",
+      "categoria": [
+        "short-form"
+      ],
+      "video": "",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Contenido de estilo UGC para el sector estética y belleza. Estructurado con narrativa de experiencia personal, subtitulado dinámico con resaltado a color, tomas de proceso de tratamiento y prueba visual de resultados enfocada en venta."
+    },
+    {
       "titulo": "High-Ticket & Consulting",
       "categoria": [
         "short-form"
