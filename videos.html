@@ -1,987 +1,452 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videos — Robert</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141415;
-            --surface-2: #1a1a1c;
-            --border: #232325;
-            --border-strong: #333336;
-            --text: #f5f5f5;
-            --text-soft: #d4d4d4;
-            --text-muted: #9b9ba3;
-            --text-dim: #6f6f76;
-            --white: #fafafa;
-            --black: #0a0a0a;
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-serif: 'Source Serif 4', Georgia, serif;
-            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--font-sans);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        ::selection { background: var(--white); color: var(--black); }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            gap: 1rem;
-        }
-
-        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); }
-        .logo-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
-
-        .logo-badge {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--text-soft);
-            background: var(--surface-2);
-            border: 1px solid var(--border-strong);
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-            white-space: nowrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            padding: 0.9rem 1.6rem;
-            border-radius: 12px;
-            text-decoration: none;
-            border: 1px solid transparent;
-            transition: all 0.25s ease;
-            cursor: pointer;
-            font-family: var(--font-sans);
-        }
-
-        .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
-        .btn-dark:hover { background: var(--surface-2); border-color: #4a4a4e; transform: translateY(-2px); }
-        .btn-small { padding: 0.6rem 1.3rem; border-radius: 10px; font-size: 0.88rem; }
-
-        .page-hero {
-            padding: 10rem 1.5rem 3rem;
-            text-align: center;
-            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.05), transparent 70%);
-        }
-
-        .section-tag {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            letter-spacing: 0.05em;
-            display: block;
-            margin-bottom: 1rem;
-        }
-
-        .page-hero h1 {
-            font-family: var(--font-serif);
-            font-size: clamp(2.2rem, 5vw, 3.6rem);
-            font-weight: 500;
-            line-height: 1.15;
-            margin-bottom: 1rem;
-        }
-
-        .page-hero h1 em { font-style: italic; }
-
-        .count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2.5rem; }
-
-        .video-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; max-width: 800px; margin: 0 auto; }
-
-        .filter-pill {
-            font-family: var(--font-sans);
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: var(--text-soft);
-            background: var(--surface);
-            border: 1px solid var(--border-strong);
-            padding: 0.55rem 1.2rem;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .filter-pill:hover { border-color: #4a4a4e; transform: translateY(-1px); }
-        .filter-pill.active { background: var(--white); color: var(--black); border-color: var(--white); }
-
-        main { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-
-        /* ============ GRID MIXTO (verticales 9:16 + horizontales 16:9) ============ */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            grid-auto-flow: dense;
-        }
-
-        .video-card.h { grid-column: 1 / -1; }
-
-        @media (min-width: 700px) {
-            .video-grid {
-                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-                gap: 1.25rem;
-            }
-            .video-card.h { grid-column: span 2; }
-        }
-
-        .video-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.4s ease both;
-        }
-
-        .video-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .video-thumb {
-            aspect-ratio: 16 / 9;
-            background-color: #121213;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 24px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .video-thumb.tall { aspect-ratio: 9 / 16; }
-
-        .video-thumb > span {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.12em;
-            color: var(--text-dim);
-            text-transform: uppercase;
-        }
-
-        .thumb-base, .thumb-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-        .thumb-media { opacity: 0; transition: opacity 0.35s ease; }
-        .video-card:hover .thumb-media { opacity: 1; }
-
-        .play {
-            position: absolute;
-            width: 56px;
-            height: 56px;
-            background: var(--white);
-            color: var(--black);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            padding-left: 4px;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-
-        .video-card:hover .play { opacity: 1; transform: scale(1); }
-
-        /* Overlay inferior para cards verticales (estilo Reels) */
-        .v-overlay {
-            position: absolute;
-            left: 0; right: 0; bottom: 0;
-            padding: 3rem 0.9rem 0.9rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.88));
-            z-index: 2;
-            text-align: left;
-        }
-
-        .v-overlay .video-tag { margin-bottom: 0.5rem; }
-        .v-overlay h3 {
-            font-family: var(--font-serif);
-            font-size: 1.02rem;
-            font-weight: 500;
-            line-height: 1.3;
-            color: var(--white);
-        }
-
-        .video-body { padding: 1.4rem; }
-
-        .video-tag {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--text-soft);
-            background: var(--surface-2);
-            border: 1px solid var(--border-strong);
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            margin-bottom: 0.9rem;
-        }
-
-        .video-body h3 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem; }
-        .video-body p { color: var(--text-muted); font-size: 0.92rem; }
-
-        .empty {
-            text-align: center;
-            padding: 5rem 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--text-dim);
-        }
-
-        /* ============ MODAL (videos horizontales) ============ */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 5, 5, 0.88);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 200;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-        }
-
-        .modal.open { display: flex; }
-
-        .modal-content {
-            width: min(960px, 100%);
-            max-height: 90vh;
-            overflow-y: auto;
-            background: var(--surface);
-            border: 1px solid var(--border-strong);
-            border-radius: 16px;
-            animation: fadeIn 0.3s ease both;
-        }
-
-        .modal-video { aspect-ratio: 16 / 9; background: #000; position: relative; overflow: hidden; }
-        .modal-video iframe { width: 100%; height: 100%; border: 0; display: block; }
-
-        .yt-fallback {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
-
-        .yt-fallback img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.5;
-            transition: opacity 0.3s ease, transform 0.4s ease;
-        }
-
-        .yt-fallback:hover img { opacity: 0.7; transform: scale(1.03); }
-
-        .yt-btn {
-            position: relative;
-            z-index: 2;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--white);
-            color: var(--black);
-            font-family: var(--font-sans);
-            font-weight: 600;
-            font-size: 0.95rem;
-            padding: 0.9rem 1.6rem;
-            border-radius: 12px;
-            transition: all 0.25s ease;
-        }
-
-        .yt-fallback:hover .yt-btn { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
-
-        .modal-info {
-            padding: 1.5rem 1.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1.5rem;
-        }
-
-        .modal-info h3 { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 500; margin: 0.8rem 0 0.5rem; }
-        .modal-info p { color: var(--text-muted); font-size: 0.95rem; }
-
-        .modal-link {
-            display: inline-block;
-            margin-top: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            text-decoration: none;
-            border-bottom: 1px solid var(--border-strong);
-            padding-bottom: 2px;
-            transition: color 0.25s ease;
-        }
-
-        .modal-link:hover { color: var(--text); }
-
-        .modal-close {
-            flex-shrink: 0;
-            width: 40px;
-            height: 40px;
-            background: var(--surface-2);
-            border: 1px solid var(--border-strong);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .modal-close:hover { background: var(--white); color: var(--black); }
-
-        @media (max-width: 768px) {
-            .modal { padding: 0; }
-
-            .modal-content {
-                width: 100%;
-                height: 100%;
-                max-height: 100%;
-                border-radius: 0;
-                border: none;
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-            }
-
-            .modal-video {
-                flex: 1 1 auto;
-                min-height: 55vh;
-                aspect-ratio: auto;
-            }
-
-            .modal-info {
-                flex: 0 0 auto;
-                max-height: 45vh;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                padding: 1.2rem 1.2rem 2rem;
-            }
-        }
-
-        /* ============ MODO REELS (visor vertical inmersivo) ============ */
-        .reels {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 300;
-            display: none;
-        }
-
-        .reels.open { display: block; }
-
-        .reels-stage {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .reels-frame {
-            position: relative;
-            height: 100%;
-            aspect-ratio: 9 / 16;
-            max-width: 100vw;
-            background: #000;
-            overflow: hidden;
-        }
-
-        .reels-media { position: absolute; inset: 0; }
-        .reels-media iframe { width: 100%; height: 100%; border: 0; display: block; }
-
-        .reels-top {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.9rem 1rem;
-            background: linear-gradient(rgba(0,0,0,0.65), transparent);
-            z-index: 5;
-        }
-
-        .reels-count {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            color: var(--text-soft);
-        }
-
-        .reels-btn {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            background: rgba(20, 20, 21, 0.8);
-            border: 1px solid var(--border-strong);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .reels-btn:hover { background: var(--white); color: var(--black); }
-
-        .reels-caption {
-            position: absolute;
-            left: 0; right: 0; bottom: 0;
-            padding: 3.5rem 1rem 1.1rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.92));
-            z-index: 4;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 0.75rem;
-        }
-
-        .reels-caption .video-tag { margin-bottom: 0.5rem; }
-        .reels-caption h3 {
-            font-family: var(--font-serif);
-            font-size: 1.1rem;
-            font-weight: 500;
-            line-height: 1.3;
-            color: var(--white);
-        }
-
-        .reels-panel {
-            position: absolute;
-            left: 0; right: 0; bottom: 0;
-            background: var(--surface);
-            border-top: 1px solid var(--border-strong);
-            border-radius: 20px 20px 0 0;
-            padding: 1.4rem 1.3rem 1.8rem;
-            z-index: 6;
-            max-height: 60%;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .reels-panel.open { transform: translateY(0); }
-        .reels-panel h3 { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; margin: 0.7rem 0 0.5rem; }
-        .reels-panel p { color: var(--text-muted); font-size: 0.93rem; }
-
-        .reels-arrows {
-            position: absolute;
-            right: 0.8rem;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            z-index: 5;
-        }
-
-        @media (hover: none) { .reels-arrows { display: none; } }
-
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 2.5rem 1.5rem;
-            text-align: center;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            color: var(--text-dim);
-        }
-
-        @media (max-width: 600px) {
-            .logo-badge { display: none; }
-            .nav-container { padding: 1rem 1.25rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videos — Robert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#0a0a0a; --surface:#141415; --surface-2:#1a1a1c; --border:#232325; --border-strong:#333336; --text:#f5f5f5; --text-soft:#d4d4d4; --text-muted:#9b9ba3; --text-dim:#6f6f76; --white:#fafafa; --black:#0a0a0a; --font-sans:'Inter',system-ui,-apple-system,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--font-sans); line-height:1.6; overflow-x:hidden; }
+::selection { background:var(--white); color:var(--black); }
+nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:100; }
+.nav-container { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; gap:1rem; }
+.logo { display:flex; align-items:center; gap:.75rem; text-decoration:none; color:var(--text); }
+.logo-name { font-family:var(--font-serif); font-size:1.25rem; font-weight:500; }
+.logo-badge { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.3rem .6rem; border-radius:6px; white-space:nowrap; }
+.btn { display:inline-flex; align-items:center; gap:.6rem; font-weight:600; font-size:.95rem; padding:.9rem 1.6rem; border-radius:12px; text-decoration:none; border:1px solid transparent; transition:all .25s ease; cursor:pointer; font-family:var(--font-sans); }
+.btn-dark { background:var(--surface); border-color:var(--border-strong); color:var(--text); }
+.btn-dark:hover { background:var(--surface-2); border-color:#4a4a4e; transform:translateY(-2px); }
+.btn-small { padding:.6rem 1.3rem; border-radius:10px; font-size:.88rem; }
+.page-hero { padding:10rem 1.5rem 3rem; text-align:center; background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.05), transparent 70%); }
+.section-tag { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); letter-spacing:.05em; display:block; margin-bottom:1rem; }
+.page-hero h1 { font-family:var(--font-serif); font-size:clamp(2.2rem,5vw,3.6rem); font-weight:500; line-height:1.15; margin-bottom:1rem; }
+.page-hero h1 em { font-style:italic; }
+.count { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); margin-bottom:2.5rem; }
+.video-filters { display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; max-width:800px; margin:0 auto; }
+.filter-pill { font-family:var(--font-sans); font-size:.88rem; font-weight:500; color:var(--text-soft); background:var(--surface); border:1px solid var(--border-strong); padding:.55rem 1.2rem; border-radius:999px; cursor:pointer; transition:all .25s ease; }
+.filter-pill:hover { border-color:#4a4a4e; transform:translateY(-1px); }
+.filter-pill.active { background:var(--white); color:var(--black); border-color:var(--white); }
+main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
+.video-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; grid-auto-flow:dense; }
+.video-card.h { grid-column:1/-1; }
+@media (min-width:700px) {
+  .video-grid { grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:1.25rem; }
+  .video-card.h { grid-column:span 2; }
+}
+.video-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; cursor:pointer; transition:all .3s ease; animation:fadeIn .4s ease both; }
+.video-card:hover { transform:translateY(-4px); border-color:var(--border-strong); }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.video-thumb { aspect-ratio:16/9; background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.video-thumb.tall { aspect-ratio:9/16; }
+.video-thumb > span { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; color:var(--text-dim); text-transform:uppercase; }
+.thumb-base,.thumb-media { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.thumb-media { opacity:0; transition:opacity .35s ease; }
+.video-card:hover .thumb-media { opacity:1; }
+.play { position:absolute; width:56px; height:56px; background:var(--white); color:var(--black); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; padding-left:4px; opacity:0; transform:scale(.8); transition:all .3s ease; z-index:2; }
+.video-card:hover .play { opacity:1; transform:scale(1); }
+.v-overlay { position:absolute; left:0; right:0; bottom:0; padding:3rem .9rem .9rem; background:linear-gradient(transparent,rgba(0,0,0,.88)); z-index:2; text-align:left; }
+.v-overlay .video-tag { margin-bottom:.5rem; }
+.v-overlay h3 { font-family:var(--font-serif); font-size:1.02rem; font-weight:500; line-height:1.3; color:var(--white); }
+.video-body { padding:1.4rem; }
+.video-tag { display:inline-block; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.25rem .6rem; border-radius:6px; margin-bottom:.9rem; }
+.video-body h3 { font-family:var(--font-serif); font-size:1.2rem; font-weight:500; margin-bottom:.5rem; }
+.video-body p { color:var(--text-muted); font-size:.92rem; }
+.empty { text-align:center; padding:5rem 1rem; font-family:var(--font-mono); font-size:.85rem; color:var(--text-dim); }
+.modal { position:fixed; inset:0; background:rgba(5,5,5,.88); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:200; display:none; align-items:center; justify-content:center; padding:1.5rem; }
+.modal.open { display:flex; }
+.modal-content { width:min(960px,100%); max-height:90vh; overflow-y:auto; background:var(--surface); border:1px solid var(--border-strong); border-radius:16px; animation:fadeIn .3s ease both; }
+.modal-video { aspect-ratio:16/9; background:#000; position:relative; overflow:hidden; }
+.modal-video iframe { width:100%; height:100%; border:0; display:block; }
+.yt-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-decoration:none; }
+.yt-fallback img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5; transition:opacity .3s ease,transform .4s ease; }
+.yt-fallback:hover img { opacity:.7; transform:scale(1.03); }
+.yt-btn { position:relative; z-index:2; display:inline-flex; align-items:center; gap:.6rem; background:var(--white); color:var(--black); font-family:var(--font-sans); font-weight:600; font-size:.95rem; padding:.9rem 1.6rem; border-radius:12px; transition:all .25s ease; }
+.yt-fallback:hover .yt-btn { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,255,255,.15); }
+.modal-info { padding:1.5rem 1.8rem; display:flex; justify-content:space-between; align-items:flex-start; gap:1.5rem; }
+.modal-info h3 { font-family:var(--font-serif); font-size:1.4rem; font-weight:500; margin:.8rem 0 .5rem; }
+.modal-info p { color:var(--text-muted); font-size:.95rem; }
+.modal-link { display:inline-block; margin-top:1rem; font-family:var(--font-mono); font-size:.75rem; letter-spacing:.05em; color:var(--text-muted); text-decoration:none; border-bottom:1px solid var(--border-strong); padding-bottom:2px; transition:color .25s ease; }
+.modal-link:hover { color:var(--text); }
+.modal-close { flex-shrink:0; width:40px; height:40px; background:var(--surface-2); border:1px solid var(--border-strong); border-radius:10px; color:var(--text); font-size:1.1rem; cursor:pointer; transition:all .25s ease; }
+.modal-close:hover { background:var(--white); color:var(--black); }
+@media (max-width:768px) {
+  .modal { padding:0; }
+  .modal-content { width:100%; height:100%; max-height:100%; border-radius:0; border:none; display:flex; flex-direction:column; overflow:hidden; }
+  .modal-video { flex:1 1 auto; min-height:55vh; aspect-ratio:auto; }
+  .modal-info { flex:0 0 auto; max-height:45vh; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:1.2rem 1.2rem 2rem; }
+}
+/* ============ MODO REELS ============ */
+.reels { position:fixed; inset:0; background:#000; z-index:300; display:none; }
+.reels.open { display:block; }
+.reels-stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.reels-frame { position:relative; height:100%; aspect-ratio:9/16; max-width:100vw; background:#000; overflow:hidden; }
+.reels-media { position:absolute; inset:0; }
+.reels-media iframe { width:100%; height:100%; border:0; display:block; }
+/* Las capas no bloquean los clics del player; solo sus botones son clicables */
+.reels-top,.reels-caption,.reels-arrows,.reels-hint { pointer-events:none; }
+.reels-top .reels-btn,.reels-arrows .reels-btn,.reels-side .reels-btn,.reels-mute { pointer-events:auto; }
+.reels-top { position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:.9rem 1rem; background:linear-gradient(rgba(0,0,0,.65),transparent); z-index:5; }
+.reels-count { font-family:var(--font-mono); font-size:.75rem; letter-spacing:.08em; color:var(--text-soft); }
+.reels-btn { width:40px; height:40px; flex-shrink:0; background:rgba(20,20,21,.8); border:1px solid var(--border-strong); border-radius:10px; color:var(--text); font-size:1rem; cursor:pointer; transition:all .25s ease; }
+.reels-btn:hover { background:var(--white); color:var(--black); }
+.reels-caption { position:absolute; left:0; right:0; bottom:0; padding:3.5rem 1rem 1.1rem; background:linear-gradient(transparent,rgba(0,0,0,.92)); z-index:4; display:flex; align-items:flex-end; justify-content:space-between; gap:.75rem; }
+.reels-caption .video-tag { margin-bottom:.5rem; }
+.reels-caption h3 { font-family:var(--font-serif); font-size:1.1rem; font-weight:500; line-height:1.3; color:var(--white); }
+.reels-side { display:flex; align-items:center; gap:.6rem; flex-shrink:0; }
+.reels-mute { display:inline-flex; align-items:center; gap:.5rem; background:rgba(20,20,21,.8); border:1px solid var(--border-strong); border-radius:999px; color:var(--text); font-family:var(--font-sans); font-weight:600; font-size:.78rem; padding:.55rem .95rem; cursor:pointer; transition:all .25s ease; white-space:nowrap; }
+.reels-mute:hover { background:var(--white); color:var(--black); }
+.reels-hint { position:absolute; left:50%; bottom:6.2rem; transform:translateX(-50%) translateY(6px); background:rgba(20,20,21,.92); border:1px solid var(--border-strong); color:var(--text-soft); font-family:var(--font-mono); font-size:.72rem; letter-spacing:.04em; padding:.5rem .9rem; border-radius:999px; opacity:0; transition:all .35s ease; z-index:5; max-width:90%; text-align:center; }
+.reels-hint.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.reels-panel { position:absolute; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--border-strong); border-radius:20px 20px 0 0; padding:1.4rem 1.3rem 1.8rem; z-index:6; max-height:60%; overflow-y:auto; -webkit-overflow-scrolling:touch; transform:translateY(100%); transition:transform .3s ease; }
+.reels-panel.open { transform:translateY(0); }
+.reels-panel-head { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:.5rem; }
+.reels-panel-head .video-tag { margin-bottom:0; }
+.reels-panel h3 { font-family:var(--font-serif); font-size:1.25rem; font-weight:500; margin:0 0 .5rem; }
+.reels-panel p { color:var(--text-muted); font-size:.93rem; }
+.reels-arrows { position:absolute; right:.8rem; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:.6rem; z-index:5; }
+footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; font-family:var(--font-mono); font-size:.78rem; color:var(--text-dim); }
+@media (max-width:600px) { .logo-badge { display:none; } .nav-container { padding:1rem 1.25rem; } }
+</style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-name">Robert</span>
-                <span class="logo-badge">Video Editor & Graphic Designer</span>
-            </a>
-            <a href="index.html" class="btn btn-dark btn-small">← Volver al inicio</a>
-        </div>
-    </nav>
+<nav>
+  <div class="nav-container">
+    <a href="index.html" class="logo"><span class="logo-name">Robert</span><span class="logo-badge">Video Editor & Graphic Designer</span></a>
+    <a href="index.html" class="btn btn-dark btn-small">← Volver al inicio</a>
+  </div>
+</nav>
 
-    <header class="page-hero">
-        <span class="section-tag">// Portafolio Audiovisual</span>
-        <h1 id="page-title">Proyectos <em>audiovisuales</em></h1>
-        <p class="count" id="page-count"></p>
-        <div class="video-filters" id="filters"></div>
-    </header>
+<header class="page-hero">
+  <span class="section-tag">// Portafolio Audiovisual</span>
+  <h1 id="page-title">Proyectos <em>audiovisuales</em></h1>
+  <p class="count" id="page-count"></p>
+  <div class="video-filters" id="filters"></div>
+</header>
 
-    <main>
-        <div class="video-grid" id="grid"></div>
-        <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
-    </main>
+<main>
+  <div class="video-grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
+</main>
 
-    <footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
+<footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
 
-    <!-- Modal para videos horizontales (16:9) -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-video" id="modal-video"></div>
-            <div class="modal-info">
-                <div>
-                    <span class="video-tag" id="modal-tag"></span>
-                    <h3 id="modal-title"></h3>
-                    <p id="modal-desc"></p>
-                    <a id="modal-link" class="modal-link" target="_blank" rel="noopener" style="display:none;"></a>
-                </div>
-                <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
-            </div>
-        </div>
+<!-- Modal para videos horizontales (16:9) -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-video" id="modal-video"></div>
+    <div class="modal-info">
+      <div>
+        <span class="video-tag" id="modal-tag"></span>
+        <h3 id="modal-title"></h3>
+        <p id="modal-desc"></p>
+        <a id="modal-link" class="modal-link" target="_blank" rel="noopener" style="display:none;"></a>
+      </div>
+      <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
     </div>
+  </div>
+</div>
 
-    <!-- Modo Reels (visor vertical 9:16) -->
-    <div class="reels" id="reels">
-        <div class="reels-stage">
-            <div class="reels-frame">
-                <div class="reels-media" id="reels-media"></div>
-
-                <div class="reels-top">
-                    <span class="reels-count" id="reels-count"></span>
-                    <button class="reels-btn" id="reels-close" aria-label="Salir">✕</button>
-                </div>
-
-                <div class="reels-caption">
-                    <div>
-                        <span class="video-tag" id="reels-tag"></span>
-                        <h3 id="reels-title"></h3>
-                    </div>
-                    <button class="reels-btn" id="reels-info" aria-label="Ver descripción">ⓘ</button>
-                </div>
-
-                <div class="reels-panel" id="reels-panel">
-                    <span class="video-tag" id="reels-panel-tag"></span>
-                    <h3 id="reels-panel-title"></h3>
-                    <p id="reels-panel-desc"></p>
-                    <a id="reels-panel-link" class="modal-link" target="_blank" rel="noopener" style="display:none;"></a>
-                </div>
-
-                <div class="reels-arrows">
-                    <button class="reels-btn" id="reels-prev" aria-label="Anterior">↑</button>
-                    <button class="reels-btn" id="reels-next" aria-label="Siguiente">↓</button>
-                </div>
-            </div>
+<!-- Modo Reels (visor vertical 9:16) -->
+<div class="reels" id="reels">
+  <div class="reels-stage">
+    <div class="reels-frame">
+      <div class="reels-media" id="reels-media"></div>
+      <div class="reels-top">
+        <span class="reels-count" id="reels-count"></span>
+        <button class="reels-btn" id="reels-close" aria-label="Salir">✕</button>
+      </div>
+      <div class="reels-caption">
+        <div>
+          <span class="video-tag" id="reels-tag"></span>
+          <h3 id="reels-title"></h3>
         </div>
+        <div class="reels-side">
+          <button class="reels-mute" id="reels-mute">🔇 Quitar silencio</button>
+          <button class="reels-btn" id="reels-info" aria-label="Ver descripción">ⓘ</button>
+        </div>
+      </div>
+      <div class="reels-hint" id="reels-hint">Video silenciado para que se reproduzca solo — actívalo con «Quitar silencio»</div>
+      <div class="reels-panel" id="reels-panel">
+        <div class="reels-panel-head">
+          <span class="video-tag" id="reels-panel-tag"></span>
+          <button class="reels-btn" id="reels-panel-close" aria-label="Cerrar información">✕</button>
+        </div>
+        <h3 id="reels-panel-title"></h3>
+        <p id="reels-panel-desc"></p>
+        <a id="reels-panel-link" class="modal-link" target="_blank" rel="noopener"></a>
+      </div>
+      <div class="reels-arrows">
+        <button class="reels-btn" id="reels-prev" aria-label="Anterior">↑</button>
+        <button class="reels-btn" id="reels-next" aria-label="Siguiente">↓</button>
+      </div>
     </div>
+  </div>
+</div>
 
-    <script>
-        /* =========================================================
-           📦 DATOS: se cargan desde data/videos.json (panel admin).
-           Si no existe, usa VIDEOS_FALLBACK.
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+/* =========================================================
+   📦 DATOS: se cargan desde data/videos.json (panel admin).
+   Si no existe, usa VIDEOS_FALLBACK.
+   · formato: "9:16" (Modo Reels) o "16:9" (modal).
+   ========================================================= */
+let VIDEOS = [];
+const VIDEOS_FALLBACK = [
+  { titulo:"Business & Mindset", categoria:"short-form", formato:"9:16", video:"https://vimeo.com/1218345311", thumb:"", hover:"", descripcion:"Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head." },
+  { titulo:"Finanzas & Estilo Dual", categoria:"short-form", formato:"9:16", video:"https://vimeo.com/1219288477", thumb:"", hover:"", descripcion:"Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes." },
+  { titulo:"Podcast — La Historia de Aurelio", categoria:["long-form","podcast"], formato:"16:9", video:"https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb:"", hover:"", descripcion:"Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio." },
+  { titulo:"Long-Form 02", categoria:"long-form", formato:"16:9", video:"https://www.youtube.com/watch?v=ScMzIvxBSi4", thumb:"", hover:"", descripcion:"En YouTube la miniatura se carga sola automáticamente." },
+  { titulo:"AI Generated UGC Ad", categoria:"ads", formato:"9:16", video:"https://vimeo.com/1219288461", thumb:"", hover:"", descripcion:"Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro." }
+];
+let CATEGORIAS = {};
+const CATS_FALLBACK = { "short-form":"Short-Form", "long-form":"Long-Form", "podcast":"Podcast", "ads":"Ads" };
 
-           · video: link tal cual de YouTube o Vimeo.
-           · categoria: una o varias (["long-form", "podcast"]).
-           · formato: "9:16" (vertical, abre en Modo Reels) o
-             "16:9" (horizontal, abre en el modal). Si falta,
-             se infiere: short-form/ads → 9:16, resto → 16:9.
-           · thumb: "" = frame automático · o ruta/URL propia.
-           · hover: URL de GIF/MP4 para el preview.
-           ========================================================= */
+function resolverVideo(v) {
+  if (v.tipo && v.videoId) return { tipo:v.tipo, id:v.videoId };
+  let raw = String(v.video||"").trim();
+  const mSrc = raw.match(/src=["']([^"']+)["']/i);
+  if (mSrc) raw = mSrc[1];
+  let tipo="", id="";
+  if (/youtu\.?be/i.test(raw)) {
+    tipo="youtube";
+    const m = raw.match(/(?:v=|\/embed\/|\/shorts\/|\/live\/|youtu\.be\/)([A-Za-z0-9_-]{11})/) || raw.match(/^([A-Za-z0-9_-]{11})$/);
+    id = m ? m[1] : "";
+  } else if (/vimeo/i.test(raw)) {
+    tipo="vimeo";
+    const m = raw.match(/vimeo\.com\/(?:video\/)?(\d+)/) || raw.match(/^(\d+)$/);
+    id = m ? m[1] : "";
+  } else if (/^\d+$/.test(raw)) { tipo="vimeo"; id=raw; }
+  else if (/^[A-Za-z0-9_-]{11}$/.test(raw)) { tipo="youtube"; id=raw; }
+  return { tipo, id };
+}
+function catsDe(v) { return Array.isArray(v.categoria) ? v.categoria : [v.categoria]; }
+function catLabel(v) { return catsDe(v).map(c => CATEGORIAS[c]||c).join(" · "); }
+function fmtDe(v) { if (v.formato) return v.formato; return catsDe(v).some(c => c==="short-form"||c==="ads") ? "9:16" : "16:9"; }
 
-        let VIDEOS = [];
-        const VIDEOS_FALLBACK = [
-            { titulo: "Business & Mindset", categoria: "short-form", formato: "9:16", video: "https://vimeo.com/1218345311", thumb: "", hover: "", descripcion: "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head." },
-            { titulo: "Finanzas & Estilo Dual", categoria: "short-form", formato: "9:16", video: "https://vimeo.com/1219288477", thumb: "", hover: "", descripcion: "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes." },
-            { titulo: "Podcast — La Historia de Aurelio", categoria: ["long-form", "podcast"], formato: "16:9", video: "https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb: "", hover: "", descripcion: "Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio." },
-            /* ⚠️ Video de muestra — reemplázalo o bórralo desde el panel: */
-            { titulo: "Long-Form 02", categoria: "long-form", formato: "16:9", video: "https://www.youtube.com/watch?v=ScMzIvxBSi4", thumb: "", hover: "", descripcion: "En YouTube la miniatura se carga sola automáticamente." },
-            { titulo: "AI Generated UGC Ad", categoria: "ads", formato: "9:16", video: "https://vimeo.com/1219288461", thumb: "", hover: "", descripcion: "Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro." }
-        ];
+const grid=document.getElementById("grid"), empty=document.getElementById("empty"),
+filtersBox=document.getElementById("filters"), pageTitle=document.getElementById("page-title"),
+pageCount=document.getElementById("page-count"), modal=document.getElementById("modal"),
+reels=document.getElementById("reels");
 
-        let CATEGORIAS = {};
-        const CATS_FALLBACK = {
-            "short-form": "Short-Form",
-            "long-form": "Long-Form",
-            "podcast": "Podcast",
-            "ads": "Ads"
-        };
+let current = leerCategoria();
+function leerCategoria() {
+  const p = new URLSearchParams(window.location.search).get("categoria");
+  if (CATEGORIAS[p]) return p;
+  return Object.keys(CATEGORIAS)[0];
+}
 
-        /* Detecta plataforma y extrae el ID automáticamente */
-        function resolverVideo(v) {
-            if (v.tipo && v.videoId) return { tipo: v.tipo, id: v.videoId };
+function pintarFiltros() {
+  filtersBox.innerHTML="";
+  for (const key in CATEGORIAS) {
+    const b=document.createElement("button");
+    b.className="filter-pill"+(key===current?" active":"");
+    b.textContent=CATEGORIAS[key];
+    b.onclick=()=>{ current=key; history.pushState(null,"","?categoria="+key); pintarFiltros(); pintarGrid(); };
+    filtersBox.appendChild(b);
+  }
+}
 
-            let raw = String(v.video || "").trim();
+function thumbBaseHTML(v) {
+  if (v.thumb) return '<img class="thumb-base" src="'+v.thumb+'" alt="">';
+  if (v._tipo==="youtube") return '<img class="thumb-base" data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="">';
+  return '<img class="thumb-base" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">';
+}
 
-            const mSrc = raw.match(/src=["']([^"']+)["']/i);
-            if (mSrc) raw = mSrc[1];
+function revisarThumbsYT(container) {
+  container.querySelectorAll("img[data-yt]").forEach(img => {
+    const cambiar=()=>{ if (img.dataset.fb) return; if (img.naturalWidth<=120) { img.dataset.fb="1"; img.src="https://i.ytimg.com/vi/"+img.dataset.yt+"/hqdefault.jpg"; } };
+    img.addEventListener("load",cambiar);
+    img.addEventListener("error",()=>{ if(!img.dataset.fb){ img.dataset.fb="1"; img.src="https://i.ytimg.com/vi/"+img.dataset.yt+"/hqdefault.jpg"; } });
+    if (img.complete) cambiar();
+  });
+}
 
-            let tipo = "", id = "";
+function hoverHTML(v) {
+  return /\.mp4|\.webm/i.test(v.hover)
+    ? '<video class="thumb-media" src="'+v.hover+'" muted loop playsinline preload="none"></video>'
+    : '<img class="thumb-media" src="'+v.hover+'" alt="">';
+}
 
-            if (/youtu\.?be/i.test(raw)) {
-                tipo = "youtube";
-                const m = raw.match(/(?:v=|\/embed\/|\/shorts\/|\/live\/|youtu\.be\/)([A-Za-z0-9_-]{11})/) || raw.match(/^([A-Za-z0-9_-]{11})$/);
-                id = m ? m[1] : "";
-            } else if (/vimeo/i.test(raw)) {
-                tipo = "vimeo";
-                const m = raw.match(/vimeo\.com\/(?:video\/)?(\d+)/) || raw.match(/^(\d+)$/);
-                id = m ? m[1] : "";
-            } else if (/^\d+$/.test(raw)) {
-                tipo = "vimeo"; id = raw;
-            } else if (/^[A-Za-z0-9_-]{11}$/.test(raw)) {
-                tipo = "youtube"; id = raw;
-            }
+function pintarGrid() {
+  const lista = VIDEOS.filter(v => catsDe(v).includes(current));
+  const listaV = lista.filter(v => fmtDe(v)==="9:16");
+  pageTitle.innerHTML = "Proyectos <em>"+(CATEGORIAS[current]||"")+"</em>";
+  pageCount.textContent = "// "+String(lista.length).padStart(2,"0")+(lista.length===1?" proyecto":" proyectos");
+  empty.style.display = lista.length ? "none" : "block";
+  grid.innerHTML="";
+  lista.forEach((v,i)=>{
+    const card=document.createElement("article");
+    const vertical = fmtDe(v)==="9:16";
+    card.className="video-card "+(vertical?"v":"h");
+    card.style.animationDelay=(i*0.06)+"s";
+    if (vertical) {
+      card.innerHTML =
+        '<div class="video-thumb tall">'+thumbBaseHTML(v)+(v.hover?hoverHTML(v):'')+
+        '<div class="play">▶</div>'+
+        '<div class="v-overlay"><span class="video-tag">'+catLabel(v)+'</span><h3>'+v.titulo+'</h3></div></div>';
+      card.onclick=()=>abrirReels(listaV, listaV.indexOf(v));
+    } else {
+      card.innerHTML =
+        '<div class="video-thumb"><span>'+catLabel(v)+'</span>'+thumbBaseHTML(v)+(v.hover?hoverHTML(v):'')+
+        '<div class="play">▶</div></div>'+
+        '<div class="video-body"><span class="video-tag">'+catLabel(v)+'</span><h3>'+v.titulo+'</h3><p>'+v.descripcion+'</p></div>';
+      card.onclick=()=>abrirModal(v);
+    }
+    const vid=card.querySelector("video.thumb-media");
+    if (vid) {
+      card.addEventListener("mouseenter",()=>vid.play().catch(()=>{}));
+      card.addEventListener("mouseleave",()=>vid.pause());
+    }
+    grid.appendChild(card);
+  });
+  cargarThumbsVimeo();
+  revisarThumbsYT(grid);
+}
 
-            return { tipo, id };
-        }
+function cargarThumbsVimeo() {
+  grid.querySelectorAll("img[data-vimeo]").forEach(async img => {
+    try {
+      const url="https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+img.dataset.vimeo);
+      const res=await fetch(url); const data=await res.json();
+      if (data.thumbnail_url) { img.onload=()=>{ img.style.opacity=1; }; img.src=data.thumbnail_url; }
+    } catch(e){}
+  });
+}
 
-        function catsDe(v) {
-            return Array.isArray(v.categoria) ? v.categoria : [v.categoria];
-        }
+/* ============ MODAL (horizontales) ============ */
+function abrirModal(v) {
+  const box=document.getElementById("modal-video"), link=document.getElementById("modal-link");
+  if (v._tipo==="youtube") {
+    box.innerHTML='<a class="yt-fallback" href="https://www.youtube.com/watch?v='+v._id+'" target="_blank" rel="noopener">'+
+      '<img data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="">'+
+      '<span class="yt-btn">▶ Mirar en YouTube</span></a>';
+    revisarThumbsYT(box); link.style.display="none";
+  } else {
+    box.innerHTML='<iframe src="https://player.vimeo.com/video/'+v._id+'?autoplay=1&muted=1" title="Reproductor de video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    link.href="https://vimeo.com/"+v._id; link.textContent="¿No carga? Mirar en Vimeo ↗"; link.style.display="inline-block";
+  }
+  document.getElementById("modal-tag").textContent=catLabel(v);
+  document.getElementById("modal-title").textContent=v.titulo;
+  document.getElementById("modal-desc").textContent=v.descripcion;
+  modal.classList.add("open"); document.body.style.overflow="hidden";
+}
+function cerrarModal() {
+  modal.classList.remove("open");
+  document.getElementById("modal-video").innerHTML="";
+  document.body.style.overflow="";
+}
 
-        function catLabel(v) {
-            return catsDe(v).map(c => CATEGORIAS[c] || c).join(" · ");
-        }
+/* ============ MODO REELS (verticales) ============ */
+let reelsLista=[], reelsIdx=0, reelsPlayer=null, hintT=null;
 
-        /* Formato del video: manual si existe; si no, se infiere */
-        function fmtDe(v) {
-            if (v.formato) return v.formato;
-            return catsDe(v).some(c => c === "short-form" || c === "ads") ? "9:16" : "16:9";
-        }
+function abrirReels(lista,idx) {
+  reelsLista=lista; reelsIdx=idx;
+  reels.classList.add("open"); document.body.style.overflow="hidden";
+  pintarReels();
+}
+function cerrarReels() {
+  reels.classList.remove("open");
+  document.getElementById("reels-media").innerHTML="";
+  document.getElementById("reels-panel").classList.remove("open");
+  hideHint(); reelsPlayer=null; document.body.style.overflow="";
+}
+function reelsNav(d) {
+  const n=reelsIdx+d;
+  if (n<0||n>=reelsLista.length) return;
+  reelsIdx=n; pintarReels();
+}
+function setMuteUI(muted) {
+  document.getElementById("reels-mute").textContent = muted ? "🔇 Quitar silencio" : "🔊 Silenciar";
+}
+function showHint() {
+  const h=document.getElementById("reels-hint");
+  h.classList.add("show"); clearTimeout(hintT);
+  hintT=setTimeout(()=>h.classList.remove("show"),6000);
+}
+function hideHint() { clearTimeout(hintT); document.getElementById("reels-hint").classList.remove("show"); }
 
-        const grid = document.getElementById("grid");
-        const empty = document.getElementById("empty");
-        const filtersBox = document.getElementById("filters");
-        const pageTitle = document.getElementById("page-title");
-        const pageCount = document.getElementById("page-count");
-        const modal = document.getElementById("modal");
-        const reels = document.getElementById("reels");
+function pintarReels() {
+  const v=reelsLista[reelsIdx];
+  const media=document.getElementById("reels-media");
+  const muteBtn=document.getElementById("reels-mute");
+  if (v._tipo==="youtube") {
+    media.innerHTML='<a class="yt-fallback" href="https://www.youtube.com/watch?v='+v._id+'" target="_blank" rel="noopener">'+
+      '<img data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="">'+
+      '<span class="yt-btn">▶ Mirar en YouTube</span></a>';
+    revisarThumbsYT(media);
+    reelsPlayer=null; muteBtn.style.display="none"; hideHint();
+  } else {
+    media.innerHTML='<iframe id="reels-iframe" src="https://player.vimeo.com/video/'+v._id+'?autoplay=1&muted=1&playsinline=1" title="Reproductor de video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    reelsPlayer=(window.Vimeo)?new Vimeo.Player(document.getElementById("reels-iframe")):null;
+    muteBtn.style.display="inline-flex"; setMuteUI(true); showHint();
+  }
+  document.getElementById("reels-count").textContent=String(reelsIdx+1).padStart(2,"0")+" / "+String(reelsLista.length).padStart(2,"0");
+  document.getElementById("reels-tag").textContent=catLabel(v);
+  document.getElementById("reels-title").textContent=v.titulo;
+  document.getElementById("reels-panel-tag").textContent=catLabel(v);
+  document.getElementById("reels-panel-title").textContent=v.titulo;
+  document.getElementById("reels-panel-desc").textContent=v.descripcion;
+  const pl=document.getElementById("reels-panel-link");
+  pl.href=(v._tipo==="youtube")?"https://www.youtube.com/watch?v="+v._id:"https://vimeo.com/"+v._id;
+  pl.textContent=(v._tipo==="youtube")?"Mirar en YouTube ↗":"Mirar en Vimeo ↗";
+  document.getElementById("reels-panel").classList.remove("open");
+}
 
-        let current = leerCategoria();
+document.getElementById("reels-close").onclick=cerrarReels;
+document.getElementById("reels-prev").onclick=()=>reelsNav(-1);
+document.getElementById("reels-next").onclick=()=>reelsNav(1);
+document.getElementById("reels-info").onclick=()=>document.getElementById("reels-panel").classList.toggle("open");
+document.getElementById("reels-panel-close").onclick=()=>document.getElementById("reels-panel").classList.remove("open");
 
-        function leerCategoria() {
-            const p = new URLSearchParams(window.location.search).get("categoria");
-            if (CATEGORIAS[p]) return p;
-            return Object.keys(CATEGORIAS)[0];
-        }
+/* Botón propio de silencio (API de Vimeo) */
+document.getElementById("reels-mute").onclick=async ()=>{
+  if (!reelsPlayer) return;
+  try {
+    const m=await reelsPlayer.getMuted();
+    const nueva=!m;
+    await reelsPlayer.setMuted(nueva);
+    setMuteUI(nueva);
+    if (!nueva) hideHint();
+  } catch(e){}
+};
 
-        function pintarFiltros() {
-            filtersBox.innerHTML = "";
-            for (const key in CATEGORIAS) {
-                const b = document.createElement("button");
-                b.className = "filter-pill" + (key === current ? " active" : "");
-                b.textContent = CATEGORIAS[key];
-                b.onclick = () => {
-                    current = key;
-                    history.pushState(null, "", "?categoria=" + key);
-                    pintarFiltros();
-                    pintarGrid();
-                };
-                filtersBox.appendChild(b);
-            }
-        }
+/* Rueda del mouse en desktop (con pausa anti-spam) */
+let wheelLock=0;
+reels.addEventListener("wheel", e=>{
+  const now=Date.now();
+  if (now-wheelLock<600) return;
+  wheelLock=now;
+  reelsNav(e.deltaY>0?1:-1);
+},{passive:true});
 
-        function thumbBaseHTML(v) {
-            if (v.thumb) return '<img class="thumb-base" src="' + v.thumb + '" alt="">';
-            if (v._tipo === "youtube") return '<img class="thumb-base" data-yt="' + v._id + '" src="https://i.ytimg.com/vi/' + v._id + '/maxresdefault.jpg" alt="">';
-            return '<img class="thumb-base" data-vimeo="' + v._id + '" alt="" style="opacity:0;transition:opacity .4s ease">';
-        }
+/* Teclado */
+document.getElementById("modal-close").onclick=cerrarModal;
+modal.onclick=e=>{ if(e.target===modal) cerrarModal(); };
+document.addEventListener("keydown", e=>{
+  if (reels.classList.contains("open")) {
+    if (e.key==="Escape") cerrarReels();
+    if (e.key==="ArrowDown") { e.preventDefault(); reelsNav(1); }
+    if (e.key==="ArrowUp") { e.preventDefault(); reelsNav(-1); }
+  } else if (e.key==="Escape") cerrarModal();
+});
 
-        function revisarThumbsYT(container) {
-            container.querySelectorAll("img[data-yt]").forEach(img => {
-                const cambiar = () => {
-                    if (img.dataset.fb) return;
-                    if (img.naturalWidth <= 120) {
-                        img.dataset.fb = "1";
-                        img.src = "https://i.ytimg.com/vi/" + img.dataset.yt + "/hqdefault.jpg";
-                    }
-                };
-                img.addEventListener("load", cambiar);
-                img.addEventListener("error", () => {
-                    if (!img.dataset.fb) {
-                        img.dataset.fb = "1";
-                        img.src = "https://i.ytimg.com/vi/" + img.dataset.yt + "/hqdefault.jpg";
-                    }
-                });
-                if (img.complete) cambiar();
-            });
-        }
+window.addEventListener("popstate", ()=>{ current=leerCategoria(); pintarFiltros(); pintarGrid(); });
 
-        function hoverHTML(v) {
-            return /\.mp4|\.webm/i.test(v.hover)
-                ? '<video class="thumb-media" src="' + v.hover + '" muted loop playsinline preload="none"></video>'
-                : '<img class="thumb-media" src="' + v.hover + '" alt="">';
-        }
-
-        function pintarGrid() {
-            const lista = VIDEOS.filter(v => catsDe(v).includes(current));
-            const listaV = lista.filter(v => fmtDe(v) === "9:16");
-
-            pageTitle.innerHTML = "Proyectos <em>" + (CATEGORIAS[current] || "") + "</em>";
-
-            pageCount.textContent = "// " + String(lista.length).padStart(2, "0") + (lista.length === 1 ? " proyecto" : " proyectos");
-
-            empty.style.display = lista.length ? "none" : "block";
-            grid.innerHTML = "";
-
-            lista.forEach((v, i) => {
-                const card = document.createElement("article");
-                const vertical = fmtDe(v) === "9:16";
-                card.className = "video-card " + (vertical ? "v" : "h");
-                card.style.animationDelay = (i * 0.06) + "s";
-
-                if (vertical) {
-                    /* Card vertical 9:16 con overlay estilo Reels */
-                    card.innerHTML =
-                        '<div class="video-thumb tall">' +
-                            thumbBaseHTML(v) +
-                            (v.hover ? hoverHTML(v) : '') +
-                            '<div class="play">▶</div>' +
-                            '<div class="v-overlay">' +
-                                '<span class="video-tag">' + catLabel(v) + '</span>' +
-                                '<h3>' + v.titulo + '</h3>' +
-                            '</div>' +
-                        '</div>';
-                    card.onclick = () => abrirReels(listaV, listaV.indexOf(v));
-                } else {
-                    /* Card horizontal 16:9 con cuerpo de texto */
-                    card.innerHTML =
-                        '<div class="video-thumb">' +
-                            '<span>' + catLabel(v) + '</span>' +
-                            thumbBaseHTML(v) +
-                            (v.hover ? hoverHTML(v) : '') +
-                            '<div class="play">▶</div>' +
-                        '</div>' +
-                        '<div class="video-body">' +
-                            '<span class="video-tag">' + catLabel(v) + '</span>' +
-                            '<h3>' + v.titulo + '</h3>' +
-                            '<p>' + v.descripcion + '</p>' +
-                        '</div>';
-                    card.onclick = () => abrirModal(v);
-                }
-
-                const vid = card.querySelector("video.thumb-media");
-                if (vid) {
-                    card.addEventListener("mouseenter", () => vid.play().catch(() => {}));
-                    card.addEventListener("mouseleave", () => vid.pause());
-                }
-
-                grid.appendChild(card);
-            });
-
-            cargarThumbsVimeo();
-            revisarThumbsYT(grid);
-        }
-
-        function cargarThumbsVimeo() {
-            grid.querySelectorAll("img[data-vimeo]").forEach(async img => {
-                try {
-                    const url = "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent("https://vimeo.com/" + img.dataset.vimeo);
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    if (data.thumbnail_url) {
-                        img.onload = () => { img.style.opacity = 1; };
-                        img.src = data.thumbnail_url;
-                    }
-                } catch (e) {}
-            });
-        }
-
-        /* ============ MODAL (horizontales) ============ */
-        function abrirModal(v) {
-            const box = document.getElementById("modal-video");
-            const link = document.getElementById("modal-link");
-
-            if (v._tipo === "youtube") {
-                box.innerHTML =
-                    '<a class="yt-fallback" href="https://www.youtube.com/watch?v=' + v._id + '" target="_blank" rel="noopener">' +
-                        '<img data-yt="' + v._id + '" src="https://i.ytimg.com/vi/' + v._id + '/maxresdefault.jpg" alt="">' +
-                        '<span class="yt-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Mirar en YouTube</span>' +
-                    '</a>';
-                revisarThumbsYT(box);
-                link.style.display = "none";
-            } else {
-                box.innerHTML =
-                    '<iframe src="https://player.vimeo.com/video/' + v._id + '?autoplay=1&muted=1" title="Reproductor de video" frameborder="0" ' +
-                    'allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-                link.href = "https://vimeo.com/" + v._id;
-                link.textContent = "¿No carga? Mirar en Vimeo ↗";
-                link.style.display = "inline-block";
-            }
-
-            document.getElementById("modal-tag").textContent = catLabel(v);
-            document.getElementById("modal-title").textContent = v.titulo;
-            document.getElementById("modal-desc").textContent = v.descripcion;
-
-            modal.classList.add("open");
-            document.body.style.overflow = "hidden";
-        }
-
-        function cerrarModal() {
-            modal.classList.remove("open");
-            document.getElementById("modal-video").innerHTML = "";
-            document.body.style.overflow = "";
-        }
-
-        /* ============ MODO REELS (verticales) ============ */
-        let reelsLista = [], reelsIdx = 0;
-
-        function abrirReels(lista, idx) {
-            reelsLista = lista;
-            reelsIdx = idx;
-            reels.classList.add("open");
-            document.body.style.overflow = "hidden";
-            pintarReels();
-        }
-
-        function cerrarReels() {
-            reels.classList.remove("open");
-            document.getElementById("reels-media").innerHTML = "";
-            document.getElementById("reels-panel").classList.remove("open");
-            document.body.style.overflow = "";
-        }
-
-        function reelsNav(d) {
-            const n = reelsIdx + d;
-            if (n < 0 || n >= reelsLista.length) return;
-            reelsIdx = n;
-            pintarReels();
-        }
-
-        function pintarReels() {
-            const v = reelsLista[reelsIdx];
-            const media = document.getElementById("reels-media");
-
-            if (v._tipo === "youtube") {
-                media.innerHTML =
-                    '<a class="yt-fallback" href="https://www.youtube.com/watch?v=' + v._id + '" target="_blank" rel="noopener">' +
-                        '<img data-yt="' + v._id + '" src="https://i.ytimg.com/vi/' + v._id + '/maxresdefault.jpg" alt="">' +
-                        '<span class="yt-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Mirar en YouTube</span>' +
-                    '</a>';
-                revisarThumbsYT(media);
-            } else {
-                media.innerHTML =
-                    '<iframe src="https://player.vimeo.com/video/' + v._id + '?autoplay=1&muted=1&playsinline=1" title="Reproductor de video" frameborder="0" ' +
-                    'allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-            }
-
-            document.getElementById("reels-count").textContent =
-                String(reelsIdx + 1).padStart(2, "0") + " / " + String(reelsLista.length).padStart(2, "0");
-            document.getElementById("reels-tag").textContent = catLabel(v);
-            document.getElementById("reels-title").textContent = v.titulo;
-
-            document.getElementById("reels-panel-tag").textContent = catLabel(v);
-            document.getElementById("reels-panel-title").textContent = v.titulo;
-            document.getElementById("reels-panel-desc").textContent = v.descripcion;
-
-            const plink = document.getElementById("reels-panel-link");
-            plink.href = v._tipo === "youtube" ? "https://www.youtube.com/watch?v=" + v._id : "https://vimeo.com/" + v._id;
-            plink.textContent = v._tipo === "youtube" ? "Mirar en YouTube ↗" : "Mirar en Vimeo ↗";
-            plink.style.display = "inline-block";
-
-            document.getElementById("reels-panel").classList.remove("open");
-        }
-
-        document.getElementById("reels-close").onclick = cerrarReels;
-        document.getElementById("reels-prev").onclick = () => reelsNav(-1);
-        document.getElementById("reels-next").onclick = () => reelsNav(1);
-        document.getElementById("reels-info").onclick = () => {
-            document.getElementById("reels-panel").classList.toggle("open");
-        };
-
-        /* Swipe táctil */
-        let tY = null;
-        reels.addEventListener("touchstart", e => { tY = e.touches[0].clientY; }, { passive: true });
-        reels.addEventListener("touchend", e => {
-            if (tY === null) return;
-            const d = tY - e.changedTouches[0].clientY;
-            if (Math.abs(d) > 50) reelsNav(d > 0 ? 1 : -1);
-            tY = null;
-        }, { passive: true });
-
-        /* Rueda del mouse (con pausa anti-spam) */
-        let wheelLock = 0;
-        reels.addEventListener("wheel", e => {
-            const now = Date.now();
-            if (now - wheelLock < 600) return;
-            wheelLock = now;
-            reelsNav(e.deltaY > 0 ? 1 : -1);
-        }, { passive: true });
-
-        /* Teclado y cierre global */
-        document.getElementById("modal-close").onclick = cerrarModal;
-        modal.onclick = e => { if (e.target === modal) cerrarModal(); };
-
-        document.addEventListener("keydown", e => {
-            if (reels.classList.contains("open")) {
-                if (e.key === "Escape") cerrarReels();
-                if (e.key === "ArrowDown") { e.preventDefault(); reelsNav(1); }
-                if (e.key === "ArrowUp") { e.preventDefault(); reelsNav(-1); }
-            } else if (e.key === "Escape") {
-                cerrarModal();
-            }
-        });
-
-        window.addEventListener("popstate", () => {
-            current = leerCategoria();
-            pintarFiltros();
-            pintarGrid();
-        });
-
-        /* Arranque: carga data/videos.json (panel) o usa el respaldo */
-        function arrancar() {
-            VIDEOS.forEach(v => { const r = resolverVideo(v); v._tipo = r.tipo; v._id = r.id; });
-            current = leerCategoria();
-            pintarFiltros();
-            pintarGrid();
-        }
-
-        fetch("data/videos.json?r=" + Date.now())
-            .then(r => { if (!r.ok) throw 0; return r.json(); })
-            .then(d => { VIDEOS = d.videos || []; CATEGORIAS = d.categorias || {}; arrancar(); })
-            .catch(() => { VIDEOS = VIDEOS_FALLBACK.slice(); CATEGORIAS = Object.assign({}, CATS_FALLBACK); arrancar(); });
-    </script>
-
+function arrancar() {
+  VIDEOS.forEach(v=>{ const r=resolverVideo(v); v._tipo=r.tipo; v._id=r.id; });
+  current=leerCategoria();
+  pintarFiltros(); pintarGrid();
+}
+fetch("data/videos.json?r="+Date.now())
+  .then(r=>{ if(!r.ok) throw 0; return r.json(); })
+  .then(d=>{ VIDEOS=d.videos||[]; CATEGORIAS=d.categorias||{}; arrancar(); })
+  .catch(()=>{ VIDEOS=VIDEOS_FALLBACK.slice(); CATEGORIAS=Object.assign({},CATS_FALLBACK); arrancar(); });
+</script>
 </body>
 </html>
