@@ -8,516 +8,388 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-    :root {
-        --bg: #0a0a0a; --surface: #141415; --surface-2: #1a1a1c;
-        --border: #232325; --border-strong: #333336;
-        --text: #f5f5f5; --text-soft: #d4d4d4; --text-muted: #9b9ba3; --text-dim: #6f6f76;
-        --white: #fafafa; --black: #0a0a0a;
-        --font-sans: 'Inter', system-ui, sans-serif;
-        --font-serif: 'Source Serif 4', Georgia, serif;
-        --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font-sans); line-height: 1.6; }
-    nav { position: fixed; top: 0; width: 100%; background: rgba(10,10,10,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 100; }
-    .nav-c { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; }
-    .logo { font-family: var(--font-serif); font-size: 1.15rem; color: var(--text); text-decoration: none; }
-    .logo small { font-family: var(--font-mono); font-size: .68rem; color: var(--text-dim); letter-spacing: .08em; text-transform: uppercase; margin-left: .6rem; }
-    .nav-c a.link { color: var(--text-muted); text-decoration: none; font-size: .88rem; }
-    .wrap { max-width: 900px; margin: 0 auto; padding: 6.5rem 1.5rem 5rem; }
-    .tag { font-family: var(--font-mono); font-size: .8rem; color: var(--text-dim); display: block; margin-bottom: .6rem; }
-    h1 { font-family: var(--font-serif); font-weight: 500; font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 1.2rem; }
-    .box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.4rem; }
-    label { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); display: block; margin: .9rem 0 .35rem; }
-    input, textarea { width: 100%; background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text); border-radius: 10px; padding: .7rem .9rem; font-family: var(--font-sans); font-size: .92rem; }
-    input:focus, textarea:focus { outline: none; border-color: #4a4a4e; }
-    textarea { min-height: 70px; resize: vertical; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
-    .btn { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: .9rem; padding: .7rem 1.3rem; border-radius: 10px; border: 1px solid transparent; cursor: pointer; font-family: var(--font-sans); transition: all .25s ease; }
-    .btn-white { background: var(--white); color: var(--black); }
-    .btn-white:hover { transform: translateY(-2px); }
-    .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
-    .btn-dark:hover { background: var(--surface-2); }
-    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .chip { display: inline-flex; align-items: center; gap: .5rem; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 999px; padding: .4rem .9rem; font-size: .85rem; color: var(--text-soft); white-space: nowrap; }
-    .chip button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: .8rem; }
-    .chip button:hover { color: #ff6b6b; }
-    .chip button:disabled { opacity: .3; cursor: not-allowed; }
-
-    /* Pills seleccionables (categorías y formato dentro de cada video) */
-    button.chip { cursor: pointer; font-family: var(--font-sans); transition: all .2s ease; }
-    button.chip:hover { border-color: #4a4a4e; }
-    button.chip.on { background: var(--white); color: var(--black); border-color: var(--white); font-weight: 600; }
-
-    /* Botón estrella (destacado en el inicio) */
-    .star { display: inline-flex; align-items: center; gap: .5rem; background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text-dim); border-radius: 999px; padding: .4rem .9rem; font-size: .85rem; cursor: pointer; font-family: var(--font-sans); white-space: nowrap; transition: all .2s ease; margin-top: .7rem; }
-    .star:hover { border-color: #4a4a4e; color: var(--text-soft); }
-    .star.on { background: var(--white); color: var(--black); border-color: var(--white); font-weight: 600; }
-
-    .vhead { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .4rem; }
-    .vhead strong { font-family: var(--font-serif); font-weight: 500; font-size: 1.1rem; }
-    .del { background: none; border: 1px solid var(--border-strong); color: var(--text-muted); border-radius: 8px; padding: .35rem .7rem; cursor: pointer; font-size: .8rem; }
-    .del:hover { color: #ff6b6b; border-color: #ff6b6b; }
-    .status { font-family: var(--font-mono); font-size: .8rem; color: var(--text-muted); min-height: 1.4em; margin-bottom: 1rem; }
-    .topbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
-    .actions { display: flex; gap: .6rem; flex-wrap: wrap; }
-    .sub { border-top: 1px solid var(--border); margin-top: .9rem; padding-top: .9rem; }
-    details { margin-top: 1.2rem; color: var(--text-muted); font-size: .88rem; }
-    details summary { cursor: pointer; color: var(--text-soft); }
-    details ol { margin: .7rem 0 0 1.3rem; line-height: 1.9; }
+:root { --bg:#0a0a0a; --surface:#141415; --surface-2:#1a1a1c; --border:#232325; --border-strong:#333336; --text:#f5f5f5; --text-soft:#d4d4d4; --text-muted:#9b9ba3; --text-dim:#6f6f76; --white:#fafafa; --black:#0a0a0a; --font-sans:'Inter',system-ui,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',ui-monospace,monospace; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--font-sans); line-height:1.6; }
+nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:100; }
+.nav-c { max-width:900px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; }
+.logo { font-family:var(--font-serif); font-size:1.15rem; color:var(--text); text-decoration:none; }
+.logo small { font-family:var(--font-mono); font-size:.68rem; color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; margin-left:.6rem; }
+.nav-c a.link { color:var(--text-muted); text-decoration:none; font-size:.88rem; }
+.wrap { max-width:900px; margin:0 auto; padding:6.5rem 1.5rem 5rem; }
+.tag { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); display:block; margin-bottom:.6rem; }
+h1 { font-family:var(--font-serif); font-weight:500; font-size:clamp(1.7rem,4vw,2.4rem); margin-bottom:1.2rem; }
+.box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:1.4rem; }
+label { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim); display:block; margin:.9rem 0 .35rem; }
+input,textarea { width:100%; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text); border-radius:10px; padding:.7rem .9rem; font-family:var(--font-sans); font-size:.92rem; }
+input:focus,textarea:focus { outline:none; border-color:#4a4a4e; }
+textarea { min-height:70px; resize:vertical; }
+.row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media (max-width:640px){ .row { grid-template-columns:1fr; } }
+.btn { display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.9rem; padding:.7rem 1.3rem; border-radius:10px; border:1px solid transparent; cursor:pointer; font-family:var(--font-sans); transition:all .25s ease; }
+.btn-white { background:var(--white); color:var(--black); }
+.btn-white:hover { transform:translateY(-2px); }
+.btn-dark { background:var(--surface); border-color:var(--border-strong); color:var(--text); }
+.btn-dark:hover { background:var(--surface-2); }
+.chips { display:flex; flex-wrap:wrap; gap:.5rem; }
+.chip { display:inline-flex; align-items:center; gap:.5rem; background:var(--surface-2); border:1px solid var(--border-strong); border-radius:999px; padding:.4rem .9rem; font-size:.85rem; color:var(--text-soft); white-space:nowrap; }
+.chip button { background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:.8rem; }
+.chip button:hover { color:#ff6b6b; }
+.chip button:disabled { opacity:.3; cursor:not-allowed; }
+button.chip { cursor:pointer; font-family:var(--font-sans); transition:all .2s ease; }
+button.chip:hover { border-color:#4a4a4e; }
+button.chip.on { background:var(--white); color:var(--black); border-color:var(--white); font-weight:600; }
+.star { display:inline-flex; align-items:center; gap:.5rem; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text-dim); border-radius:999px; padding:.4rem .9rem; font-size:.85rem; cursor:pointer; font-family:var(--font-sans); white-space:nowrap; transition:all .2s ease; margin-top:.7rem; }
+.star:hover { border-color:#4a4a4e; color:var(--text-soft); }
+.star.on { background:var(--white); color:var(--black); border-color:var(--white); font-weight:600; }
+.vhead { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:.4rem; }
+.vhead strong { font-family:var(--font-serif); font-weight:500; font-size:1.1rem; }
+.del { background:none; border:1px solid var(--border-strong); color:var(--text-muted); border-radius:8px; padding:.35rem .7rem; cursor:pointer; font-size:.8rem; }
+.del:hover { color:#ff6b6b; border-color:#ff6b6b; }
+.status { font-family:var(--font-mono); font-size:.8rem; color:var(--text-muted); min-height:1.4em; margin-bottom:1rem; }
+.topbar { display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; }
+.actions { display:flex; gap:.6rem; flex-wrap:wrap; }
+.sub { border-top:1px solid var(--border); margin-top:.9rem; padding-top:.9rem; }
+details { margin-top:1.2rem; color:var(--text-muted); font-size:.88rem; }
+details summary { cursor:pointer; color:var(--text-soft); }
+details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
 </style>
 </head>
 <body>
-
-<nav>
-    <div class="nav-c">
-        <span class="logo">Robert <small>Panel de Contenido</small></span>
-        <a class="link" href="index.html">← Ver sitio</a>
-    </div>
-</nav>
-
+<nav><div class="nav-c"><span class="logo">Robert <small>Panel de Contenido</small></span><a class="link" href="index.html">← Ver sitio</a></div></nav>
 <div class="wrap">
 
-    <section id="setup">
-        <span class="tag">// Panel de Contenido</span>
-        <h1>Conecta tu repositorio</h1>
-        <div class="box">
-            <label>Repositorio (owner/repo)</label>
-            <input id="repo" placeholder="tu-usuario/tu-repo">
-            <label>Personal Access Token (GitHub)</label>
-            <input id="token" type="password" placeholder="github_pat_…">
-            <div style="margin-top:1.2rem;">
-                <button class="btn btn-white" onclick="conectar()">Conectar y cargar</button>
-            </div>
-            <details>
-                <summary>¿Cómo creo el token? (una sola vez, 2 minutos)</summary>
-                <ol>
-                    <li>GitHub → tu avatar → <b>Settings</b> → <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>.</li>
-                    <li>En <b>Repository access</b> elige <i>Only select repositories</i> y selecciona el repo del portafolio.</li>
-                    <li>En <b>Permissions → Repository permissions</b> busca <b>Contents</b> y ponlo en <b>Read and write</b>.</li>
-                    <li>Genera el token, cópialo y pégalo arriba. Queda guardado solo en este navegador.</li>
-                </ol>
-            </details>
-        </div>
-    </section>
+  <section id="setup">
+    <span class="tag">// Panel de Contenido</span>
+    <h1>Conecta tu repositorio</h1>
+    <div class="box">
+      <label>Repositorio (owner/repo)</label>
+      <input id="repo" placeholder="tu-usuario/tu-repo">
+      <label>Personal Access Token (GitHub)</label>
+      <input id="token" type="password" placeholder="github_pat_…">
+      <div style="margin-top:1.2rem;"><button class="btn btn-white" onclick="conectar()">Conectar y cargar</button></div>
+      <details><summary>¿Cómo creo el token? (una sola vez, 2 minutos)</summary>
+        <ol>
+          <li>GitHub → tu avatar → <b>Settings</b> → <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>.</li>
+          <li>En <b>Repository access</b> elige <i>Only select repositories</i> y selecciona el repo del portafolio.</li>
+          <li>En <b>Permissions → Repository permissions</b> busca <b>Contents</b> y ponlo en <b>Read and write</b>.</li>
+          <li>Genera el token, cópialo y pégalo arriba. Queda guardado solo en este navegador.</li>
+        </ol>
+      </details>
+    </div>
+  </section>
 
-    <section id="editor" hidden>
-        <div class="topbar">
-            <div>
-                <span class="tag">// Panel de Contenido</span>
-                <h1 style="margin:0;">Edita tu portafolio</h1>
-            </div>
-            <div class="actions">
-                <button class="btn btn-dark" onclick="cargar()">Recargar</button>
-                <button class="btn btn-dark" onclick="backup()">Descargar copias</button>
-                <button class="btn btn-dark" onclick="restaurar()">↺ Restaurar</button>
-                <button class="btn btn-white" onclick="publicar()">⬆ Publicar cambios</button>
-            </div>
-        </div>
-        <p class="status" id="status"></p>
+  <section id="editor" hidden>
+    <div class="topbar">
+      <div><span class="tag">// Panel de Contenido</span><h1 style="margin:0;">Edita tu portafolio</h1></div>
+      <div class="actions">
+        <button class="btn btn-dark" onclick="cargar()">Recargar</button>
+        <button class="btn btn-dark" onclick="backup()">Descargar copias</button>
+        <button class="btn btn-dark" onclick="restaurar()">↺ Restaurar</button>
+        <button class="btn btn-white" onclick="publicar()">⬆ Publicar cambios</button>
+      </div>
+    </div>
+    <p class="status" id="status"></p>
 
-        <div class="box">
-            <label style="margin-top:0;">Categorías</label>
-            <div class="chips" id="cats"></div>
-            <div class="row" style="margin-top:1rem;">
-                <input id="newcat" placeholder="Nueva categoría (ej: Documental)">
-                <button class="btn btn-dark" onclick="addCat()">+ Agregar categoría</button>
-            </div>
-        </div>
+    <div class="box">
+      <label style="margin-top:0;">Categorías</label>
+      <div class="chips" id="cats"></div>
+      <div class="row" style="margin-top:1rem;">
+        <input id="newcat" placeholder="Nueva categoría (ej: Documental)">
+        <button class="btn btn-dark" onclick="addCat()">+ Agregar categoría</button>
+      </div>
+    </div>
 
-        <div class="topbar" style="margin-top:2rem;">
-            <h1 style="margin:0; font-size:1.4rem;">Videos</h1>
-            <button class="btn btn-dark" onclick="addVideo()">+ Agregar video</button>
-        </div>
-        <div id="list"></div>
+    <div class="topbar" style="margin-top:2rem;"><h1 style="margin:0; font-size:1.4rem;">Videos</h1><button class="btn btn-dark" onclick="addVideo()">+ Agregar video</button></div>
+    <div id="list"></div>
 
-        <div class="topbar" style="margin-top:2rem;">
-            <h1 style="margin:0; font-size:1.4rem;">Contenido del inicio</h1>
-        </div>
+    <div class="topbar" style="margin-top:2rem;"><h1 style="margin:0; font-size:1.4rem;">Contenido del inicio</h1></div>
 
-        <div class="box">
-            <label style="margin-top:0;">Hero — frase (parte normal / parte en cursiva / parte final)</label>
-            <input id="s-pre" placeholder="Texto antes de la cursiva">
-            <input id="s-enf" style="margin-top:.5rem;" placeholder="Texto en cursiva (énfasis)">
-            <input id="s-post" style="margin-top:.5rem;" placeholder="Texto después de la cursiva">
-            <label>Hero — subtítulo</label>
-            <textarea id="s-sub"></textarea>
-        </div>
+    <div class="box">
+      <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
+      <div class="chips" id="vis-list"></div>
+    </div>
 
-        <div class="box">
-            <label style="margin-top:0;">Especialidades</label>
-            <div id="esp-list"></div>
-            <button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button>
-        </div>
+    <div class="box">
+      <label style="margin-top:0;">Hero — frase (parte normal / parte en cursiva / parte final)</label>
+      <input id="s-pre" placeholder="Texto antes de la cursiva">
+      <input id="s-enf" style="margin-top:.5rem;" placeholder="Texto en cursiva (énfasis)">
+      <input id="s-post" style="margin-top:.5rem;" placeholder="Texto después de la cursiva">
+      <label>Hero — subtítulo</label>
+      <textarea id="s-sub"></textarea>
+    </div>
 
-        <div class="box">
-            <label style="margin-top:0;">Cards de Diseño</label>
-            <div id="dis-list"></div>
-            <button class="btn btn-dark" style="margin-top:.9rem;" onclick="addDis()">+ Card de diseño</button>
-        </div>
-
-        <div class="box">
-            <label style="margin-top:0;">Stack</label>
-            <div id="stack-list"></div>
-            <button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStack()">+ Herramienta</button>
-        </div>
-
-        <div class="box">
-            <label style="margin-top:0;">Contacto — título</label>
-            <input id="c-tit">
-            <label>Contacto — descripción</label>
-            <textarea id="c-desc"></textarea>
-            <div class="row" style="margin-top:.5rem;">
-                <div><label>URL LinkedIn</label><input id="c-li"></div>
-                <div><label>URL Instagram</label><input id="c-ig"></div>
-            </div>
-        </div>
-    </section>
-
+    <div class="box"><label style="margin-top:0;">Especialidades</label><div id="esp-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button></div>
+    <div class="box"><label style="margin-top:0;">Cards de Diseño</label><div id="dis-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addDis()">+ Card de diseño</button></div>
+    <div class="box"><label style="margin-top:0;">Stack</label><div id="stack-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStack()">+ Herramienta</button></div>
+    <div class="box">
+      <label style="margin-top:0;">Contacto — título</label>
+      <input id="c-tit">
+      <label>Contacto — descripción</label>
+      <textarea id="c-desc"></textarea>
+      <div class="row" style="margin-top:.5rem;">
+        <div><label>URL LinkedIn</label><input id="c-li"></div>
+        <div><label>URL Instagram</label><input id="c-ig"></div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script>
-    const $ = s => document.querySelector(s);
-    let TOKEN = localStorage.getItem("rb_token") || "";
-    let REPO  = localStorage.getItem("rb_repo") || "";
-    let SHA_V = null, SHA_S = null;
-    let DATA = { categorias: {}, videos: [] };
-    let SITE = null;
+const $=s=>document.querySelector(s);
+let TOKEN=localStorage.getItem("rb_token")||"", REPO=localStorage.getItem("rb_repo")||"";
+let SHA_V=null, SHA_S=null;
+let DATA={categorias:{},videos:[]};
+let SITE=null;
+if(TOKEN)$("#token").value=TOKEN;
+(function(){ if(REPO){$("#repo").value=REPO;return;} const h=location.hostname;
+  if(h.endsWith(".github.io")){ const owner=h.split(".")[0]; const seg=(location.pathname.split("/").filter(Boolean)[0])||""; $("#repo").value=(seg&&!seg.endsWith(".html"))?owner+"/"+seg:owner+"/"+owner+".github.io"; } })();
+const auth=()=>({"Authorization":"Bearer "+TOKEN,"Accept":"application/vnd.github+json"});
+const b64enc=s=>btoa(unescape(encodeURIComponent(s)));
+const b64dec=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const cats=v=>Array.isArray(v.categoria)?v.categoria:[v.categoria];
+const fmtDe=v=>v.formato||(cats(v).some(c=>c==="short-form"||c==="ads")?"9:16":"16:9");
+const status=t=>{$("#status").textContent=t;};
 
-    if (TOKEN) $("#token").value = TOKEN;
-    (function () {
-        if (REPO) { $("#repo").value = REPO; return; }
-        const h = location.hostname;
-        if (h.endsWith(".github.io")) {
-            const owner = h.split(".")[0];
-            const seg = (location.pathname.split("/").filter(Boolean)[0]) || "";
-            $("#repo").value = (seg && !seg.endsWith(".html")) ? owner + "/" + seg : owner + "/" + owner + ".github.io";
-        }
-    })();
+function defVideos(){return{
+  categorias:{"short-form":"Short-Form","long-form":"Long-Form","podcast":"Podcast","ads":"Ads"},
+  videos:[
+    {titulo:"Business & Mindset",categoria:["short-form"],formato:"9:16",video:"https://vimeo.com/1218345311",thumb:"",hover:"",destacado:false,descripcion:"Edición dinámica orientada a la retención de audiencia."},
+    {titulo:"Finanzas & Estilo Dual",categoria:["short-form"],formato:"9:16",video:"https://vimeo.com/1219288477",thumb:"",hover:"",destacado:true,descripcion:"Edición dinámica con división de pantalla."},
+    {titulo:"Podcast — La Historia de Aurelio",categoria:["long-form","podcast"],formato:"16:9",video:"https://www.youtube.com/watch?v=bSUGpEIaEmg",thumb:"",hover:"",destacado:false,descripcion:"Edición de formato largo para podcast."},
+    {titulo:"AI Generated UGC Ad",categoria:["ads"],formato:"9:16",video:"https://vimeo.com/1219288461",thumb:"",hover:"",destacado:true,descripcion:"Anuncio orientado a conversión."}
+  ]};}
 
-    const auth = () => ({ "Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json" });
-    const b64enc = s => btoa(unescape(encodeURIComponent(s)));
-    const b64dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
-    const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
-    const cats = v => Array.isArray(v.categoria) ? v.categoria : [v.categoria];
-    const fmtDe = v => v.formato || (cats(v).some(c => c === "short-form" || c === "ads") ? "9:16" : "16:9");
-    const status = t => { $("#status").textContent = t; };
+function defSite(){return{
+  hero:{pre:"Creación de contenido, ",enfasis:"edición de impacto",post:" & diseño que detiene el scroll.",sub:"Editor de video y diseñador gráfico: postproducción de alta retención, miniaturas orientadas al CTR y piezas para redes que conectan con tu audiencia."},
+  especialidades:[
+    {titulo:"Edición & Postproducción",descripcion:"Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador."},
+    {titulo:"Diseño Gráfico & Branding",descripcion:"Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético."},
+    {titulo:"Guiones & Estrategia",descripcion:"Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes."}
+  ],
+  diseno:[
+    {etiqueta:"THUMBNAILS YOUTUBE",tag:"YouTube",titulo:"Miniaturas de alto CTR",descripcion:"Diseño de miniaturas orientadas a clics y retención.",img:"img/portada-yt.jpg",link:"diseno.html?categoria=thumbs-yt"},
+    {etiqueta:"THUMBNAILS IA",tag:"Instagram",titulo:"Thumbnails con IA",descripcion:"Miniaturas para Instagram creadas con inteligencia artificial.",img:"img/portada-ia.jpg",link:"diseno.html?categoria=thumbs-ia"},
+    {etiqueta:"CARRUSELES",tag:"Carruseles",titulo:"Carruseles que cuentan",descripcion:"Secuencias visuales con narrativa y ritmo para redes.",img:"img/portada-carrusel.jpg",link:"diseno.html?categoria=carruseles"},
+    {etiqueta:"SOCIAL MEDIA",tag:"Social Media",titulo:"Piezas para redes",descripcion:"Arte digital consistente para marcas y creadores.",img:"img/portada-social.jpg",link:"diseno.html?categoria=social"}
+  ],
+  stack:[
+    {nombre:"Premiere Pro",rol:"Edición de video"},{nombre:"After Effects",rol:"Motion & VFX"},
+    {nombre:"Photoshop",rol:"Retoque & Thumbnails"},{nombre:"Illustrator",rol:"Branding & Vectores"},
+    {nombre:"Python",rol:"Automatización"},{nombre:"Notion",rol:"Docs & Sistemas"},{nombre:"ClickUp",rol:"Gestión de proyectos"}
+  ],
+  contacto:{titulo:"¿Tienes un proyecto en mente?",descripcion:"Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.",linkedin:"https://linkedin.com",instagram:"https://instagram.com"},
+  visibilidad:{especialidades:true,videos:true,diseno:false,stack:true}
+};}
 
-    function defVideos() {
-        return {
-            categorias: { "short-form": "Short-Form", "long-form": "Long-Form", "podcast": "Podcast", "ads": "Ads" },
-            videos: [
-                { titulo: "Business & Mindset", categoria: ["short-form"], formato: "9:16", video: "https://vimeo.com/1218345311", thumb: "", hover: "", destacado: false, descripcion: "Edición dinámica orientada a la retención de audiencia." },
-                { titulo: "Finanzas & Estilo Dual", categoria: ["short-form"], formato: "9:16", video: "https://vimeo.com/1219288477", thumb: "", hover: "", destacado: true, descripcion: "Edición dinámica con división de pantalla." },
-                { titulo: "Podcast — La Historia de Aurelio", categoria: ["long-form", "podcast"], formato: "16:9", video: "https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb: "", hover: "", destacado: false, descripcion: "Edición de formato largo para podcast." },
-                { titulo: "AI Generated UGC Ad", categoria: ["ads"], formato: "9:16", video: "https://vimeo.com/1219288461", thumb: "", hover: "", destacado: true, descripcion: "Anuncio orientado a conversión." }
-            ]
-        };
+function conectar(){
+  TOKEN=$("#token").value.trim(); REPO=$("#repo").value.trim();
+  if(!TOKEN||!REPO){status("Escribe el repo y el token.");return;}
+  localStorage.setItem("rb_token",TOKEN); localStorage.setItem("rb_repo",REPO);
+  cargar();
+}
+function cargar(){
+  status("Cargando datos del repo…");
+  const get=p=>fetch("https://api.github.com/repos/"+REPO+"/contents/"+p,{headers:auth()}).then(r=>{
+    if(r.status===404)return{sha:null,data:null};
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    return r.json().then(f=>({sha:f.sha,data:JSON.parse(b64dec(f.content))}));
+  });
+  Promise.all([get("data/videos.json"),get("data/site.json")]).then(([a,b])=>{
+    SHA_V=a.sha; DATA=a.data||defVideos();
+    SHA_S=b.sha; SITE=b.data||defSite();
+    abrirEditor();
+    status("✔ Datos cargados. Edita y pulsa ⬆ Publicar.");
+  }).catch(e=>status("✖ Error: "+e.message+" — revisa token, repo o permisos."));
+}
+function abrirEditor(){
+  $("#setup").hidden=true; $("#editor").hidden=false;
+  bindSiteInputs(); renderCats(); renderList(); renderSiteEditor();
+}
+
+function renderCats(){
+  const box=$("#cats"); box.innerHTML="";
+  for(const k in DATA.categorias){
+    const used=DATA.videos.some(v=>cats(v).includes(k));
+    const chip=document.createElement("span"); chip.className="chip";
+    chip.innerHTML="<span>"+esc(DATA.categorias[k])+"</span>";
+    const x=document.createElement("button"); x.textContent="✕";
+    x.title=used?"No se puede: hay videos usándola":"Eliminar categoría"; x.disabled=used;
+    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DATA.categorias[k]+"?")){ delete DATA.categorias[k]; renderCats(); renderList(); status("Categoría eliminada. Recuerda ⬆ Publicar."); } };
+    chip.appendChild(x); box.appendChild(chip);
+  }
+}
+function addCat(){
+  const nombre=$("#newcat").value.trim(); if(!nombre)return;
+  const key=nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+  if(!key||DATA.categorias[key]){status("Ese nombre ya existe o no es válido.");return;}
+  DATA.categorias[key]=nombre; $("#newcat").value="";
+  renderCats(); renderList(); status("Categoría agregada. Recuerda ⬆ Publicar.");
+}
+
+function addVideo(){
+  const primera=Object.keys(DATA.categorias)[0];
+  DATA.videos.unshift({titulo:"Nuevo video",categoria:primera?[primera]:[],formato:"9:16",video:"",thumb:"",hover:"",destacado:false,descripcion:""});
+  renderList(); status("Video agregado arriba. Complétalo y ⬆ Publicar.");
+}
+function renderList(){
+  const box=$("#list"); box.innerHTML="";
+  DATA.videos.forEach((v,i)=>{
+    const el=document.createElement("div"); el.className="box";
+    let chips="";
+    for(const k in DATA.categorias){
+      chips+='<button type="button" class="chip cat-chip'+(cats(v).includes(k)?" on":"")+'" data-c="'+k+'" data-i="'+i+'">'+esc(DATA.categorias[k])+'</button>';
     }
+    el.innerHTML=
+      '<div class="vhead"><strong>'+esc(v.titulo||"Sin título")+'</strong><button class="del" data-i="'+i+'">Eliminar</button></div>'+
+      '<div class="row"><div><label>Título</label><input data-f="titulo" data-i="'+i+'" value="'+esc(v.titulo)+'"></div>'+
+      '<div><label>Link del video (pégalo tal cual)</label><input data-f="video" data-i="'+i+'" value="'+esc(v.video)+'" placeholder="https://youtube.com/watch?v=… o https://vimeo.com/…"></div></div>'+
+      '<label>Categorías — toca para activar / desactivar</label><div class="chips">'+chips+'</div>'+
+      '<label>Formato</label><div class="chips">'+
+        '<button type="button" class="chip fmt-chip'+(fmtDe(v)==="9:16"?" on":"")+'" data-fmt="9:16" data-i="'+i+'">9:16 · Vertical</button>'+
+        '<button type="button" class="chip fmt-chip'+(fmtDe(v)==="16:9"?" on":"")+'" data-fmt="16:9" data-i="'+i+'">16:9 · Horizontal</button>'+
+      '</div>'+
+      '<button type="button" class="star'+(v.destacado?" on":"")+'" data-star data-i="'+i+'">'+(v.destacado?"★":"☆")+'&nbsp;Destacado en el inicio</button>'+
+      '<label>Descripción</label><textarea data-f="descripcion" data-i="'+i+'">'+esc(v.descripcion)+'</textarea>'+
+      '<div class="row"><div><label>Portada propia (opcional)</label><input data-f="thumb" data-i="'+i+'" value="'+esc(v.thumb)+'" placeholder="img/portada.jpg o URL"></div>'+
+      '<div><label>Hover preview (opcional)</label><input data-f="hover" data-i="'+i+'" value="'+esc(v.hover)+'" placeholder="URL de GIF o MP4"></div></div>';
+    box.appendChild(el);
+  });
+  box.querySelectorAll("input[data-f], textarea[data-f]").forEach(inp=>{
+    inp.addEventListener("input",()=>{DATA.videos[inp.dataset.i][inp.dataset.f]=inp.value;});
+  });
+  box.querySelectorAll(".cat-chip").forEach(b=>{
+    b.onclick=()=>{ const v=DATA.videos[+b.dataset.i]; let arr=cats(v).slice(); const k=b.dataset.c;
+      if(arr.includes(k))arr=arr.filter(c=>c!==k); else arr.push(k);
+      v.categoria=arr; b.classList.toggle("on",arr.includes(k)); };
+  });
+  box.querySelectorAll(".fmt-chip").forEach(b=>{
+    b.onclick=()=>{ const v=DATA.videos[+b.dataset.i]; v.formato=b.dataset.fmt;
+      box.querySelectorAll('.fmt-chip[data-i="'+b.dataset.i+'"]').forEach(x=>x.classList.toggle("on",x.dataset.fmt===v.formato)); };
+  });
+  box.querySelectorAll("[data-star]").forEach(b=>{
+    b.onclick=()=>{ const v=DATA.videos[+b.dataset.i]; v.destacado=!v.destacado;
+      b.classList.toggle("on",v.destacado); b.innerHTML=(v.destacado?"★":"☆")+"&nbsp;Destacado en el inicio"; };
+  });
+  box.querySelectorAll(".del").forEach(b=>{
+    b.onclick=()=>{ if(confirm("¿Eliminar este video?")){ DATA.videos.splice(+b.dataset.i,1); renderList(); status("Video eliminado. Recuerda ⬆ Publicar."); } };
+  });
+}
 
-    function defSite() {
-        return {
-            hero: { pre: "Creación de contenido, ", enfasis: "edición de impacto", post: " & diseño que detiene el scroll.", sub: "Editor de video y diseñador gráfico: postproducción de alta retención, miniaturas orientadas al CTR y piezas para redes que conectan con tu audiencia." },
-            especialidades: [
-                { titulo: "Edición & Postproducción", descripcion: "Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador." },
-                { titulo: "Diseño Gráfico & Branding", descripcion: "Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético." },
-                { titulo: "Guiones & Estrategia", descripcion: "Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes." }
-            ],
-            diseno: [
-                { etiqueta: "THUMBNAILS YOUTUBE", tag: "YouTube", titulo: "Miniaturas de alto CTR", descripcion: "Diseño de miniaturas orientadas a clics y retención.", img: "img/portada-yt.jpg", link: "diseno.html?categoria=thumbs-yt" },
-                { etiqueta: "THUMBNAILS IA", tag: "Instagram", titulo: "Thumbnails con IA", descripcion: "Miniaturas para Instagram creadas con inteligencia artificial.", img: "img/portada-ia.jpg", link: "diseno.html?categoria=thumbs-ia" },
-                { etiqueta: "CARRUSELES", tag: "Carruseles", titulo: "Carruseles que cuentan", descripcion: "Secuencias visuales con narrativa y ritmo para redes.", img: "img/portada-carrusel.jpg", link: "diseno.html?categoria=carruseles" },
-                { etiqueta: "SOCIAL MEDIA", tag: "Social Media", titulo: "Piezas para redes", descripcion: "Arte digital consistente para marcas y creadores.", img: "img/portada-social.jpg", link: "diseno.html?categoria=social" }
-            ],
-            stack: [
-                { nombre: "Premiere Pro", rol: "Edición de video" },
-                { nombre: "After Effects", rol: "Motion & VFX" },
-                { nombre: "Photoshop", rol: "Retoque & Thumbnails" },
-                { nombre: "Illustrator", rol: "Branding & Vectores" },
-                { nombre: "Python", rol: "Automatización" },
-                { nombre: "Notion", rol: "Docs & Sistemas" },
-                { nombre: "ClickUp", rol: "Gestión de proyectos" }
-            ],
-            contacto: { titulo: "¿Tienes un proyecto en mente?", descripcion: "Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.", linkedin: "https://linkedin.com", instagram: "https://instagram.com" }
-        };
-    }
+function bindSiteInputs(){
+  $("#s-pre").oninput=e=>SITE.hero.pre=e.target.value;
+  $("#s-enf").oninput=e=>SITE.hero.enfasis=e.target.value;
+  $("#s-post").oninput=e=>SITE.hero.post=e.target.value;
+  $("#s-sub").oninput=e=>SITE.hero.sub=e.target.value;
+  $("#c-tit").oninput=e=>SITE.contacto.titulo=e.target.value;
+  $("#c-desc").oninput=e=>SITE.contacto.descripcion=e.target.value;
+  $("#c-li").oninput=e=>SITE.contacto.linkedin=e.target.value;
+  $("#c-ig").oninput=e=>SITE.contacto.instagram=e.target.value;
+}
+function renderVis(){
+  SITE.visibilidad=Object.assign({especialidades:true,videos:true,diseno:false,stack:true},SITE.visibilidad||{});
+  const box=$("#vis-list"); box.innerHTML="";
+  const nombres={especialidades:"Especialidades",videos:"Videos",diseno:"Diseño",stack:"Stack"};
+  for(const k in nombres){
+    const on=SITE.visibilidad[k]!==false;
+    const b=document.createElement("button"); b.type="button";
+    b.className="chip"+(on?" on":"");
+    b.textContent=(on?"👁 ":"🚫 ")+nombres[k];
+    b.onclick=()=>{ SITE.visibilidad[k]=!SITE.visibilidad[k];
+      const ahora=SITE.visibilidad[k]!==false;
+      b.classList.toggle("on",ahora); b.textContent=(ahora?"👁 ":" ")+nombres[k]; };
+    box.appendChild(b);
+  }
+}
+function renderSiteEditor(){
+  $("#s-pre").value=SITE.hero.pre||""; $("#s-enf").value=SITE.hero.enfasis||"";
+  $("#s-post").value=SITE.hero.post||""; $("#s-sub").value=SITE.hero.sub||"";
+  $("#c-tit").value=SITE.contacto.titulo||""; $("#c-desc").value=SITE.contacto.descripcion||"";
+  $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";
+  renderEsp(); renderDis(); renderStack(); renderVis();
+}
+function renderEsp(){
+  const box=$("#esp-list"); box.innerHTML="";
+  SITE.especialidades.forEach((e,i)=>{
+    const d=document.createElement("div"); d.className="sub";
+    d.innerHTML='<div class="vhead"><strong>'+esc(e.titulo||"Especialidad")+'</strong><button class="del">Eliminar</button></div>'+
+      '<label>Título</label><input class="e-t" value="'+esc(e.titulo)+'">'+
+      '<label>Descripción</label><textarea class="e-d">'+esc(e.descripcion)+'</textarea>';
+    d.querySelector(".e-t").addEventListener("input",ev=>e.titulo=ev.target.value);
+    d.querySelector(".e-d").addEventListener("input",ev=>e.descripcion=ev.target.value);
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.especialidades.splice(i,1);renderEsp();}};
+    box.appendChild(d);
+  });
+}
+function addEsp(){SITE.especialidades.push({titulo:"Nueva especialidad",descripcion:""});renderEsp();}
+function renderDis(){
+  const box=$("#dis-list"); box.innerHTML="";
+  SITE.diseno.forEach((c,i)=>{
+    const d=document.createElement("div"); d.className="sub";
+    d.innerHTML='<div class="vhead"><strong>'+esc(c.titulo||"Card")+'</strong><button class="del">Eliminar</button></div>'+
+      '<div class="row"><div><label>Etiqueta superior</label><input class="f-et" value="'+esc(c.etiqueta)+'"></div>'+
+      '<div><label>Tag</label><input class="f-tag" value="'+esc(c.tag)+'"></div></div>'+
+      '<label>Título</label><input class="f-t" value="'+esc(c.titulo)+'">'+
+      '<label>Descripción</label><textarea class="f-d">'+esc(c.descripcion)+'</textarea>'+
+      '<div class="row"><div><label>Imagen</label><input class="f-img" value="'+esc(c.img)+'"></div>'+
+      '<div><label>Link</label><input class="f-l" value="'+esc(c.link)+'"></div></div>';
+    d.querySelector(".f-et").addEventListener("input",ev=>c.etiqueta=ev.target.value);
+    d.querySelector(".f-tag").addEventListener("input",ev=>c.tag=ev.target.value);
+    d.querySelector(".f-t").addEventListener("input",ev=>c.titulo=ev.target.value);
+    d.querySelector(".f-d").addEventListener("input",ev=>c.descripcion=ev.target.value);
+    d.querySelector(".f-img").addEventListener("input",ev=>c.img=ev.target.value);
+    d.querySelector(".f-l").addEventListener("input",ev=>c.link=ev.target.value);
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.diseno.splice(i,1);renderDis();}};
+    box.appendChild(d);
+  });
+}
+function addDis(){SITE.diseno.push({etiqueta:"NUEVO",tag:"Tag",titulo:"Nueva card",descripcion:"",img:"img/portada.jpg",link:"diseno.html"});renderDis();}
+function renderStack(){
+  const box=$("#stack-list"); box.innerHTML="";
+  SITE.stack.forEach((s,i)=>{
+    const d=document.createElement("div"); d.className="sub";
+    d.innerHTML='<div class="row"><div><label>Herramienta</label><input class="f-n" value="'+esc(s.nombre)+'"></div>'+
+      '<div><label>Rol</label><input class="f-r" value="'+esc(s.rol)+'"></div></div>'+
+      '<div style="margin-top:.6rem;"><button class="del">Eliminar</button></div>';
+    d.querySelector(".f-n").addEventListener("input",ev=>s.nombre=ev.target.value);
+    d.querySelector(".f-r").addEventListener("input",ev=>s.rol=ev.target.value);
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.stack.splice(i,1);renderStack();}};
+    box.appendChild(d);
+  });
+}
+function addStack(){SITE.stack.push({nombre:"Herramienta",rol:"Rol"});renderStack();}
 
-    function conectar() {
-        TOKEN = $("#token").value.trim();
-        REPO = $("#repo").value.trim();
-        if (!TOKEN || !REPO) { status("Escribe el repo y el token."); return; }
-        localStorage.setItem("rb_token", TOKEN);
-        localStorage.setItem("rb_repo", REPO);
-        cargar();
-    }
+function restaurar(){
+  if(!confirm("¿Restaurar TODO el contenido (videos, categorías e inicio) a los valores originales?\n\nEsto reemplaza lo que haya cargado en el panel. Después pulsa ⬆ Publicar para aplicarlo al sitio."))return;
+  DATA=defVideos(); SITE=defSite();
+  renderCats(); renderList(); renderSiteEditor();
+  status("✔ Contenido restaurado en el panel. Pulsa ⬆ Publicar para aplicarlo al sitio.");
+}
 
-    function cargar() {
-        status("Cargando datos del repo…");
-        const get = p => fetch("https://api.github.com/repos/" + REPO + "/contents/" + p, { headers: auth() }).then(r => {
-            if (r.status === 404) return { sha: null, data: null };
-            if (!r.ok) throw new Error("HTTP " + r.status);
-            return r.json().then(f => ({ sha: f.sha, data: JSON.parse(b64dec(f.content)) }));
-        });
-        Promise.all([get("data/videos.json"), get("data/site.json")])
-            .then(([a, b]) => {
-                SHA_V = a.sha; DATA = a.data || defVideos();
-                SHA_S = b.sha; SITE = b.data || defSite();
-                abrirEditor();
-                status("✔ Datos cargados. Edita y pulsa ⬆ Publicar.");
-            })
-            .catch(e => status("✖ Error: " + e.message + " — revisa token, repo o permisos."));
-    }
-
-    function abrirEditor() {
-        $("#setup").hidden = true;
-        $("#editor").hidden = false;
-        bindSiteInputs();
-        renderCats();
-        renderList();
-        renderSiteEditor();
-    }
-
-    /* ---------- CATEGORÍAS ---------- */
-    function renderCats() {
-        const box = $("#cats"); box.innerHTML = "";
-        for (const k in DATA.categorias) {
-            const used = DATA.videos.some(v => cats(v).includes(k));
-            const chip = document.createElement("span");
-            chip.className = "chip";
-            chip.innerHTML = "<span>" + esc(DATA.categorias[k]) + "</span>";
-            const x = document.createElement("button");
-            x.textContent = "✕";
-            x.title = used ? "No se puede: hay videos usándola" : "Eliminar categoría";
-            x.disabled = used;
-            x.onclick = () => {
-                if (confirm("¿Eliminar la categoría " + DATA.categorias[k] + "?")) {
-                    delete DATA.categorias[k];
-                    renderCats(); renderList();
-                    status("Categoría eliminada. Recuerda ⬆ Publicar.");
-                }
-            };
-            chip.appendChild(x);
-            box.appendChild(chip);
-        }
-    }
-
-    function addCat() {
-        const nombre = $("#newcat").value.trim();
-        if (!nombre) return;
-        const key = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-        if (!key || DATA.categorias[key]) { status("Ese nombre ya existe o no es válido."); return; }
-        DATA.categorias[key] = nombre;
-        $("#newcat").value = "";
-        renderCats(); renderList();
-        status("Categoría agregada. Recuerda ⬆ Publicar.");
-    }
-
-    /* ---------- VIDEOS ---------- */
-    function addVideo() {
-        const primera = Object.keys(DATA.categorias)[0];
-        DATA.videos.unshift({ titulo: "Nuevo video", categoria: primera ? [primera] : [], formato: "9:16", video: "", thumb: "", hover: "", destacado: false, descripcion: "" });
-        renderList();
-        status("Video agregado arriba. Complétalo y ⬆ Publicar.");
-    }
-
-    function renderList() {
-        const box = $("#list"); box.innerHTML = "";
-        DATA.videos.forEach((v, i) => {
-            const el = document.createElement("div");
-            el.className = "box";
-            let chips = "";
-            for (const k in DATA.categorias) {
-                chips += '<button type="button" class="chip cat-chip' + (cats(v).includes(k) ? " on" : "") + '" data-c="' + k + '" data-i="' + i + '">' + esc(DATA.categorias[k]) + '</button>';
-            }
-            el.innerHTML =
-                '<div class="vhead"><strong>' + esc(v.titulo || "Sin título") + '</strong><button class="del" data-i="' + i + '">Eliminar</button></div>' +
-                '<div class="row"><div><label>Título</label><input data-f="titulo" data-i="' + i + '" value="' + esc(v.titulo) + '"></div>' +
-                '<div><label>Link del video (pégalo tal cual)</label><input data-f="video" data-i="' + i + '" value="' + esc(v.video) + '" placeholder="https://youtube.com/watch?v=… o https://vimeo.com/…"></div></div>' +
-                '<label>Categorías — toca para activar / desactivar</label><div class="chips">' + chips + '</div>' +
-                '<label>Formato</label><div class="chips">' +
-                    '<button type="button" class="chip fmt-chip' + (fmtDe(v) === "9:16" ? " on" : "") + '" data-fmt="9:16" data-i="' + i + '">9:16 · Vertical</button>' +
-                    '<button type="button" class="chip fmt-chip' + (fmtDe(v) === "16:9" ? " on" : "") + '" data-fmt="16:9" data-i="' + i + '">16:9 · Horizontal</button>' +
-                '</div>' +
-                '<button type="button" class="star' + (v.destacado ? " on" : "") + '" data-star data-i="' + i + '">' + (v.destacado ? "★" : "☆") + '&nbsp;Destacado en el inicio</button>' +
-                '<label>Descripción</label><textarea data-f="descripcion" data-i="' + i + '">' + esc(v.descripcion) + '</textarea>' +
-                '<div class="row"><div><label>Portada propia (opcional)</label><input data-f="thumb" data-i="' + i + '" value="' + esc(v.thumb) + '" placeholder="img/portada.jpg o URL"></div>' +
-                '<div><label>Hover preview (opcional)</label><input data-f="hover" data-i="' + i + '" value="' + esc(v.hover) + '" placeholder="URL de GIF o MP4"></div></div>';
-            box.appendChild(el);
-        });
-
-        box.querySelectorAll("input[data-f], textarea[data-f]").forEach(inp => {
-            inp.addEventListener("input", () => { DATA.videos[inp.dataset.i][inp.dataset.f] = inp.value; });
-        });
-
-        /* Pills de categorías */
-        box.querySelectorAll(".cat-chip").forEach(b => {
-            b.onclick = () => {
-                const v = DATA.videos[+b.dataset.i];
-                let arr = cats(v).slice();
-                const k = b.dataset.c;
-                if (arr.includes(k)) arr = arr.filter(c => c !== k);
-                else arr.push(k);
-                v.categoria = arr;
-                b.classList.toggle("on", arr.includes(k));
-            };
-        });
-
-        /* Pills de formato */
-        box.querySelectorAll(".fmt-chip").forEach(b => {
-            b.onclick = () => {
-                const v = DATA.videos[+b.dataset.i];
-                v.formato = b.dataset.fmt;
-                box.querySelectorAll('.fmt-chip[data-i="' + b.dataset.i + '"]').forEach(x => x.classList.toggle("on", x.dataset.fmt === v.formato));
-            };
-        });
-
-        /* Botón estrella */
-        box.querySelectorAll("[data-star]").forEach(b => {
-            b.onclick = () => {
-                const v = DATA.videos[+b.dataset.i];
-                v.destacado = !v.destacado;
-                b.classList.toggle("on", v.destacado);
-                b.innerHTML = (v.destacado ? "★" : "☆") + "&nbsp;Destacado en el inicio";
-            };
-        });
-
-        box.querySelectorAll(".del").forEach(b => {
-            b.onclick = () => {
-                if (confirm("¿Eliminar este video?")) {
-                    DATA.videos.splice(+b.dataset.i, 1);
-                    renderList();
-                    status("Video eliminado. Recuerda ⬆ Publicar.");
-                }
-            };
-        });
-    }
-
-    /* ---------- CONTENIDO DEL INICIO ---------- */
-    function bindSiteInputs() {
-        $("#s-pre").oninput  = e => SITE.hero.pre = e.target.value;
-        $("#s-enf").oninput = e => SITE.hero.enfasis = e.target.value;
-        $("#s-post").oninput = e => SITE.hero.post = e.target.value;
-        $("#s-sub").oninput = e => SITE.hero.sub = e.target.value;
-        $("#c-tit").oninput = e => SITE.contacto.titulo = e.target.value;
-        $("#c-desc").oninput = e => SITE.contacto.descripcion = e.target.value;
-        $("#c-li").oninput  = e => SITE.contacto.linkedin = e.target.value;
-        $("#c-ig").oninput  = e => SITE.contacto.instagram = e.target.value;
-    }
-
-    function renderSiteEditor() {
-        $("#s-pre").value = SITE.hero.pre || "";
-        $("#s-enf").value = SITE.hero.enfasis || "";
-        $("#s-post").value = SITE.hero.post || "";
-        $("#s-sub").value = SITE.hero.sub || "";
-        $("#c-tit").value = SITE.contacto.titulo || "";
-        $("#c-desc").value = SITE.contacto.descripcion || "";
-        $("#c-li").value = SITE.contacto.linkedin || "";
-        $("#c-ig").value = SITE.contacto.instagram || "";
-        renderEsp(); renderDis(); renderStack();
-    }
-
-    function renderEsp() {
-        const box = $("#esp-list"); box.innerHTML = "";
-        SITE.especialidades.forEach((e, i) => {
-            const d = document.createElement("div");
-            d.className = "sub";
-            d.innerHTML = '<div class="vhead"><strong>' + esc(e.titulo || "Especialidad") + '</strong><button class="del">Eliminar</button></div>' +
-                '<label>Título</label><input class="e-t" value="' + esc(e.titulo) + '">' +
-                '<label>Descripción</label><textarea class="e-d">' + esc(e.descripcion) + '</textarea>';
-            d.querySelector(".e-t").addEventListener("input", ev => e.titulo = ev.target.value);
-            d.querySelector(".e-d").addEventListener("input", ev => e.descripcion = ev.target.value);
-            d.querySelector(".del").onclick = () => { if (confirm("¿Eliminar?")) { SITE.especialidades.splice(i, 1); renderEsp(); } };
-            box.appendChild(d);
-        });
-    }
-
-    function addEsp() { SITE.especialidades.push({ titulo: "Nueva especialidad", descripcion: "" }); renderEsp(); }
-
-    function renderDis() {
-        const box = $("#dis-list"); box.innerHTML = "";
-        SITE.diseno.forEach((c, i) => {
-            const d = document.createElement("div");
-            d.className = "sub";
-            d.innerHTML = '<div class="vhead"><strong>' + esc(c.titulo || "Card") + '</strong><button class="del">Eliminar</button></div>' +
-                '<div class="row"><div><label>Etiqueta superior</label><input class="f-et" value="' + esc(c.etiqueta) + '"></div>' +
-                '<div><label>Tag</label><input class="f-tag" value="' + esc(c.tag) + '"></div></div>' +
-                '<label>Título</label><input class="f-t" value="' + esc(c.titulo) + '">' +
-                '<label>Descripción</label><textarea class="f-d">' + esc(c.descripcion) + '</textarea>' +
-                '<div class="row"><div><label>Imagen</label><input class="f-img" value="' + esc(c.img) + '"></div>' +
-                '<div><label>Link</label><input class="f-l" value="' + esc(c.link) + '"></div></div>';
-            d.querySelector(".f-et").addEventListener("input", ev => c.etiqueta = ev.target.value);
-            d.querySelector(".f-tag").addEventListener("input", ev => c.tag = ev.target.value);
-            d.querySelector(".f-t").addEventListener("input", ev => c.titulo = ev.target.value);
-            d.querySelector(".f-d").addEventListener("input", ev => c.descripcion = ev.target.value);
-            d.querySelector(".f-img").addEventListener("input", ev => c.img = ev.target.value);
-            d.querySelector(".f-l").addEventListener("input", ev => c.link = ev.target.value);
-            d.querySelector(".del").onclick = () => { if (confirm("¿Eliminar?")) { SITE.diseno.splice(i, 1); renderDis(); } };
-            box.appendChild(d);
-        });
-    }
-
-    function addDis() { SITE.diseno.push({ etiqueta: "NUEVO", tag: "Tag", titulo: "Nueva card", descripcion: "", img: "img/portada.jpg", link: "diseno.html" }); renderDis(); }
-
-    function renderStack() {
-        const box = $("#stack-list"); box.innerHTML = "";
-        SITE.stack.forEach((s, i) => {
-            const d = document.createElement("div");
-            d.className = "sub";
-            d.innerHTML = '<div class="row"><div><label>Herramienta</label><input class="f-n" value="' + esc(s.nombre) + '"></div>' +
-                '<div><label>Rol</label><input class="f-r" value="' + esc(s.rol) + '"></div></div>' +
-                '<div style="margin-top:.6rem;"><button class="del">Eliminar</button></div>';
-            d.querySelector(".f-n").addEventListener("input", ev => s.nombre = ev.target.value);
-            d.querySelector(".f-r").addEventListener("input", ev => s.rol = ev.target.value);
-            d.querySelector(".del").onclick = () => { if (confirm("¿Eliminar?")) { SITE.stack.splice(i, 1); renderStack(); } };
-            box.appendChild(d);
-        });
-    }
-
-    function addStack() { SITE.stack.push({ nombre: "Herramienta", rol: "Rol" }); renderStack(); }
-
-    /* ---------- RESTAURAR TODO ---------- */
-    function restaurar() {
-        if (!confirm("¿Restaurar TODO el contenido (videos, categorías e inicio) a los valores originales?\n\nEsto reemplaza lo que haya cargado en el panel. Después pulsa ⬆ Publicar para aplicarlo al sitio.")) return;
-        DATA = defVideos();
-        SITE = defSite();
-        renderCats();
-        renderList();
-        renderSiteEditor();
-        status("✔ Contenido restaurado en el panel. Pulsa ⬆ Publicar para aplicarlo al sitio.");
-    }
-
-    /* ---------- PUBLICAR (ambos archivos) ---------- */
-    function putFile(path, sha, obj) {
-        const body = { message: "✏️ Contenido actualizado desde el panel", content: b64enc(JSON.stringify(obj, null, 2)) };
-        if (sha) body.sha = sha;
-        return fetch("https://api.github.com/repos/" + REPO + "/contents/" + path, {
-            method: "PUT",
-            headers: Object.assign(auth(), { "Content-Type": "application/json" }),
-            body: JSON.stringify(body)
-        }).then(r => { if (!r.ok) return r.json().then(j => { throw new Error(j.message || "HTTP " + r.status); }); return r.json(); });
-    }
-
-    function publicar() {
-        status("Publicando…");
-        putFile("data/videos.json", SHA_V, DATA)
-            .then(res => { SHA_V = res.content.sha; return putFile("data/site.json", SHA_S, SITE); })
-            .then(res => { SHA_S = res.content.sha; status("✔ ¡Publicado! El sitio se actualiza en ~1 minuto."); })
-            .catch(e => status("✖ Error al publicar: " + e.message));
-    }
-
-    function backup() {
-        [["videos.json", DATA], ["site.json", SITE]].forEach(([name, obj]) => {
-            const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = name;
-            a.click();
-        });
-    }
-
-    if (TOKEN && REPO) cargar();
+function putFile(path,sha,obj){
+  const body={message:"✏️ Contenido actualizado desde el panel",content:b64enc(JSON.stringify(obj,null,2))};
+  if(sha)body.sha=sha;
+  return fetch("https://api.github.com/repos/"+REPO+"/contents/"+path,{
+    method:"PUT",
+    headers:Object.assign(auth(),{"Content-Type":"application/json"}),
+    body:JSON.stringify(body)
+  }).then(r=>{if(!r.ok)return r.json().then(j=>{throw new Error(j.message||"HTTP "+r.status);});return r.json();});
+}
+function publicar(){
+  status("Publicando…");
+  putFile("data/videos.json",SHA_V,DATA)
+    .then(res=>{SHA_V=res.content.sha;return putFile("data/site.json",SHA_S,SITE);})
+    .then(res=>{SHA_S=res.content.sha;status("✔ ¡Publicado! El sitio se actualiza en ~1 minuto.");})
+    .catch(e=>status("✖ Error al publicar: "+e.message));
+}
+function backup(){
+  [["videos.json",DATA],["site.json",SITE]].forEach(([name,obj])=>{
+    const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; a.click();
+  });
+}
+if(TOKEN&&REPO)cargar();
 </script>
-
 </body>
 </html>
