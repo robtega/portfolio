@@ -32,11 +32,18 @@ nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop
 .filter-pill:hover { border-color:#4a4a4e; transform:translateY(-1px); }
 .filter-pill.active { background:var(--white); color:var(--black); border-color:var(--white); }
 main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
-.d-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.5rem; }
-.d-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; cursor:pointer; transition:all .3s ease; animation:fadeIn .4s ease both; }
+/* Masonry: las piezas conviven con formatos distintos sin huecos */
+.d-grid { columns:2; column-gap:1rem; }
+.d-card { break-inside:avoid; margin-bottom:1rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; cursor:pointer; transition:all .3s ease; animation:fadeIn .4s ease both; }
 .d-card:hover { transform:translateY(-4px); border-color:var(--border-strong); }
+@media (min-width:700px){ .d-grid { columns:3; column-gap:1.5rem; } .d-card { margin-bottom:1.5rem; } }
+@media (min-width:1000px){ .d-grid { columns:4; } }
 @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-.d-thumb { aspect-ratio:4/5; background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.d-thumb { background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.d-thumb.r45 { aspect-ratio:4/5; }
+.d-thumb.r169 { aspect-ratio:16/9; }
+.d-thumb.r11 { aspect-ratio:1/1; }
+.d-thumb.r916 { aspect-ratio:9/16; }
 .d-thumb > span { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; color:var(--text-dim); text-transform:uppercase; }
 .d-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
 .d-card:hover .d-thumb img { transform:scale(1.05); }
@@ -45,11 +52,11 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 .d-body h3 { font-family:var(--font-serif); font-size:1.2rem; font-weight:500; margin-bottom:.5rem; }
 .d-body p { color:var(--text-muted); font-size:.92rem; }
 .empty { text-align:center; padding:5rem 1rem; font-family:var(--font-mono); font-size:.85rem; color:var(--text-dim); }
-/* Lightbox */
 .lb { position:fixed; inset:0; background:rgba(5,5,5,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:300; display:none; align-items:center; justify-content:center; padding:1.5rem; }
 .lb.open { display:flex; }
 .lb-inner { position:relative; max-width:min(560px,92vw); width:100%; }
-.lb-imgwrap { aspect-ratio:4/5; background:#000; border:1px solid var(--border-strong); border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.lb-imgwrap { background:#000; border:1px solid var(--border-strong); border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.lb-imgwrap.r45 { aspect-ratio:4/5; } .lb-imgwrap.r169 { aspect-ratio:16/9; } .lb-imgwrap.r11 { aspect-ratio:1/1; } .lb-imgwrap.r916 { aspect-ratio:9/16; }
 .lb-imgwrap img { width:100%; height:100%; object-fit:contain; }
 .lb-info { margin-top:1rem; text-align:center; }
 .lb-info .d-tag { margin-bottom:.6rem; }
@@ -96,7 +103,7 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
     <button class="lb-btn lb-close" id="lb-close" aria-label="Cerrar">✕</button>
     <button class="lb-btn lb-prev" id="lb-prev" aria-label="Anterior">←</button>
     <button class="lb-btn lb-next" id="lb-next" aria-label="Siguiente">→</button>
-    <div class="lb-imgwrap"><img id="lb-img" alt=""></div>
+    <div class="lb-imgwrap r45" id="lb-imgwrap"><img id="lb-img" alt=""></div>
     <div class="lb-info">
       <span class="d-tag" id="lb-tag"></span>
       <h3 id="lb-title"></h3>
@@ -111,31 +118,30 @@ let DISENO=null;
 const DEF={
   categorias:{"thumbs-yt":"Thumbnails YouTube","thumbs-ia":"Thumbnails IA","carruseles":"Carruseles","social":"Social Media"},
   piezas:[
-    {titulo:"Thumbnail YouTube 01",categoria:"thumbs-yt",img:"img/diseno/yt-01.jpg",descripcion:"Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/."},
-    {titulo:"Thumbnail YouTube 02",categoria:"thumbs-yt",img:"img/diseno/yt-02.jpg",descripcion:"Diseño orientado a clics y retención."},
-    {titulo:"Thumbnail IA 01",categoria:"thumbs-ia",img:"img/diseno/ia-01.jpg",descripcion:"Composición generativa + retoque profesional."},
-    {titulo:"Thumbnail IA 02",categoria:"thumbs-ia",img:"img/diseno/ia-02.jpg",descripcion:"Composición generativa + retoque profesional."},
-    {titulo:"Carrusel 01",categoria:"carruseles",img:"img/diseno/carrusel-01.jpg",descripcion:"Secuencia visual con narrativa y ritmo."},
-    {titulo:"Social Media 01",categoria:"social",img:"img/diseno/social-01.jpg",descripcion:"Pieza digital para marca o creador."}
+    {titulo:"Thumbnail YouTube 01",categoria:"thumbs-yt",formato:"16:9",img:"img/diseno/yt-01.jpg",descripcion:"Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/."},
+    {titulo:"Thumbnail YouTube 02",categoria:"thumbs-yt",formato:"16:9",img:"img/diseno/yt-02.jpg",descripcion:"Diseño orientado a clics y retención."},
+    {titulo:"Thumbnail IA 01",categoria:"thumbs-ia",formato:"4:5",img:"img/diseno/ia-01.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Thumbnail IA 02",categoria:"thumbs-ia",formato:"4:5",img:"img/diseno/ia-02.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Carrusel 01",categoria:"carruseles",formato:"4:5",img:"img/diseno/carrusel-01.jpg",descripcion:"Secuencia visual con narrativa y ritmo."},
+    {titulo:"Social Media 01",categoria:"social",formato:"4:5",img:"img/diseno/social-01.jpg",descripcion:"Pieza digital para marca o creador."}
   ]
 };
 const grid=document.getElementById("grid"), empty=document.getElementById("empty"),
 filtersBox=document.getElementById("filters"), pageTitle=document.getElementById("page-title"),
 pageCount=document.getElementById("page-count"), lb=document.getElementById("lb");
-let current="todos", listaActual=[], lbIdx=0;
+let current="", listaActual=[], lbIdx=0;
 
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+function ratioClass(p){ return {"4:5":"r45","16:9":"r169","1:1":"r11","9:16":"r916"}[p.formato]||"r45"; }
+
+/* Sin "Todos": arranca en la primera categoría disponible */
 function leerCategoria(){
   const p=new URLSearchParams(window.location.search).get("categoria");
-  if(p==="todos"||DISENO.categorias[p])return p;
-  return "todos";
+  if(DISENO.categorias[p])return p;
+  return Object.keys(DISENO.categorias)[0];
 }
 function pintarFiltros(){
   filtersBox.innerHTML="";
-  const t=document.createElement("button");
-  t.className="filter-pill"+(current==="todos"?" active":"");
-  t.textContent="Todos";
-  t.onclick=()=>ir("todos");
-  filtersBox.appendChild(t);
   for(const k in DISENO.categorias){
     const b=document.createElement("button");
     b.className="filter-pill"+(k===current?" active":"");
@@ -150,8 +156,8 @@ function ir(k){
   pintarFiltros(); pintarGrid();
 }
 function pintarGrid(){
-  listaActual=current==="todos"?DISENO.piezas.slice():DISENO.piezas.filter(p=>p.categoria===current);
-  pageTitle.innerHTML=current==="todos"?"Proyectos de <em>diseño</em>":"Proyectos de <em>"+(DISENO.categorias[current]||"")+"</em>";
+  listaActual=DISENO.piezas.filter(p=>p.categoria===current);
+  pageTitle.innerHTML="Proyectos de <em>"+(DISENO.categorias[current]||"diseño")+"</em>";
   pageCount.textContent="// "+String(listaActual.length).padStart(2,"0")+(listaActual.length===1?" proyecto":" proyectos");
   empty.style.display=listaActual.length?"none":"block";
   grid.innerHTML="";
@@ -160,7 +166,7 @@ function pintarGrid(){
     card.className="d-card";
     card.style.animationDelay=(i*0.06)+"s";
     card.innerHTML=
-      '<div class="d-thumb"><span>'+esc(DISENO.categorias[p.categoria]||p.categoria)+'</span>'+
+      '<div class="d-thumb '+ratioClass(p)+'"><span>'+esc(DISENO.categorias[p.categoria]||p.categoria)+'</span>'+
       (p.img?'<img src="'+esc(p.img)+'" alt="'+esc(p.titulo)+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+'</div>'+
       '<div class="d-body"><span class="d-tag">'+esc(DISENO.categorias[p.categoria]||p.categoria)+'</span>'+
       '<h3>'+esc(p.titulo)+'</h3><p>'+esc(p.descripcion)+'</p></div>';
@@ -168,19 +174,12 @@ function pintarGrid(){
     grid.appendChild(card);
   });
 }
-function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
-function abrirLB(i){
-  lbIdx=i; pintarLB();
-  lb.classList.add("open"); document.body.style.overflow="hidden";
-}
+function abrirLB(i){ lbIdx=i; pintarLB(); lb.classList.add("open"); document.body.style.overflow="hidden"; }
 function cerrarLB(){ lb.classList.remove("open"); document.body.style.overflow=""; }
-function navLB(d){
-  const n=lbIdx+d;
-  if(n<0||n>=listaActual.length)return;
-  lbIdx=n; pintarLB();
-}
+function navLB(d){ const n=lbIdx+d; if(n<0||n>=listaActual.length)return; lbIdx=n; pintarLB(); }
 function pintarLB(){
   const p=listaActual[lbIdx];
+  document.getElementById("lb-imgwrap").className="lb-imgwrap "+ratioClass(p);
   document.getElementById("lb-img").src=p.img||"";
   document.getElementById("lb-tag").textContent=DISENO.categorias[p.categoria]||p.categoria;
   document.getElementById("lb-title").textContent=p.titulo;
