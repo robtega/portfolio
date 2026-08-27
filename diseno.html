@@ -1,396 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diseño — Robert</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141415;
-            --surface-2: #1a1a1c;
-            --border: #232325;
-            --border-strong: #333336;
-            --text: #f5f5f5;
-            --text-soft: #d4d4d4;
-            --text-muted: #9b9ba3;
-            --text-dim: #6f6f76;
-            --white: #fafafa;
-            --black: #0a0a0a;
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-serif: 'Source Serif 4', Georgia, serif;
-            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-sans); line-height: 1.6; overflow-x: hidden; }
-        ::selection { background: var(--white); color: var(--black); }
-
-        nav {
-            position: fixed; top: 0; width: 100%;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border); z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1200px; margin: 0 auto;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 2rem; gap: 1rem;
-        }
-
-        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); }
-        .logo-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
-
-        .logo-badge {
-            font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
-            text-transform: uppercase; color: var(--text-soft);
-            background: var(--surface-2); border: 1px solid var(--border-strong);
-            padding: 0.3rem 0.6rem; border-radius: 6px; white-space: nowrap;
-        }
-
-        .btn {
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            font-weight: 600; font-size: 0.95rem; padding: 0.9rem 1.6rem;
-            border-radius: 12px; text-decoration: none; border: 1px solid transparent;
-            transition: all 0.25s ease; cursor: pointer; font-family: var(--font-sans);
-        }
-
-        .btn-dark { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
-        .btn-dark:hover { background: var(--surface-2); border-color: #4a4a4e; transform: translateY(-2px); }
-        .btn-small { padding: 0.6rem 1.3rem; border-radius: 10px; font-size: 0.88rem; }
-
-        .page-hero {
-            padding: 10rem 1.5rem 3rem; text-align: center;
-            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.05), transparent 70%);
-        }
-
-        .section-tag { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); letter-spacing: 0.05em; display: block; margin-bottom: 1rem; }
-
-        .page-hero h1 { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 500; line-height: 1.15; margin-bottom: 1rem; }
-        .page-hero h1 em { font-style: italic; }
-
-        .count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2.5rem; }
-
-        .video-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; max-width: 800px; margin: 0 auto; }
-
-        .filter-pill {
-            font-family: var(--font-sans); font-size: 0.88rem; font-weight: 500;
-            color: var(--text-soft); background: var(--surface);
-            border: 1px solid var(--border-strong); padding: 0.55rem 1.2rem;
-            border-radius: 999px; cursor: pointer; transition: all 0.25s ease;
-        }
-
-        .filter-pill:hover { border-color: #4a4a4e; transform: translateY(-1px); }
-        .filter-pill.active { background: var(--white); color: var(--black); border-color: var(--white); }
-
-        main { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-
-        /* ---- Masonry (columnas tipo Pinterest) ---- */
-        .masonry { columns: 3; column-gap: 1.5rem; }
-
-        .d-card {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.4s ease both;
-        }
-
-        .d-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .r-16-9 { aspect-ratio: 16 / 9; }
-        .r-1-1  { aspect-ratio: 1 / 1; }
-        .r-4-5  { aspect-ratio: 4 / 5; }
-
-        .d-thumb {
-            width: 100%;
-            background-color: #121213;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 24px 24px;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
-        }
-
-        .d-thumb > span { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
-        .d-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-
-        .d-body { padding: 1.2rem 1.4rem; }
-
-        .video-tag {
-            display: inline-block; font-family: var(--font-mono); font-size: 0.68rem;
-            letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft);
-            background: var(--surface-2); border: 1px solid var(--border-strong);
-            padding: 0.25rem 0.6rem; border-radius: 6px; margin-bottom: 0.7rem;
-        }
-
-        .d-body h3 { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 500; margin-bottom: 0.4rem; }
-        .d-body p { color: var(--text-muted); font-size: 0.9rem; }
-
-        .empty { text-align: center; padding: 5rem 1rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); }
-
-        /* ============ LIGHTBOX ============ */
-        .lightbox {
-            position: fixed; inset: 0;
-            background: rgba(5, 5, 5, 0.92);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            z-index: 200; display: none;
-            flex-direction: column; align-items: center; justify-content: center;
-            padding: 4.5rem 1rem 1.5rem;
-        }
-
-        .lightbox.open { display: flex; }
-
-        .lb-media { display: flex; align-items: center; justify-content: center; max-width: min(1000px, 92vw); }
-        .lb-media img { max-width: min(1000px, 92vw); max-height: 68vh; object-fit: contain; border-radius: 12px; border: 1px solid var(--border-strong); }
-
-        .lb-placeholder {
-            width: min(800px, 92vw);
-            background-color: #121213;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 24px 24px;
-            border: 1px solid var(--border-strong); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.12em;
-            color: var(--text-dim); text-transform: uppercase;
-        }
-
-        .lb-caption { text-align: center; margin-top: 1.3rem; max-width: 700px; }
-        .lb-caption h3 { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; margin: 0.5rem 0 0.3rem; }
-        .lb-caption p { color: var(--text-muted); font-size: 0.92rem; }
-        .lb-count { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); margin-top: 0.6rem; display: block; }
-
-        .lb-close, .lb-prev, .lb-next {
-            position: fixed;
-            width: 48px; height: 48px;
-            background: var(--surface-2); border: 1px solid var(--border-strong);
-            border-radius: 12px; color: var(--text); font-size: 1.2rem;
-            cursor: pointer; transition: all 0.25s ease; z-index: 210;
-        }
-
-        .lb-close:hover, .lb-prev:hover, .lb-next:hover { background: var(--white); color: var(--black); }
-        .lb-close { top: 1rem; right: 1rem; }
-        .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
-        .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
-
-        footer { border-top: 1px solid var(--border); padding: 2.5rem 1.5rem; text-align: center; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-dim); }
-
-        @media (max-width: 900px) { .masonry { columns: 2; } }
-        @media (max-width: 600px) {
-            .masonry { columns: 1; }
-            .logo-badge { display: none; }
-            .nav-container { padding: 1rem 1.25rem; }
-            .lb-prev, .lb-next { top: auto; bottom: 1rem; transform: none; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diseño — Robert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#0a0a0a; --surface:#141415; --surface-2:#1a1a1c; --border:#232325; --border-strong:#333336; --text:#f5f5f5; --text-soft:#d4d4d4; --text-muted:#9b9ba3; --text-dim:#6f6f76; --white:#fafafa; --black:#0a0a0a; --font-sans:'Inter',system-ui,-apple-system,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--font-sans); line-height:1.6; overflow-x:hidden; }
+::selection { background:var(--white); color:var(--black); }
+nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:100; }
+.nav-container { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; gap:1rem; }
+.logo { display:flex; align-items:center; gap:.75rem; text-decoration:none; color:var(--text); }
+.logo-name { font-family:var(--font-serif); font-size:1.25rem; font-weight:500; }
+.logo-badge { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.3rem .6rem; border-radius:6px; white-space:nowrap; }
+.btn { display:inline-flex; align-items:center; gap:.6rem; font-weight:600; font-size:.95rem; padding:.9rem 1.6rem; border-radius:12px; text-decoration:none; border:1px solid transparent; transition:all .25s ease; cursor:pointer; font-family:var(--font-sans); }
+.btn-dark { background:var(--surface); border-color:var(--border-strong); color:var(--text); }
+.btn-dark:hover { background:var(--surface-2); border-color:#4a4a4e; transform:translateY(-2px); }
+.btn-small { padding:.6rem 1.3rem; border-radius:10px; font-size:.88rem; }
+.page-hero { padding:10rem 1.5rem 3rem; text-align:center; background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.05), transparent 70%); }
+.section-tag { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); letter-spacing:.05em; display:block; margin-bottom:1rem; }
+.page-hero h1 { font-family:var(--font-serif); font-size:clamp(2.2rem,5vw,3.6rem); font-weight:500; line-height:1.15; margin-bottom:1rem; }
+.page-hero h1 em { font-style:italic; }
+.count { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); margin-bottom:2.5rem; }
+.filters { display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; max-width:800px; margin:0 auto; }
+.filter-pill { font-family:var(--font-sans); font-size:.88rem; font-weight:500; color:var(--text-soft); background:var(--surface); border:1px solid var(--border-strong); padding:.55rem 1.2rem; border-radius:999px; cursor:pointer; transition:all .25s ease; }
+.filter-pill:hover { border-color:#4a4a4e; transform:translateY(-1px); }
+.filter-pill.active { background:var(--white); color:var(--black); border-color:var(--white); }
+main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
+.d-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.5rem; }
+.d-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; cursor:pointer; transition:all .3s ease; animation:fadeIn .4s ease both; }
+.d-card:hover { transform:translateY(-4px); border-color:var(--border-strong); }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.d-thumb { aspect-ratio:4/5; background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.d-thumb > span { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; color:var(--text-dim); text-transform:uppercase; }
+.d-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+.d-card:hover .d-thumb img { transform:scale(1.05); }
+.d-body { padding:1.4rem; }
+.d-tag { display:inline-block; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.25rem .6rem; border-radius:6px; margin-bottom:.9rem; }
+.d-body h3 { font-family:var(--font-serif); font-size:1.2rem; font-weight:500; margin-bottom:.5rem; }
+.d-body p { color:var(--text-muted); font-size:.92rem; }
+.empty { text-align:center; padding:5rem 1rem; font-family:var(--font-mono); font-size:.85rem; color:var(--text-dim); }
+/* Lightbox */
+.lb { position:fixed; inset:0; background:rgba(5,5,5,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:300; display:none; align-items:center; justify-content:center; padding:1.5rem; }
+.lb.open { display:flex; }
+.lb-inner { position:relative; max-width:min(560px,92vw); width:100%; }
+.lb-imgwrap { aspect-ratio:4/5; background:#000; border:1px solid var(--border-strong); border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.lb-imgwrap img { width:100%; height:100%; object-fit:contain; }
+.lb-info { margin-top:1rem; text-align:center; }
+.lb-info .d-tag { margin-bottom:.6rem; }
+.lb-info h3 { font-family:var(--font-serif); font-size:1.3rem; font-weight:500; margin-bottom:.3rem; }
+.lb-info p { color:var(--text-muted); font-size:.92rem; }
+.lb-btn { position:absolute; width:44px; height:44px; background:rgba(20,20,21,.85); border:1px solid var(--border-strong); border-radius:12px; color:var(--text); font-size:1.05rem; cursor:pointer; transition:all .25s ease; z-index:5; }
+.lb-btn:hover { background:var(--white); color:var(--black); }
+.lb-close { top:-14px; right:-14px; }
+.lb-prev { left:-60px; top:50%; transform:translateY(-50%); }
+.lb-next { right:-60px; top:50%; transform:translateY(-50%); }
+@media (max-width:768px) {
+  .lb-prev { left:6px; top:auto; bottom:-70px; transform:none; }
+  .lb-next { right:6px; top:auto; bottom:-70px; transform:none; }
+  .lb-close { top:-14px; right:0; }
+}
+footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; font-family:var(--font-mono); font-size:.78rem; color:var(--text-dim); }
+@media (max-width:600px) { .logo-badge { display:none; } .nav-container { padding:1rem 1.25rem; } }
+</style>
 </head>
 <body>
+<nav>
+  <div class="nav-container">
+    <a href="index.html" class="logo"><span class="logo-name">Robert</span><span class="logo-badge">Video Editor & Graphic Designer</span></a>
+    <a href="index.html" class="btn btn-dark btn-small">← Volver al inicio</a>
+  </div>
+</nav>
 
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-name">Robert</span>
-                <span class="logo-badge">Video Editor & Graphic Designer</span>
-            </a>
-            <a href="index.html" class="btn btn-dark btn-small">← Volver al inicio</a>
-        </div>
-    </nav>
+<header class="page-hero">
+  <span class="section-tag">// Diseño & Social Media</span>
+  <h1 id="page-title">Proyectos de <em>diseño</em></h1>
+  <p class="count" id="page-count"></p>
+  <div class="filters" id="filters"></div>
+</header>
 
-    <header class="page-hero">
-        <span class="section-tag">// Diseño & Social Media</span>
-        <h1 id="page-title">Proyectos <em>de diseño</em></h1>
-        <p class="count" id="page-count"></p>
-        <div class="video-filters" id="filters"></div>
-    </header>
+<main>
+  <div class="d-grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
+</main>
 
-    <main>
-        <div class="masonry" id="grid"></div>
-        <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
-    </main>
+<footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
 
-    <footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <button class="lb-close" id="lb-close" aria-label="Cerrar">✕</button>
-        <button class="lb-prev" id="lb-prev" aria-label="Anterior">←</button>
-        <button class="lb-next" id="lb-next" aria-label="Siguiente">→</button>
-        <div class="lb-media" id="lb-media"></div>
-        <div class="lb-caption">
-            <span class="video-tag" id="lb-tag"></span>
-            <h3 id="lb-title"></h3>
-            <p id="lb-desc"></p>
-            <span class="lb-count" id="lb-count"></span>
-        </div>
+<div class="lb" id="lb">
+  <div class="lb-inner">
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Cerrar">✕</button>
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Anterior">←</button>
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Siguiente">→</button>
+    <div class="lb-imgwrap"><img id="lb-img" alt=""></div>
+    <div class="lb-info">
+      <span class="d-tag" id="lb-tag"></span>
+      <h3 id="lb-title"></h3>
+      <p id="lb-desc"></p>
     </div>
+  </div>
+</div>
 
-    <script>
-        /* =========================================================
-           👇 EDITA AQUÍ TUS PROYECTOS DE DISEÑO
-           ---------------------------------------------------------
-           · categoria: "thumbs-yt" | "thumbs-ia" | "carruseles" | "social"
-           · ratio:     "16:9" | "1:1" | "4:5"  (formato de tu imagen)
-           · img:       Crea una carpeta "img" en tu repo de GitHub,
-                        sube tu imagen y pon aquí la ruta:
-                        img/thumbnail-1.jpg
-                        Mientras esté en "" se muestra el placeholder.
-           ========================================================= */
-        const DISENO = [
-            { titulo: "Thumbnail YouTube 01", categoria: "thumbs-yt", ratio: "16:9", img: "", descripcion: "Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/." },
-            { titulo: "Thumbnail YouTube 02", categoria: "thumbs-yt", ratio: "16:9", img: "", descripcion: "Diseño orientado a clics y retención." },
-            { titulo: "Thumbnail IA 01", categoria: "thumbs-ia", ratio: "1:1", img: "", descripcion: "Miniatura para Instagram creada con IA." },
-            { titulo: "Thumbnail IA 02", categoria: "thumbs-ia", ratio: "1:1", img: "", descripcion: "Composición generativa + retoque profesional." },
-            { titulo: "Carrusel 01", categoria: "carruseles", ratio: "4:5", img: "", descripcion: "Carrusel con narrativa visual para redes." },
-            { titulo: "Carrusel 02", categoria: "carruseles", ratio: "4:5", img: "", descripcion: "Secuencia de valor + CTA final." },
-            { titulo: "Social Media 01", categoria: "social", ratio: "1:1", img: "", descripcion: "Pieza digital para marca o creador." },
-            { titulo: "Social Media 02", categoria: "social", ratio: "4:5", img: "", descripcion: "Arte consistente para feed." }
-        ];
+<script>
+/* 📦 Datos desde data/diseno.json (panel admin). Si no existe, respaldo. */
+let DISENO=null;
+const DEF={
+  categorias:{"thumbs-yt":"Thumbnails YouTube","thumbs-ia":"Thumbnails IA","carruseles":"Carruseles","social":"Social Media"},
+  piezas:[
+    {titulo:"Thumbnail YouTube 01",categoria:"thumbs-yt",img:"img/diseno/yt-01.jpg",descripcion:"Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/."},
+    {titulo:"Thumbnail YouTube 02",categoria:"thumbs-yt",img:"img/diseno/yt-02.jpg",descripcion:"Diseño orientado a clics y retención."},
+    {titulo:"Thumbnail IA 01",categoria:"thumbs-ia",img:"img/diseno/ia-01.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Thumbnail IA 02",categoria:"thumbs-ia",img:"img/diseno/ia-02.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Carrusel 01",categoria:"carruseles",img:"img/diseno/carrusel-01.jpg",descripcion:"Secuencia visual con narrativa y ritmo."},
+    {titulo:"Social Media 01",categoria:"social",img:"img/diseno/social-01.jpg",descripcion:"Pieza digital para marca o creador."}
+  ]
+};
+const grid=document.getElementById("grid"), empty=document.getElementById("empty"),
+filtersBox=document.getElementById("filters"), pageTitle=document.getElementById("page-title"),
+pageCount=document.getElementById("page-count"), lb=document.getElementById("lb");
+let current="todos", listaActual=[], lbIdx=0;
 
-        const CATEGORIAS = {
-            "todos": "Todos",
-            "thumbs-yt": "Thumbnails YouTube",
-            "thumbs-ia": "Thumbnails IA",
-            "carruseles": "Carruseles",
-            "social": "Social Media"
-        };
+function leerCategoria(){
+  const p=new URLSearchParams(window.location.search).get("categoria");
+  if(p==="todos"||DISENO.categorias[p])return p;
+  return "todos";
+}
+function pintarFiltros(){
+  filtersBox.innerHTML="";
+  const t=document.createElement("button");
+  t.className="filter-pill"+(current==="todos"?" active":"");
+  t.textContent="Todos";
+  t.onclick=()=>ir("todos");
+  filtersBox.appendChild(t);
+  for(const k in DISENO.categorias){
+    const b=document.createElement("button");
+    b.className="filter-pill"+(k===current?" active":"");
+    b.textContent=DISENO.categorias[k];
+    b.onclick=()=>ir(k);
+    filtersBox.appendChild(b);
+  }
+}
+function ir(k){
+  current=k;
+  history.pushState(null,"","?categoria="+k);
+  pintarFiltros(); pintarGrid();
+}
+function pintarGrid(){
+  listaActual=current==="todos"?DISENO.piezas.slice():DISENO.piezas.filter(p=>p.categoria===current);
+  pageTitle.innerHTML=current==="todos"?"Proyectos de <em>diseño</em>":"Proyectos de <em>"+(DISENO.categorias[current]||"")+"</em>";
+  pageCount.textContent="// "+String(listaActual.length).padStart(2,"0")+(listaActual.length===1?" proyecto":" proyectos");
+  empty.style.display=listaActual.length?"none":"block";
+  grid.innerHTML="";
+  listaActual.forEach((p,i)=>{
+    const card=document.createElement("article");
+    card.className="d-card";
+    card.style.animationDelay=(i*0.06)+"s";
+    card.innerHTML=
+      '<div class="d-thumb"><span>'+esc(DISENO.categorias[p.categoria]||p.categoria)+'</span>'+
+      (p.img?'<img src="'+esc(p.img)+'" alt="'+esc(p.titulo)+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+'</div>'+
+      '<div class="d-body"><span class="d-tag">'+esc(DISENO.categorias[p.categoria]||p.categoria)+'</span>'+
+      '<h3>'+esc(p.titulo)+'</h3><p>'+esc(p.descripcion)+'</p></div>';
+    card.onclick=()=>abrirLB(i);
+    grid.appendChild(card);
+  });
+}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+function abrirLB(i){
+  lbIdx=i; pintarLB();
+  lb.classList.add("open"); document.body.style.overflow="hidden";
+}
+function cerrarLB(){ lb.classList.remove("open"); document.body.style.overflow=""; }
+function navLB(d){
+  const n=lbIdx+d;
+  if(n<0||n>=listaActual.length)return;
+  lbIdx=n; pintarLB();
+}
+function pintarLB(){
+  const p=listaActual[lbIdx];
+  document.getElementById("lb-img").src=p.img||"";
+  document.getElementById("lb-tag").textContent=DISENO.categorias[p.categoria]||p.categoria;
+  document.getElementById("lb-title").textContent=p.titulo;
+  document.getElementById("lb-desc").textContent=p.descripcion;
+}
+document.getElementById("lb-close").onclick=cerrarLB;
+document.getElementById("lb-prev").onclick=()=>navLB(-1);
+document.getElementById("lb-next").onclick=()=>navLB(1);
+lb.onclick=e=>{ if(e.target===lb)cerrarLB(); };
+document.addEventListener("keydown",e=>{
+  if(!lb.classList.contains("open"))return;
+  if(e.key==="Escape")cerrarLB();
+  if(e.key==="ArrowLeft")navLB(-1);
+  if(e.key==="ArrowRight")navLB(1);
+});
+window.addEventListener("popstate",()=>{ current=leerCategoria(); pintarFiltros(); pintarGrid(); });
 
-        const RATIOS = { "16:9": "r-16-9", "1:1": "r-1-1", "4:5": "r-4-5" };
-
-        const grid = document.getElementById("grid");
-        const empty = document.getElementById("empty");
-        const filtersBox = document.getElementById("filters");
-        const pageTitle = document.getElementById("page-title");
-        const pageCount = document.getElementById("page-count");
-        const lightbox = document.getElementById("lightbox");
-
-        let current = leerCategoria();
-        let lista = [];
-        let idx = 0;
-
-        function leerCategoria() {
-            const p = new URLSearchParams(window.location.search).get("categoria");
-            return CATEGORIAS[p] ? p : "todos";
-        }
-
-        function pintarFiltros() {
-            filtersBox.innerHTML = "";
-            for (const key in CATEGORIAS) {
-                const b = document.createElement("button");
-                b.className = "filter-pill" + (key === current ? " active" : "");
-                b.textContent = CATEGORIAS[key];
-                b.onclick = () => {
-                    current = key;
-                    history.pushState(null, "", "?categoria=" + key);
-                    pintarFiltros();
-                    pintarGrid();
-                };
-                filtersBox.appendChild(b);
-            }
-        }
-
-        function pintarGrid() {
-            lista = current === "todos" ? DISENO : DISENO.filter(d => d.categoria === current);
-
-            pageTitle.innerHTML = current === "todos"
-                ? "Proyectos <em>de diseño</em>"
-                : "Proyectos <em>" + CATEGORIAS[current] + "</em>";
-
-            pageCount.textContent = "// " + String(lista.length).padStart(2, "0") + (lista.length === 1 ? " proyecto" : " proyectos");
-
-            empty.style.display = lista.length ? "none" : "block";
-            grid.innerHTML = "";
-
-            lista.forEach((d, i) => {
-                const card = document.createElement("article");
-                card.className = "d-card";
-                card.style.animationDelay = (i * 0.05) + "s";
-
-                const media = d.img
-                    ? '<img src="' + d.img + '" alt="">'
-                    : '<span>' + CATEGORIAS[d.categoria] + '</span>';
-
-                card.innerHTML =
-                    '<div class="d-thumb ' + RATIOS[d.ratio] + '">' + media + '</div>' +
-                    '<div class="d-body">' +
-                        '<span class="video-tag">' + CATEGORIAS[d.categoria] + '</span>' +
-                        '<h3>' + d.titulo + '</h3>' +
-                        '<p>' + d.descripcion + '</p>' +
-                    '</div>';
-
-                card.onclick = () => abrirLightbox(i);
-                grid.appendChild(card);
-            });
-        }
-
-        /* ---- Lightbox con navegación ---- */
-        function abrirLightbox(i) {
-            idx = i;
-            pintarLightbox();
-            lightbox.classList.add("open");
-            document.body.style.overflow = "hidden";
-        }
-
-        function pintarLightbox() {
-            const d = lista[idx];
-            document.getElementById("lb-media").innerHTML = d.img
-                ? '<img src="' + d.img + '" alt="">'
-                : '<div class="lb-placeholder ' + RATIOS[d.ratio] + '">' + CATEGORIAS[d.categoria] + '</div>';
-            document.getElementById("lb-tag").textContent = CATEGORIAS[d.categoria];
-            document.getElementById("lb-title").textContent = d.titulo;
-            document.getElementById("lb-desc").textContent = d.descripcion;
-            document.getElementById("lb-count").textContent =
-                String(idx + 1).padStart(2, "0") + " / " + String(lista.length).padStart(2, "0");
-        }
-
-        function navegar(delta) {
-            idx = (idx + delta + lista.length) % lista.length;
-            pintarLightbox();
-        }
-
-        function cerrarLightbox() {
-            lightbox.classList.remove("open");
-            document.body.style.overflow = "";
-        }
-
-        document.getElementById("lb-close").onclick = cerrarLightbox;
-        document.getElementById("lb-prev").onclick = () => navegar(-1);
-        document.getElementById("lb-next").onclick = () => navegar(1);
-        lightbox.onclick = e => { if (e.target === lightbox) cerrarLightbox(); };
-
-        document.addEventListener("keydown", e => {
-            if (!lightbox.classList.contains("open")) return;
-            if (e.key === "Escape") cerrarLightbox();
-            if (e.key === "ArrowLeft") navegar(-1);
-            if (e.key === "ArrowRight") navegar(1);
-        });
-
-        window.addEventListener("popstate", () => {
-            current = leerCategoria();
-            pintarFiltros();
-            pintarGrid();
-        });
-
-        pintarFiltros();
-        pintarGrid();
-    </script>
-
+fetch("data/diseno.json?r="+Date.now())
+  .then(r=>{ if(!r.ok)throw 0; return r.json(); })
+  .then(d=>{ DISENO={categorias:d.categorias||{},piezas:d.piezas||[]}; arrancar(); })
+  .catch(()=>{ DISENO=JSON.parse(JSON.stringify(DEF)); arrancar(); });
+function arrancar(){ current=leerCategoria(); pintarFiltros(); pintarGrid(); }
+</script>
 </body>
 </html>
