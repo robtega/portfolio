@@ -101,7 +101,6 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
       <button class="tab" data-tab="inicio">🏠 Inicio</button>
     </div>
 
-    <!-- ============ PESTAÑA VIDEOS ============ -->
     <section id="tab-videos">
       <div class="box">
         <label style="margin-top:0;">Categorías de videos</label>
@@ -115,7 +114,6 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
       <div id="list"></div>
     </section>
 
-    <!-- ============ PESTAÑA DISEÑO ============ -->
     <section id="tab-diseno" hidden>
       <div class="box">
         <label style="margin-top:0;">Categorías de diseño</label>
@@ -129,7 +127,6 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
       <div id="piezas-list"></div>
     </section>
 
-    <!-- ============ PESTAÑA INICIO ============ -->
     <section id="tab-inicio" hidden>
       <div class="box">
         <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
@@ -144,7 +141,7 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
         <textarea id="s-sub"></textarea>
       </div>
       <div class="box"><label style="margin-top:0;">Especialidades</label><div id="esp-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button></div>
-      <div class="box"><label style="margin-top:0;">Teaser de Diseño en el inicio (4 cards)</label><div id="dis-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addTeaser()">+ Card</button></div>
+      <div class="box"><label style="margin-top:0;">Teaser de Diseño en el inicio (cards)</label><div id="dis-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addTeaser()">+ Card</button></div>
       <div class="box"><label style="margin-top:0;">Stack</label><div id="stack-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStack()">+ Herramienta</button></div>
       <div class="box">
         <label style="margin-top:0;">Contacto — título</label>
@@ -212,12 +209,12 @@ function defSite(){return{
 function defDis(){return{
   categorias:{"thumbs-yt":"Thumbnails YouTube","thumbs-ia":"Thumbnails IA","carruseles":"Carruseles","social":"Social Media"},
   piezas:[
-    {titulo:"Thumbnail YouTube 01",categoria:"thumbs-yt",img:"img/diseno/yt-01.jpg",descripcion:"Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/."},
-    {titulo:"Thumbnail YouTube 02",categoria:"thumbs-yt",img:"img/diseno/yt-02.jpg",descripcion:"Diseño orientado a clics y retención."},
-    {titulo:"Thumbnail IA 01",categoria:"thumbs-ia",img:"img/diseno/ia-01.jpg",descripcion:"Composición generativa + retoque profesional."},
-    {titulo:"Thumbnail IA 02",categoria:"thumbs-ia",img:"img/diseno/ia-02.jpg",descripcion:"Composición generativa + retoque profesional."},
-    {titulo:"Carrusel 01",categoria:"carruseles",img:"img/diseno/carrusel-01.jpg",descripcion:"Secuencia visual con narrativa y ritmo."},
-    {titulo:"Social Media 01",categoria:"social",img:"img/diseno/social-01.jpg",descripcion:"Pieza digital para marca o creador."}
+    {titulo:"Thumbnail YouTube 01",categoria:"thumbs-yt",formato:"16:9",img:"img/diseno/yt-01.jpg",descripcion:"Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/."},
+    {titulo:"Thumbnail YouTube 02",categoria:"thumbs-yt",formato:"16:9",img:"img/diseno/yt-02.jpg",descripcion:"Diseño orientado a clics y retención."},
+    {titulo:"Thumbnail IA 01",categoria:"thumbs-ia",formato:"4:5",img:"img/diseno/ia-01.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Thumbnail IA 02",categoria:"thumbs-ia",formato:"4:5",img:"img/diseno/ia-02.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Carrusel 01",categoria:"carruseles",formato:"4:5",img:"img/diseno/carrusel-01.jpg",descripcion:"Secuencia visual con narrativa y ritmo."},
+    {titulo:"Social Media 01",categoria:"social",formato:"4:5",img:"img/diseno/social-01.jpg",descripcion:"Pieza digital para marca o creador."}
   ]};}
 
 function conectar(){
@@ -245,8 +242,6 @@ function abrirEditor(){
   $("#setup").hidden=true; $("#editor").hidden=false;
   bindSiteInputs(); renderCats(); renderList(); renderDisCats(); renderPiezas(); renderSiteEditor();
 }
-
-/* ---------- PESTAÑAS ---------- */
 document.querySelectorAll(".tab").forEach(t=>{
   t.onclick=()=>{
     document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
@@ -323,7 +318,7 @@ function renderList(){
   });
 }
 
-/* ---------- DISEÑO (galería diseno.html) ---------- */
+/* ---------- DISEÑO ---------- */
 function renderDisCats(){
   const box=$("#discats"); box.innerHTML="";
   for(const k in DIS.categorias){
@@ -344,7 +339,7 @@ function addDisCat(){
   renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda ⬆ Publicar.");
 }
 function addPieza(){
-  DIS.piezas.unshift({titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",img:"",descripcion:""});
+  DIS.piezas.unshift({titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",formato:"4:5",img:"",descripcion:""});
   renderPiezas(); status("Pieza agregada arriba. Complétala y ⬆ Publicar.");
 }
 function renderPiezas(){
@@ -357,7 +352,10 @@ function renderPiezas(){
       '<div class="vhead"><strong>'+esc(p.titulo||"Sin título")+'</strong><button class="del" data-i="'+i+'">Eliminar</button></div>'+
       '<div class="row"><div><label>Título</label><input class="p-t" value="'+esc(p.titulo)+'"></div>'+
       '<div><label>Categoría</label><select class="p-c">'+opts+'</select></div></div>'+
-      '<label>Imagen (ruta o URL, formato vertical 4:5)</label><input class="p-i" value="'+esc(p.img)+'" placeholder="img/diseno/mi-pieza.jpg">'+
+      '<label>Formato de la pieza</label><div class="chips">'+
+        ["4:5","16:9","1:1","9:16"].map(f=>'<button type="button" class="chip pfmt-chip'+((p.formato||"4:5")===f?" on":"")+'" data-f="'+f+'" data-i="'+i+'">'+f+'</button>').join("")+
+      '</div>'+
+      '<label>Imagen (ruta o URL)</label><input class="p-i" value="'+esc(p.img)+'" placeholder="img/diseno/mi-pieza.jpg">'+
       '<label>Descripción</label><textarea class="p-d">'+esc(p.descripcion)+'</textarea>';
     el.querySelector(".p-t").addEventListener("input",ev=>p.titulo=ev.target.value);
     el.querySelector(".p-c").addEventListener("change",ev=>p.categoria=ev.target.value);
@@ -365,6 +363,10 @@ function renderPiezas(){
     el.querySelector(".p-d").addEventListener("input",ev=>p.descripcion=ev.target.value);
     el.querySelector(".del").onclick=()=>{ if(confirm("¿Eliminar esta pieza?")){ DIS.piezas.splice(i,1); renderPiezas(); status("Pieza eliminada. Recuerda ⬆ Publicar."); } };
     box.appendChild(el);
+  });
+  box.querySelectorAll(".pfmt-chip").forEach(b=>{
+    b.onclick=()=>{ const p=DIS.piezas[+b.dataset.i]; p.formato=b.dataset.f;
+      box.querySelectorAll('.pfmt-chip[data-i="'+b.dataset.i+'"]').forEach(x=>x.classList.toggle("on",x.dataset.f===p.formato)); };
   });
 }
 
