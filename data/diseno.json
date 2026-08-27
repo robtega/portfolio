@@ -1,0 +1,46 @@
+{
+  "categorias": {
+    "thumbs-yt": "Thumbnails YouTube",
+    "thumbs-ia": "Thumbnails IA",
+    "carruseles": "Carruseles",
+    "social": "Social Media"
+  },
+  "piezas": [
+    {
+      "titulo": "E-Commerce",
+      "categoria": "thumbs-yt",
+      "img": "img/diseno/yt-01.jpg",
+      "descripcion": "Miniatura de Youtube sobre dropshipping, construido sobre una comparativa antes/después, efecto numérico 10x y empleo de IA para expresión facial."
+    },
+    {
+      "titulo": "Thumbnail YouTube 02",
+      "categoria": "thumbs-yt",
+      "img": "img/diseno/yt-02.jpg",
+      "descripcion": "Diseño orientado a clics y retención."
+    },
+    {
+      "titulo": "Thumbnail IA 01",
+      "categoria": "thumbs-ia",
+      "img": "img/diseno/ia-01.jpg",
+      "descripcion": "Composición generativa + retoque profesional."
+    },
+    {
+      "titulo": "Thumbnail IA 02",
+      "categoria": "thumbs-ia",
+      "img": "img/diseno/ia-02.jpg",
+      "descripcion": "Composición generativa + retoque profesional."
+    },
+    {
+      "titulo": "Carrusel 01",
+      "categoria": "carruseles",
+      "img": "img/diseno/carrusel-01.jpg",
+      "descripcion": "Secuencia visual con narrativa y ritmo."
+    },
+    {
+      "titulo": "Social Media 01",
+      "categoria": "social",
+      "img": "img/diseno/social-01.jpg",
+      "descripcion": "Pieza digital para marca o creador."
+    }
+  ]
+}
