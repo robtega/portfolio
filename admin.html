@@ -21,9 +21,10 @@ nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop
 h1 { font-family:var(--font-serif); font-weight:500; font-size:clamp(1.7rem,4vw,2.4rem); margin-bottom:1.2rem; }
 .box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:1.4rem; }
 label { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim); display:block; margin:.9rem 0 .35rem; }
-input,textarea { width:100%; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text); border-radius:10px; padding:.7rem .9rem; font-family:var(--font-sans); font-size:.92rem; }
-input:focus,textarea:focus { outline:none; border-color:#4a4a4e; }
+input,textarea,select { width:100%; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text); border-radius:10px; padding:.7rem .9rem; font-family:var(--font-sans); font-size:.92rem; }
+input:focus,textarea:focus,select:focus { outline:none; border-color:#4a4a4e; }
 textarea { min-height:70px; resize:vertical; }
+select { cursor:pointer; }
 .row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 @media (max-width:640px){ .row { grid-template-columns:1fr; } }
 .btn { display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.9rem; padding:.7rem 1.3rem; border-radius:10px; border:1px solid transparent; cursor:pointer; font-family:var(--font-sans); transition:all .25s ease; }
@@ -53,6 +54,9 @@ button.chip.on { background:var(--white); color:var(--black); border-color:var(-
 details { margin-top:1.2rem; color:var(--text-muted); font-size:.88rem; }
 details summary { cursor:pointer; color:var(--text-soft); }
 details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
+.tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin:0 0 1.4rem; }
+.tab { background:var(--surface); border:1px solid var(--border-strong); color:var(--text-soft); border-radius:999px; padding:.55rem 1.2rem; font-size:.9rem; font-weight:600; cursor:pointer; font-family:var(--font-sans); transition:all .2s ease; }
+.tab.on { background:var(--white); color:var(--black); border-color:var(--white); }
 </style>
 </head>
 <body>
@@ -91,56 +95,78 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
     </div>
     <p class="status" id="status"></p>
 
-    <div class="box">
-      <label style="margin-top:0;">Categorías</label>
-      <div class="chips" id="cats"></div>
-      <div class="row" style="margin-top:1rem;">
-        <input id="newcat" placeholder="Nueva categoría (ej: Documental)">
-        <button class="btn btn-dark" onclick="addCat()">+ Agregar categoría</button>
+    <div class="tabs">
+      <button class="tab on" data-tab="videos">🎬 Videos</button>
+      <button class="tab" data-tab="diseno">🎨 Diseño</button>
+      <button class="tab" data-tab="inicio">🏠 Inicio</button>
+    </div>
+
+    <!-- ============ PESTAÑA VIDEOS ============ -->
+    <section id="tab-videos">
+      <div class="box">
+        <label style="margin-top:0;">Categorías de videos</label>
+        <div class="chips" id="cats"></div>
+        <div class="row" style="margin-top:1rem;">
+          <input id="newcat" placeholder="Nueva categoría (ej: Documental)">
+          <button class="btn btn-dark" onclick="addCat()">+ Agregar categoría</button>
+        </div>
       </div>
-    </div>
+      <div class="topbar"><h1 style="margin:0; font-size:1.4rem;">Videos</h1><button class="btn btn-dark" onclick="addVideo()">+ Agregar video</button></div>
+      <div id="list"></div>
+    </section>
 
-    <div class="topbar" style="margin-top:2rem;"><h1 style="margin:0; font-size:1.4rem;">Videos</h1><button class="btn btn-dark" onclick="addVideo()">+ Agregar video</button></div>
-    <div id="list"></div>
-
-    <div class="topbar" style="margin-top:2rem;"><h1 style="margin:0; font-size:1.4rem;">Contenido del inicio</h1></div>
-
-    <div class="box">
-      <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
-      <div class="chips" id="vis-list"></div>
-    </div>
-
-    <div class="box">
-      <label style="margin-top:0;">Hero — frase (parte normal / parte en cursiva / parte final)</label>
-      <input id="s-pre" placeholder="Texto antes de la cursiva">
-      <input id="s-enf" style="margin-top:.5rem;" placeholder="Texto en cursiva (énfasis)">
-      <input id="s-post" style="margin-top:.5rem;" placeholder="Texto después de la cursiva">
-      <label>Hero — subtítulo</label>
-      <textarea id="s-sub"></textarea>
-    </div>
-
-    <div class="box"><label style="margin-top:0;">Especialidades</label><div id="esp-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button></div>
-    <div class="box"><label style="margin-top:0;">Cards de Diseño</label><div id="dis-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addDis()">+ Card de diseño</button></div>
-    <div class="box"><label style="margin-top:0;">Stack</label><div id="stack-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStack()">+ Herramienta</button></div>
-    <div class="box">
-      <label style="margin-top:0;">Contacto — título</label>
-      <input id="c-tit">
-      <label>Contacto — descripción</label>
-      <textarea id="c-desc"></textarea>
-      <div class="row" style="margin-top:.5rem;">
-        <div><label>URL LinkedIn</label><input id="c-li"></div>
-        <div><label>URL Instagram</label><input id="c-ig"></div>
+    <!-- ============ PESTAÑA DISEÑO ============ -->
+    <section id="tab-diseno" hidden>
+      <div class="box">
+        <label style="margin-top:0;">Categorías de diseño</label>
+        <div class="chips" id="discats"></div>
+        <div class="row" style="margin-top:1rem;">
+          <input id="newdiscat" placeholder="Nueva categoría (ej: Branding)">
+          <button class="btn btn-dark" onclick="addDisCat()">+ Agregar categoría</button>
+        </div>
       </div>
-    </div>
+      <div class="topbar"><h1 style="margin:0; font-size:1.4rem;">Piezas de diseño</h1><button class="btn btn-dark" onclick="addPieza()">+ Agregar pieza</button></div>
+      <div id="piezas-list"></div>
+    </section>
+
+    <!-- ============ PESTAÑA INICIO ============ -->
+    <section id="tab-inicio" hidden>
+      <div class="box">
+        <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
+        <div class="chips" id="vis-list"></div>
+      </div>
+      <div class="box">
+        <label style="margin-top:0;">Hero — frase (parte normal / parte en cursiva / parte final)</label>
+        <input id="s-pre" placeholder="Texto antes de la cursiva">
+        <input id="s-enf" style="margin-top:.5rem;" placeholder="Texto en cursiva (énfasis)">
+        <input id="s-post" style="margin-top:.5rem;" placeholder="Texto después de la cursiva">
+        <label>Hero — subtítulo</label>
+        <textarea id="s-sub"></textarea>
+      </div>
+      <div class="box"><label style="margin-top:0;">Especialidades</label><div id="esp-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button></div>
+      <div class="box"><label style="margin-top:0;">Teaser de Diseño en el inicio (4 cards)</label><div id="dis-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addTeaser()">+ Card</button></div>
+      <div class="box"><label style="margin-top:0;">Stack</label><div id="stack-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStack()">+ Herramienta</button></div>
+      <div class="box">
+        <label style="margin-top:0;">Contacto — título</label>
+        <input id="c-tit">
+        <label>Contacto — descripción</label>
+        <textarea id="c-desc"></textarea>
+        <div class="row" style="margin-top:.5rem;">
+          <div><label>URL LinkedIn</label><input id="c-li"></div>
+          <div><label>URL Instagram</label><input id="c-ig"></div>
+        </div>
+      </div>
+    </section>
   </section>
 </div>
 
 <script>
 const $=s=>document.querySelector(s);
 let TOKEN=localStorage.getItem("rb_token")||"", REPO=localStorage.getItem("rb_repo")||"";
-let SHA_V=null, SHA_S=null;
+let SHA_V=null, SHA_S=null, SHA_D=null;
 let DATA={categorias:{},videos:[]};
 let SITE=null;
+let DIS={categorias:{},piezas:[]};
 if(TOKEN)$("#token").value=TOKEN;
 (function(){ if(REPO){$("#repo").value=REPO;return;} const h=location.hostname;
   if(h.endsWith(".github.io")){ const owner=h.split(".")[0]; const seg=(location.pathname.split("/").filter(Boolean)[0])||""; $("#repo").value=(seg&&!seg.endsWith(".html"))?owner+"/"+seg:owner+"/"+owner+".github.io"; } })();
@@ -183,6 +209,17 @@ function defSite(){return{
   visibilidad:{especialidades:true,videos:true,diseno:false,stack:true}
 };}
 
+function defDis(){return{
+  categorias:{"thumbs-yt":"Thumbnails YouTube","thumbs-ia":"Thumbnails IA","carruseles":"Carruseles","social":"Social Media"},
+  piezas:[
+    {titulo:"Thumbnail YouTube 01",categoria:"thumbs-yt",img:"img/diseno/yt-01.jpg",descripcion:"Miniatura de alto CTR. Reemplázame subiendo tu imagen a la carpeta img/."},
+    {titulo:"Thumbnail YouTube 02",categoria:"thumbs-yt",img:"img/diseno/yt-02.jpg",descripcion:"Diseño orientado a clics y retención."},
+    {titulo:"Thumbnail IA 01",categoria:"thumbs-ia",img:"img/diseno/ia-01.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Thumbnail IA 02",categoria:"thumbs-ia",img:"img/diseno/ia-02.jpg",descripcion:"Composición generativa + retoque profesional."},
+    {titulo:"Carrusel 01",categoria:"carruseles",img:"img/diseno/carrusel-01.jpg",descripcion:"Secuencia visual con narrativa y ritmo."},
+    {titulo:"Social Media 01",categoria:"social",img:"img/diseno/social-01.jpg",descripcion:"Pieza digital para marca o creador."}
+  ]};}
+
 function conectar(){
   TOKEN=$("#token").value.trim(); REPO=$("#repo").value.trim();
   if(!TOKEN||!REPO){status("Escribe el repo y el token.");return;}
@@ -196,18 +233,28 @@ function cargar(){
     if(!r.ok)throw new Error("HTTP "+r.status);
     return r.json().then(f=>({sha:f.sha,data:JSON.parse(b64dec(f.content))}));
   });
-  Promise.all([get("data/videos.json"),get("data/site.json")]).then(([a,b])=>{
+  Promise.all([get("data/videos.json"),get("data/site.json"),get("data/diseno.json")]).then(([a,b,c])=>{
     SHA_V=a.sha; DATA=a.data||defVideos();
     SHA_S=b.sha; SITE=b.data||defSite();
+    SHA_D=c.sha; DIS=c.data||defDis();
     abrirEditor();
     status("✔ Datos cargados. Edita y pulsa ⬆ Publicar.");
   }).catch(e=>status("✖ Error: "+e.message+" — revisa token, repo o permisos."));
 }
 function abrirEditor(){
   $("#setup").hidden=true; $("#editor").hidden=false;
-  bindSiteInputs(); renderCats(); renderList(); renderSiteEditor();
+  bindSiteInputs(); renderCats(); renderList(); renderDisCats(); renderPiezas(); renderSiteEditor();
 }
 
+/* ---------- PESTAÑAS ---------- */
+document.querySelectorAll(".tab").forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
+    ["videos","diseno","inicio"].forEach(k=>{ document.getElementById("tab-"+k).hidden=(k!==t.dataset.tab); });
+  };
+});
+
+/* ---------- VIDEOS ---------- */
 function renderCats(){
   const box=$("#cats"); box.innerHTML="";
   for(const k in DATA.categorias){
@@ -227,7 +274,6 @@ function addCat(){
   DATA.categorias[key]=nombre; $("#newcat").value="";
   renderCats(); renderList(); status("Categoría agregada. Recuerda ⬆ Publicar.");
 }
-
 function addVideo(){
   const primera=Object.keys(DATA.categorias)[0];
   DATA.videos.unshift({titulo:"Nuevo video",categoria:primera?[primera]:[],formato:"9:16",video:"",thumb:"",hover:"",destacado:false,descripcion:""});
@@ -277,6 +323,52 @@ function renderList(){
   });
 }
 
+/* ---------- DISEÑO (galería diseno.html) ---------- */
+function renderDisCats(){
+  const box=$("#discats"); box.innerHTML="";
+  for(const k in DIS.categorias){
+    const used=DIS.piezas.some(p=>p.categoria===k);
+    const chip=document.createElement("span"); chip.className="chip";
+    chip.innerHTML="<span>"+esc(DIS.categorias[k])+"</span>";
+    const x=document.createElement("button"); x.textContent="✕";
+    x.title=used?"No se puede: hay piezas usándola":"Eliminar categoría"; x.disabled=used;
+    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DIS.categorias[k]+"?")){ delete DIS.categorias[k]; renderDisCats(); renderPiezas(); status("Categoría de diseño eliminada. Recuerda ⬆ Publicar."); } };
+    chip.appendChild(x); box.appendChild(chip);
+  }
+}
+function addDisCat(){
+  const nombre=$("#newdiscat").value.trim(); if(!nombre)return;
+  const key=nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+  if(!key||DIS.categorias[key]){status("Ese nombre ya existe o no es válido.");return;}
+  DIS.categorias[key]=nombre; $("#newdiscat").value="";
+  renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda ⬆ Publicar.");
+}
+function addPieza(){
+  DIS.piezas.unshift({titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",img:"",descripcion:""});
+  renderPiezas(); status("Pieza agregada arriba. Complétala y ⬆ Publicar.");
+}
+function renderPiezas(){
+  const box=$("#piezas-list"); box.innerHTML="";
+  DIS.piezas.forEach((p,i)=>{
+    let opts="";
+    for(const k in DIS.categorias){ opts+='<option value="'+k+'"'+((p.categoria||"")===k?" selected":"")+'>'+esc(DIS.categorias[k])+"</option>"; }
+    const el=document.createElement("div"); el.className="box";
+    el.innerHTML=
+      '<div class="vhead"><strong>'+esc(p.titulo||"Sin título")+'</strong><button class="del" data-i="'+i+'">Eliminar</button></div>'+
+      '<div class="row"><div><label>Título</label><input class="p-t" value="'+esc(p.titulo)+'"></div>'+
+      '<div><label>Categoría</label><select class="p-c">'+opts+'</select></div></div>'+
+      '<label>Imagen (ruta o URL, formato vertical 4:5)</label><input class="p-i" value="'+esc(p.img)+'" placeholder="img/diseno/mi-pieza.jpg">'+
+      '<label>Descripción</label><textarea class="p-d">'+esc(p.descripcion)+'</textarea>';
+    el.querySelector(".p-t").addEventListener("input",ev=>p.titulo=ev.target.value);
+    el.querySelector(".p-c").addEventListener("change",ev=>p.categoria=ev.target.value);
+    el.querySelector(".p-i").addEventListener("input",ev=>p.img=ev.target.value);
+    el.querySelector(".p-d").addEventListener("input",ev=>p.descripcion=ev.target.value);
+    el.querySelector(".del").onclick=()=>{ if(confirm("¿Eliminar esta pieza?")){ DIS.piezas.splice(i,1); renderPiezas(); status("Pieza eliminada. Recuerda ⬆ Publicar."); } };
+    box.appendChild(el);
+  });
+}
+
+/* ---------- INICIO ---------- */
 function bindSiteInputs(){
   $("#s-pre").oninput=e=>SITE.hero.pre=e.target.value;
   $("#s-enf").oninput=e=>SITE.hero.enfasis=e.target.value;
@@ -298,7 +390,7 @@ function renderVis(){
     b.textContent=(on?"👁 ":"🚫 ")+nombres[k];
     b.onclick=()=>{ SITE.visibilidad[k]=!SITE.visibilidad[k];
       const ahora=SITE.visibilidad[k]!==false;
-      b.classList.toggle("on",ahora); b.textContent=(ahora?"👁 ":" ")+nombres[k]; };
+      b.classList.toggle("on",ahora); b.textContent=(ahora?"👁 ":"🚫 ")+nombres[k]; };
     box.appendChild(b);
   }
 }
@@ -307,7 +399,7 @@ function renderSiteEditor(){
   $("#s-post").value=SITE.hero.post||""; $("#s-sub").value=SITE.hero.sub||"";
   $("#c-tit").value=SITE.contacto.titulo||""; $("#c-desc").value=SITE.contacto.descripcion||"";
   $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";
-  renderEsp(); renderDis(); renderStack(); renderVis();
+  renderEsp(); renderTeaser(); renderStack(); renderVis();
 }
 function renderEsp(){
   const box=$("#esp-list"); box.innerHTML="";
@@ -323,7 +415,7 @@ function renderEsp(){
   });
 }
 function addEsp(){SITE.especialidades.push({titulo:"Nueva especialidad",descripcion:""});renderEsp();}
-function renderDis(){
+function renderTeaser(){
   const box=$("#dis-list"); box.innerHTML="";
   SITE.diseno.forEach((c,i)=>{
     const d=document.createElement("div"); d.className="sub";
@@ -340,11 +432,11 @@ function renderDis(){
     d.querySelector(".f-d").addEventListener("input",ev=>c.descripcion=ev.target.value);
     d.querySelector(".f-img").addEventListener("input",ev=>c.img=ev.target.value);
     d.querySelector(".f-l").addEventListener("input",ev=>c.link=ev.target.value);
-    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.diseno.splice(i,1);renderDis();}};
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.diseno.splice(i,1);renderTeaser();}};
     box.appendChild(d);
   });
 }
-function addDis(){SITE.diseno.push({etiqueta:"NUEVO",tag:"Tag",titulo:"Nueva card",descripcion:"",img:"img/portada.jpg",link:"diseno.html"});renderDis();}
+function addTeaser(){SITE.diseno.push({etiqueta:"NUEVO",tag:"Tag",titulo:"Nueva card",descripcion:"",img:"img/portada.jpg",link:"diseno.html"});renderTeaser();}
 function renderStack(){
   const box=$("#stack-list"); box.innerHTML="";
   SITE.stack.forEach((s,i)=>{
@@ -360,13 +452,13 @@ function renderStack(){
 }
 function addStack(){SITE.stack.push({nombre:"Herramienta",rol:"Rol"});renderStack();}
 
+/* ---------- RESTAURAR / PUBLICAR / BACKUP ---------- */
 function restaurar(){
-  if(!confirm("¿Restaurar TODO el contenido (videos, categorías e inicio) a los valores originales?\n\nEsto reemplaza lo que haya cargado en el panel. Después pulsa ⬆ Publicar para aplicarlo al sitio."))return;
-  DATA=defVideos(); SITE=defSite();
-  renderCats(); renderList(); renderSiteEditor();
+  if(!confirm("¿Restaurar TODO el contenido (videos, diseño e inicio) a los valores originales?\n\nEsto reemplaza lo que haya cargado en el panel. Después pulsa ⬆ Publicar para aplicarlo al sitio."))return;
+  DATA=defVideos(); SITE=defSite(); DIS=defDis();
+  renderCats(); renderList(); renderDisCats(); renderPiezas(); renderSiteEditor();
   status("✔ Contenido restaurado en el panel. Pulsa ⬆ Publicar para aplicarlo al sitio.");
 }
-
 function putFile(path,sha,obj){
   const body={message:"✏️ Contenido actualizado desde el panel",content:b64enc(JSON.stringify(obj,null,2))};
   if(sha)body.sha=sha;
@@ -380,11 +472,12 @@ function publicar(){
   status("Publicando…");
   putFile("data/videos.json",SHA_V,DATA)
     .then(res=>{SHA_V=res.content.sha;return putFile("data/site.json",SHA_S,SITE);})
-    .then(res=>{SHA_S=res.content.sha;status("✔ ¡Publicado! El sitio se actualiza en ~1 minuto.");})
+    .then(res=>{SHA_S=res.content.sha;return putFile("data/diseno.json",SHA_D,DIS);})
+    .then(res=>{SHA_D=res.content.sha;status("✔ ¡Publicado! El sitio se actualiza en ~1 minuto.");})
     .catch(e=>status("✖ Error al publicar: "+e.message));
 }
 function backup(){
-  [["videos.json",DATA],["site.json",SITE]].forEach(([name,obj])=>{
+  [["videos.json",DATA],["site.json",SITE],["diseno.json",DIS]].forEach(([name,obj])=>{
     const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
     const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; a.click();
   });
