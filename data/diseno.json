@@ -10,7 +10,8 @@
       "titulo": "E-Commerce",
       "categoria": "thumbs-yt",
       "img": "img/diseno/yt-01.jpg",
-      "descripcion": "Miniatura de Youtube sobre dropshipping, construido sobre una comparativa antes/después, efecto numérico 10x y empleo de IA para expresión facial."
+      "descripcion": "Miniatura de Youtube sobre dropshipping, construido sobre una comparativa antes/después, efecto numérico 10x y empleo de IA para expresión facial.",
+      "formato": "16:9"
     },
     {
       "titulo": "Thumbnail YouTube 02",
