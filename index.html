@@ -234,12 +234,21 @@ function revisarThumbsYT(container){
     if(img.complete)cambiar();
   });
 }
+/* Miniaturas Vimeo en HD: 1920 → 1280 → original */
+function vimeoHQ(url,w,h){ return /_\d+x\d+/.test(url)?url.replace(/_\d+x\d+/,"_"+w+"x"+h):url; }
 function cargarThumbsVimeo(container){
-  container.querySelectorAll("img[data-vimeo]").forEach(async img=>{
+  (container||grid).querySelectorAll("img[data-vimeo]").forEach(async img=>{
     try{
       const url="https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+img.dataset.vimeo);
-      const res=await fetch(url);const data=await res.json();
-      if(data.thumbnail_url){img.onload=()=>{img.style.opacity=1;};img.src=data.thumbnail_url;}
+      const res=await fetch(url); const data=await res.json();
+      if(data.thumbnail_url){
+        const base=data.thumbnail_url;
+        const lista=[vimeoHQ(base,1920,1080),vimeoHQ(base,1280,720),base].filter((v,i,a)=>a.indexOf(v)===i);
+        let i=0;
+        img.onload=()=>{ img.style.opacity=1; };
+        img.onerror=()=>{ i++; if(i<lista.length) img.src=lista[i]; };
+        img.src=lista[0];
+      }
     }catch(e){}
   });
 }
@@ -301,9 +310,9 @@ function renderVideos(videos,cats){
   gridF.innerHTML="";
   lista.forEach(v=>{
     const r=resolverVideo(v);v._tipo=r.tipo;v._id=r.id;
-    const thumb=v.thumb?'<img class="thumb-base" src="'+esc(v.thumb)+'" alt="">'
-      :(v._tipo==="youtube"?'<img class="thumb-base" data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="">'
-      :'<img class="thumb-base" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">');
+    const thumb=v.thumb?'<img src="'+esc(v.thumb)+'" alt="" loading="lazy">'
+      :(v._tipo==="youtube"?'<img data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="" loading="lazy">'
+      :'<img data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">');
     const a=document.createElement("a");
     a.className="video-card";
     a.href="videos.html?categoria="+catsDe(v)[0];
