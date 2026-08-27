@@ -105,9 +105,9 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
   border:1px solid var(--border-strong);
   color:var(--text-soft);
   font-family:var(--font-mono); font-size:.72rem; letter-spacing:.03em; line-height:1.8;
-  padding:.9rem 0.5rem;
+  padding:.9rem 1.5rem;
   border-radius:16px;
-  max-width:min(86%,300px);
+  max-width:min(92%,420px);
   text-align:center;
   box-shadow:0 10px 35px rgba(0,0,0,.5);
   opacity:0; transition:all .35s ease; z-index:5;
@@ -173,9 +173,7 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
         <button class="reels-btn" id="reels-close" aria-label="Salir">✕</button>
       </div>
       <div class="reels-caption">
-        <div>
-          <h3 id="reels-title"></h3>
-        </div>
+        <div><h3 id="reels-title"></h3></div>
         <div class="reels-side">
           <button class="reels-mute" id="reels-mute">🔇 Quitar silencio</button>
           <button class="reels-btn" id="reels-info" aria-label="Ver descripción">ⓘ</button>
@@ -220,8 +218,7 @@ const CATS_FALLBACK = { "short-form":"Short-Form", "long-form":"Long-Form", "pod
 function resolverVideo(v) {
   if (v.tipo && v.videoId) return { tipo:v.tipo, id:v.videoId };
   let raw = String(v.video||"").trim();
-  const mSrc = raw.match(/src=["']([^"']+)["']/i);
-  if (mSrc) raw = mSrc[1];
+  const mSrc = raw.match(/src=["']([^"']+)["']/i); if (mSrc) raw = mSrc[1];
   let tipo="", id="";
   if (/youtu\.?be/i.test(raw)) {
     tipo="youtube";
@@ -277,6 +274,25 @@ function revisarThumbsYT(container) {
   });
 }
 
+/* Miniaturas Vimeo en HD: 1920 → 1280 → original */
+function vimeoHQ(url,w,h){ return /_\d+x\d+/.test(url)?url.replace(/_\d+x\d+/,"_"+w+"x"+h):url; }
+function cargarThumbsVimeo(container) {
+  (container||grid).querySelectorAll("img[data-vimeo]").forEach(async img => {
+    try {
+      const url="https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+img.dataset.vimeo);
+      const res=await fetch(url); const data=await res.json();
+      if (data.thumbnail_url) {
+        const base=data.thumbnail_url;
+        const lista=[vimeoHQ(base,1920,1080),vimeoHQ(base,1280,720),base].filter((v,i,a)=>a.indexOf(v)===i);
+        let i=0;
+        img.onload=()=>{ img.style.opacity=1; };
+        img.onerror=()=>{ i++; if(i<lista.length) img.src=lista[i]; };
+        img.src=lista[0];
+      }
+    } catch(e){}
+  });
+}
+
 function hoverHTML(v) {
   return /\.mp4|\.webm/i.test(v.hover)
     ? '<video class="thumb-media" src="'+v.hover+'" muted loop playsinline preload="none"></video>'
@@ -296,14 +312,14 @@ function pintarGrid() {
     card.className="video-card "+(vertical?"v":"h");
     card.style.animationDelay=(i*0.06)+"s";
     if (vertical) {
-      /* Verticales: solo el título sobre el degradado, sin etiqueta */
+      /* Verticales: solo el título sobre el degradado */
       card.innerHTML =
         '<div class="video-thumb tall">'+thumbBaseHTML(v)+(v.hover?hoverHTML(v):'')+
         '<div class="play">▶</div>'+
         '<div class="v-overlay"><h3>'+v.titulo+'</h3></div></div>';
       card.onclick=()=>abrirReels(listaV, listaV.indexOf(v));
     } else {
-      /* Horizontales: conservan etiqueta + cuerpo de texto */
+      /* Horizontales: etiqueta + cuerpo de texto */
       card.innerHTML =
         '<div class="video-thumb"><span>'+catLabel(v)+'</span>'+thumbBaseHTML(v)+(v.hover?hoverHTML(v):'')+
         '<div class="play">▶</div></div>'+
@@ -319,16 +335,6 @@ function pintarGrid() {
   });
   cargarThumbsVimeo();
   revisarThumbsYT(grid);
-}
-
-function cargarThumbsVimeo() {
-  grid.querySelectorAll("img[data-vimeo]").forEach(async img => {
-    try {
-      const url="https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+img.dataset.vimeo);
-      const res=await fetch(url); const data=await res.json();
-      if (data.thumbnail_url) { img.onload=()=>{ img.style.opacity=1; }; img.src=data.thumbnail_url; }
-    } catch(e){}
-  });
 }
 
 /* ============ MODAL (horizontales) ============ */
@@ -394,6 +400,7 @@ function pintarReels() {
     revisarThumbsYT(media);
     reelsPlayer=null; muteBtn.style.display="none"; hideHint();
   } else {
+    /* controls=0 + loop=1: player limpio tipo Reels, sin banner nativo */
     media.innerHTML='<iframe id="reels-iframe" src="https://player.vimeo.com/video/'+v._id+'?autoplay=1&muted=1&playsinline=1&controls=0&loop=1" title="Reproductor de video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
     reelsPlayer=(window.Vimeo)?new Vimeo.Player(document.getElementById("reels-iframe")):null;
     muteBtn.style.display="inline-flex"; setMuteUI(true); showHint();
