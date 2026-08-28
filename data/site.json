@@ -92,7 +92,7 @@
   "visibilidad": {
     "especialidades": true,
     "videos": true,
-    "diseno": true,
+    "diseno": false,
     "stack": true
   }
 }
