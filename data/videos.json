@@ -4,9 +4,23 @@
     "long-form": "Long-Form",
     "podcast": "Podcast",
     "ads": "Ads",
-    "vsl": "VSL"
+    "vsl": "VSL",
+    "motion-graphics": "Motion Graphics"
   },
   "videos": [
+    {
+      "titulo": "Intro Youtube",
+      "categoria": [
+        "long-form",
+        "motion-graphics"
+      ],
+      "formato": "16:9",
+      "video": "https://vimeo.com/1222255971",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Video intro para Youtube con Motion Graphics"
+    },
     {
       "titulo": "REEL COMERCIAL",
       "categoria": [
