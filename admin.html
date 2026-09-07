@@ -57,6 +57,7 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
 .tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin:0 0 1.4rem; }
 .tab { background:var(--surface); border:1px solid var(--border-strong); color:var(--text-soft); border-radius:999px; padding:.55rem 1.2rem; font-size:.9rem; font-weight:600; cursor:pointer; font-family:var(--font-sans); transition:all .2s ease; }
 .tab.on { background:var(--white); color:var(--black); border-color:var(--white); }
+.note { font-size:.8rem; color:var(--text-dim); padding:.7rem 0; }
 </style>
 </head>
 <body>
@@ -150,8 +151,16 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
         <label>Contacto — descripción</label>
         <textarea id="c-desc"></textarea>
         <div class="row" style="margin-top:.5rem;">
+          <div><label>Email</label><input id="c-email" placeholder="tucorreo@gmail.com"></div>
+          <div><label>WhatsApp (con código de país)</label><input id="c-wa" placeholder="+58 424 330 6937"></div>
+        </div>
+        <div class="row" style="margin-top:.5rem;">
+          <div><label>Usuario Instagram (visible)</label><input id="c-ig-user" placeholder="@robert"></div>
           <div><label>URL LinkedIn</label><input id="c-li"></div>
+        </div>
+        <div class="row" style="margin-top:.5rem;">
           <div><label>URL Instagram</label><input id="c-ig"></div>
+          <div><div class="note">El link de WhatsApp se genera automáticamente con un mensaje prellenado para el cliente.</div></div>
         </div>
       </div>
     </section>
@@ -175,14 +184,18 @@ const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").r
 const cats=v=>Array.isArray(v.categoria)?v.categoria:[v.categoria];
 const fmtDe=v=>v.formato||(cats(v).some(c=>c==="short-form"||c==="ads")?"9:16":"16:9");
 const status=t=>{$("#status").textContent=t;};
+function waLinkFrom(num){
+  const d=String(num||"").replace(/\D/g,"");
+  return "https://wa.me/"+d+"?text="+encodeURIComponent("Hola Robert, vi tu portafolio y me gustaría conversar sobre un proyecto.");
+}
 
 function defVideos(){return{
   categorias:{"short-form":"Short-Form","long-form":"Long-Form","podcast":"Podcast","ads":"Ads"},
   videos:[
     {titulo:"Business & Mindset",categoria:["short-form"],formato:"9:16",video:"https://vimeo.com/1218345311",thumb:"",hover:"",destacado:false,descripcion:"Edición dinámica orientada a la retención de audiencia."},
-    {titulo:"Finanzas & Estilo Dual",categoria:["short-form"],formato:"9:16",video:"https://vimeo.com/1219288477",thumb:"",hover:"",destacado:true,descripcion:"Edición dinámica con división de pantalla."},
+    {titulo:"Finanzas & Estilo Dual",categoria:["short-form"],formato:"9:16",video:"https://vimeo.com/1219288477",thumb:"img/portada-finanzas.jpg",hover:"",destacado:true,descripcion:"Edición dinámica con división de pantalla."},
     {titulo:"Podcast — La Historia de Aurelio",categoria:["long-form","podcast"],formato:"16:9",video:"https://www.youtube.com/watch?v=bSUGpEIaEmg",thumb:"",hover:"",destacado:false,descripcion:"Edición de formato largo para podcast."},
-    {titulo:"AI Generated UGC Ad",categoria:["ads"],formato:"9:16",video:"https://vimeo.com/1219288461",thumb:"",hover:"",destacado:true,descripcion:"Anuncio orientado a conversión."}
+    {titulo:"AI Generated UGC Ad",categoria:["ads"],formato:"9:16",video:"https://vimeo.com/1219288461",thumb:"img/portada-ugc-ia.jpg",hover:"",destacado:true,descripcion:"Anuncio orientado a conversión."}
   ]};}
 
 function defSite(){return{
@@ -204,7 +217,7 @@ function defSite(){return{
     {nombre:"Photoshop",rol:"Retoque & Thumbnails"},{nombre:"Illustrator",rol:"Branding & Vectores"},
     {nombre:"Python",rol:"Automatización"},{nombre:"Notion",rol:"Docs & Sistemas"},{nombre:"ClickUp",rol:"Gestión de proyectos"}
   ],
-  contacto:{titulo:"¿Tienes un proyecto en mente?",descripcion:"Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.",linkedin:"https://linkedin.com",instagram:"https://instagram.com"},
+  contacto:{titulo:"¿Tienes un proyecto en mente?",descripcion:"Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.",email:"robtegacontact@gmail.com",whatsapp:"+58 424 330 6937",whatsappLink:"https://wa.me/584243306937?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto.",linkedin:"https://linkedin.com",instagram:"https://instagram.com",instagramUser:"@robert"},
   visibilidad:{especialidades:true,videos:true,diseno:false,stack:true}
 };}
 
@@ -260,7 +273,7 @@ function renderCats(){
     chip.innerHTML="<span>"+esc(DATA.categorias[k])+"</span>";
     const x=document.createElement("button"); x.textContent="✕";
     x.title=used?"No se puede: hay videos usándola":"Eliminar categoría"; x.disabled=used;
-    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DATA.categorias[k]+"?")){ delete DATA.categorias[k]; renderCats(); renderList(); status("Categoría eliminada. Recuerda  Publicar."); } };
+    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DATA.categorias[k]+"?")){ delete DATA.categorias[k]; renderCats(); renderList(); status("Categoría eliminada. Recuerda ⬆ Publicar."); } };
     chip.appendChild(x); box.appendChild(chip);
   }
 }
@@ -269,7 +282,7 @@ function addCat(){
   const key=nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
   if(!key||DATA.categorias[key]){status("Ese nombre ya existe o no es válido.");return;}
   DATA.categorias[key]=nombre; $("#newcat").value="";
-  renderCats(); renderList(); status("Categoría agregada. Recuerda  Publicar.");
+  renderCats(); renderList(); status("Categoría agregada. Recuerda ⬆ Publicar.");
 }
 function addVideo(){
   const primera=Object.keys(DATA.categorias)[0];
@@ -295,7 +308,7 @@ function renderList(){
       '</div>'+
       '<button type="button" class="star'+(v.destacado?" on":"")+'" data-star data-i="'+i+'">'+(v.destacado?"★":"☆")+'&nbsp;Destacado en el inicio</button>'+
       '<label>Descripción</label><textarea data-f="descripcion" data-i="'+i+'">'+esc(v.descripcion)+'</textarea>'+
-      '<div class="row"><div><label>Portada propia (opcional)</label><input data-f="thumb" data-i="'+i+'" value="'+esc(v.thumb)+'" placeholder="img/portada.jpg o URL"></div>'+
+      '<div class="row"><div><label>Portada propia (opcional, vertical 1080×1920)</label><input data-f="thumb" data-i="'+i+'" value="'+esc(v.thumb)+'" placeholder="img/portada-mi-reel.jpg"></div>'+
       '<div><label>Hover preview (opcional)</label><input data-f="hover" data-i="'+i+'" value="'+esc(v.hover)+'" placeholder="URL de GIF o MP4"></div></div>';
     box.appendChild(el);
   });
@@ -329,7 +342,7 @@ function renderDisCats(){
     chip.innerHTML="<span>"+esc(DIS.categorias[k])+"</span>";
     const x=document.createElement("button"); x.textContent="✕";
     x.title=used?"No se puede: hay piezas usándola":"Eliminar categoría"; x.disabled=used;
-    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DIS.categorias[k]+"?")){ delete DIS.categorias[k]; renderDisCats(); renderPiezas(); status("Categoría de diseño eliminada. Recuerda  Publicar."); } };
+    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DIS.categorias[k]+"?")){ delete DIS.categorias[k]; renderDisCats(); renderPiezas(); status("Categoría de diseño eliminada. Recuerda ⬆ Publicar."); } };
     chip.appendChild(x); box.appendChild(chip);
   }
 }
@@ -338,7 +351,7 @@ function addDisCat(){
   const key=nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
   if(!key||DIS.categorias[key]){status("Ese nombre ya existe o no es válido.");return;}
   DIS.categorias[key]=nombre; $("#newdiscat").value="";
-  renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda  Publicar.");
+  renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda ⬆ Publicar.");
 }
 function addPieza(){
   DIS.piezas.unshift({titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",formato:"4:5",img:"",descripcion:""});
@@ -380,6 +393,9 @@ function bindSiteInputs(){
   $("#s-sub").oninput=e=>SITE.hero.sub=e.target.value;
   $("#c-tit").oninput=e=>SITE.contacto.titulo=e.target.value;
   $("#c-desc").oninput=e=>SITE.contacto.descripcion=e.target.value;
+  $("#c-email").oninput=e=>SITE.contacto.email=e.target.value;
+  $("#c-wa").oninput=e=>{ SITE.contacto.whatsapp=e.target.value; SITE.contacto.whatsappLink=waLinkFrom(e.target.value); };
+  $("#c-ig-user").oninput=e=>SITE.contacto.instagramUser=e.target.value;
   $("#c-li").oninput=e=>SITE.contacto.linkedin=e.target.value;
   $("#c-ig").oninput=e=>SITE.contacto.instagram=e.target.value;
 }
@@ -394,7 +410,7 @@ function renderVis(){
     b.textContent=(on?"👁 ":"🚫 ")+nombres[k];
     b.onclick=()=>{ SITE.visibilidad[k]=!SITE.visibilidad[k];
       const ahora=SITE.visibilidad[k]!==false;
-      b.classList.toggle("on",ahora); b.textContent=(ahora?"👁 ":"🚫 ")+nombres[k]; };
+      b.classList.toggle("on",ahora); b.textContent=(ahora?"👁 ":" ")+nombres[k]; };
     box.appendChild(b);
   }
 }
@@ -417,7 +433,9 @@ function renderSiteEditor(){
   $("#s-pre").value=SITE.hero.pre||""; $("#s-enf").value=SITE.hero.enfasis||"";
   $("#s-post").value=SITE.hero.post||""; $("#s-sub").value=SITE.hero.sub||"";
   $("#c-tit").value=SITE.contacto.titulo||""; $("#c-desc").value=SITE.contacto.descripcion||"";
-  $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";
+  $("#c-email").value=SITE.contacto.email||""; $("#c-wa").value=SITE.contacto.whatsapp||"";
+  $("#c-ig-user").value=SITE.contacto.instagramUser||""; $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";
+  if(!SITE.contacto.whatsappLink&&SITE.contacto.whatsapp)SITE.contacto.whatsappLink=waLinkFrom(SITE.contacto.whatsapp);
   renderEsp(); renderTeaser(); renderStack(); renderVis(); renderStats();
 }
 function renderEsp(){
