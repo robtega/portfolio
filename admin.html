@@ -132,6 +132,7 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
         <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
         <div class="chips" id="vis-list"></div>
       </div>
+      <div class="box"><label style="margin-top:0;">Franja de cifras (stats del hero)</label><div id="stats-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStat()">+ Stat</button></div>
       <div class="box">
         <label style="margin-top:0;">Hero — frase (parte normal / parte en cursiva / parte final)</label>
         <input id="s-pre" placeholder="Texto antes de la cursiva">
@@ -186,6 +187,7 @@ function defVideos(){return{
 
 function defSite(){return{
   hero:{pre:"Creación de contenido, ",enfasis:"edición de impacto",post:" & diseño que detiene el scroll.",sub:"Editor de video y diseñador gráfico: postproducción de alta retención, miniaturas orientadas al CTR y piezas para redes que conectan con tu audiencia."},
+  stats:[{valor:"+133",label:"Clientes atendidos"},{valor:"+250",label:"Proyectos entregados"},{valor:"+40M",label:"Vistas generadas"},{valor:"<24h",label:"Tiempo de respuesta"}],
   especialidades:[
     {titulo:"Edición & Postproducción",descripcion:"Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador."},
     {titulo:"Diseño Gráfico & Branding",descripcion:"Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético."},
@@ -258,7 +260,7 @@ function renderCats(){
     chip.innerHTML="<span>"+esc(DATA.categorias[k])+"</span>";
     const x=document.createElement("button"); x.textContent="✕";
     x.title=used?"No se puede: hay videos usándola":"Eliminar categoría"; x.disabled=used;
-    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DATA.categorias[k]+"?")){ delete DATA.categorias[k]; renderCats(); renderList(); status("Categoría eliminada. Recuerda ⬆ Publicar."); } };
+    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DATA.categorias[k]+"?")){ delete DATA.categorias[k]; renderCats(); renderList(); status("Categoría eliminada. Recuerda  Publicar."); } };
     chip.appendChild(x); box.appendChild(chip);
   }
 }
@@ -267,7 +269,7 @@ function addCat(){
   const key=nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
   if(!key||DATA.categorias[key]){status("Ese nombre ya existe o no es válido.");return;}
   DATA.categorias[key]=nombre; $("#newcat").value="";
-  renderCats(); renderList(); status("Categoría agregada. Recuerda ⬆ Publicar.");
+  renderCats(); renderList(); status("Categoría agregada. Recuerda  Publicar.");
 }
 function addVideo(){
   const primera=Object.keys(DATA.categorias)[0];
@@ -327,7 +329,7 @@ function renderDisCats(){
     chip.innerHTML="<span>"+esc(DIS.categorias[k])+"</span>";
     const x=document.createElement("button"); x.textContent="✕";
     x.title=used?"No se puede: hay piezas usándola":"Eliminar categoría"; x.disabled=used;
-    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DIS.categorias[k]+"?")){ delete DIS.categorias[k]; renderDisCats(); renderPiezas(); status("Categoría de diseño eliminada. Recuerda ⬆ Publicar."); } };
+    x.onclick=()=>{ if(confirm("¿Eliminar la categoría "+DIS.categorias[k]+"?")){ delete DIS.categorias[k]; renderDisCats(); renderPiezas(); status("Categoría de diseño eliminada. Recuerda  Publicar."); } };
     chip.appendChild(x); box.appendChild(chip);
   }
 }
@@ -336,7 +338,7 @@ function addDisCat(){
   const key=nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
   if(!key||DIS.categorias[key]){status("Ese nombre ya existe o no es válido.");return;}
   DIS.categorias[key]=nombre; $("#newdiscat").value="";
-  renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda ⬆ Publicar.");
+  renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda  Publicar.");
 }
 function addPieza(){
   DIS.piezas.unshift({titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",formato:"4:5",img:"",descripcion:""});
@@ -396,12 +398,27 @@ function renderVis(){
     box.appendChild(b);
   }
 }
+function renderStats(){
+  if(!SITE.stats)SITE.stats=[{valor:"+133",label:"Clientes atendidos"},{valor:"+250",label:"Proyectos entregados"},{valor:"+40M",label:"Vistas generadas"},{valor:"<24h",label:"Tiempo de respuesta"}];
+  const box=$("#stats-list"); box.innerHTML="";
+  SITE.stats.forEach((s,i)=>{
+    const d=document.createElement("div"); d.className="sub";
+    d.innerHTML='<div class="row"><div><label>Valor</label><input class="s-v" value="'+esc(s.valor)+'"></div>'+
+      '<div><label>Etiqueta</label><input class="s-l" value="'+esc(s.label)+'"></div></div>'+
+      '<div style="margin-top:.6rem;"><button class="del">Eliminar</button></div>';
+    d.querySelector(".s-v").addEventListener("input",ev=>s.valor=ev.target.value);
+    d.querySelector(".s-l").addEventListener("input",ev=>s.label=ev.target.value);
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.stats.splice(i,1);renderStats();}};
+    box.appendChild(d);
+  });
+}
+function addStat(){SITE.stats=SITE.stats||[];SITE.stats.push({valor:"+0",label:"Nuevo dato"});renderStats();}
 function renderSiteEditor(){
   $("#s-pre").value=SITE.hero.pre||""; $("#s-enf").value=SITE.hero.enfasis||"";
   $("#s-post").value=SITE.hero.post||""; $("#s-sub").value=SITE.hero.sub||"";
   $("#c-tit").value=SITE.contacto.titulo||""; $("#c-desc").value=SITE.contacto.descripcion||"";
   $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";
-  renderEsp(); renderTeaser(); renderStack(); renderVis();
+  renderEsp(); renderTeaser(); renderStack(); renderVis(); renderStats();
 }
 function renderEsp(){
   const box=$("#esp-list"); box.innerHTML="";
