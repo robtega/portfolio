@@ -131,7 +131,7 @@
         "short-form"
       ],
       "video": "https://vimeo.com/1219288477",
-      "thumb": "img/portada-finanzas.jpg",
+      "thumb": "",
       "hover": "",
       "descripcion": "Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes.",
       "destacado": true
@@ -146,7 +146,7 @@
       "thumb": "",
       "hover": "",
       "descripcion": "Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio.",
-      "destacado": true
+      "destacado": false
     },
     {
       "titulo": "AI Generated UGC Ad",
@@ -154,7 +154,7 @@
         "ads"
       ],
       "video": "https://vimeo.com/1220684449",
-      "thumb": "img/portada-ugc-ia.jpg",
+      "thumb": "",
       "hover": "",
       "descripcion": "Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro.",
       "destacado": true
