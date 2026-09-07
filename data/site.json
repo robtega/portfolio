@@ -97,11 +97,11 @@
   },
   "stats": [
     {
-      "valor": "+120",
+      "valor": "+30",
       "label": "Clientes atendidos"
     },
     {
-      "valor": "+50",
+      "valor": "+100",
       "label": "Proyectos entregados"
     },
     {
