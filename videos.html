@@ -64,7 +64,7 @@ main { max-width:1200px; margin:0 auto; padding:2rem 1.5rem 6rem; }
 .row-thumb { flex-shrink:0; width:76px; border-radius:10px; overflow:hidden; position:relative; background:#121213; }
 .row-thumb.t916 { aspect-ratio:9/16; }
 .row-thumb.t169 { aspect-ratio:16/9; width:110px; }
-.row-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.row-thumb img { position:absolute; inset:0; width:100%; height:100%; }
 .row-info { flex:1; min-width:0; }
 .row-info .p-cat { margin-bottom:.35rem; }
 .row-info h3 { font-family:var(--font-serif); font-size:1.15rem; font-weight:500; margin-bottom:.3rem; color:var(--text); }
@@ -90,8 +90,11 @@ main { max-width:1200px; margin:0 auto; padding:2rem 1.5rem 6rem; }
 .video-thumb { aspect-ratio:16/9; background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
 .video-thumb.tall { aspect-ratio:9/16; }
 .video-thumb > span { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; color:var(--text-dim); text-transform:uppercase; }
-.thumb-base,.thumb-media { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.thumb-media { opacity:0; transition:opacity .35s ease; }
+/* Miniatura inteligente: frame completo centrado + fondo desenfocado */
+.thumb-bg,.thumb-fg,.thumb-media { position:absolute; inset:0; width:100%; height:100%; }
+.thumb-bg { object-fit:cover; filter:blur(16px) saturate(1.15); transform:scale(1.12); opacity:.6; }
+.thumb-fg { object-fit:contain; }
+.thumb-media { object-fit:cover; opacity:0; transition:opacity .35s ease; }
 .video-card:hover .thumb-media { opacity:1; }
 .play { position:absolute; width:56px; height:56px; background:var(--white); color:var(--black); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; padding-left:4px; opacity:0; transform:scale(.8); transition:all .3s ease; z-index:2; }
 .video-card:hover .play { opacity:1; transform:scale(1); }
@@ -280,10 +283,16 @@ function pintarFiltros(){
     filtersBox.appendChild(b);
   }
 }
+/* Miniatura inteligente: dos capas con la misma imagen:
+   - thumb-bg: recortada y desenfocada rellena el hueco
+   - thumb-fg: frame COMPLETO centrado (contain), sin zoom */
 function thumbBaseHTML(v){
-  if(v.thumb)return '<img src="'+v.thumb+'" alt="">';
-  if(v._tipo==="youtube")return '<img data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="">';
-  return '<img data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">';
+  if(v.thumb)return '<img class="thumb-bg" src="'+v.thumb+'" alt=""><img class="thumb-fg" src="'+v.thumb+'" alt="">';
+  if(v._tipo==="youtube"){
+    const s='https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg';
+    return '<img class="thumb-bg" data-yt="'+v._id+'" src="'+s+'" alt=""><img class="thumb-fg" data-yt="'+v._id+'" src="'+s+'" alt="">';
+  }
+  return '<img class="thumb-bg" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease"><img class="thumb-fg" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">';
 }
 function revisarThumbsYT(container){
   container.querySelectorAll("img[data-yt]").forEach(img=>{
@@ -293,7 +302,6 @@ function revisarThumbsYT(container){
     if(img.complete)cambiar();
   });
 }
-/* HD respetando la proporción original: frame completo, sin zoom/recorte */
 function vimeoHQ(url){
   const m=url.match(/_(\d+)x(\d+)/);
   if(!m)return url;
@@ -303,17 +311,21 @@ function vimeoHQ(url){
   return url.replace(/_\d+x\d+/,"_"+Math.round(w*scale)+"x"+Math.round(h*scale));
 }
 function cargarThumbsVimeo(container){
-  container.querySelectorAll("img[data-vimeo]").forEach(async img=>{
+  const groups={};
+  container.querySelectorAll("img[data-vimeo]").forEach(img=>{ (groups[img.dataset.vimeo]=groups[img.dataset.vimeo]||[]).push(img); });
+  Object.keys(groups).forEach(async id=>{
     try{
-      const url="https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+img.dataset.vimeo);
-      const res=await fetch(url); const data=await res.json();
+      const res=await fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+id));
+      const data=await res.json();
       if(data.thumbnail_url){
         const base=data.thumbnail_url;
         const lis=[vimeoHQ(base),base].filter((v,i,a)=>a.indexOf(v)===i);
-        let i=0;
-        img.onload=()=>{img.style.opacity=1;};
-        img.onerror=()=>{i++;if(i<lis.length)img.src=lis[i];};
-        img.src=lis[0];
+        groups[id].forEach(img=>{
+          let i=0;
+          img.onload=()=>{ img.style.opacity=img.classList.contains("thumb-bg")?"0.6":"1"; };
+          img.onerror=()=>{ i++; if(i<lis.length)img.src=lis[i]; };
+          img.src=lis[0];
+        });
       }
     }catch(e){}
   });
