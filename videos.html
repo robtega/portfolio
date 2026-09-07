@@ -64,7 +64,7 @@ main { max-width:1200px; margin:0 auto; padding:2rem 1.5rem 6rem; }
 .row-thumb { flex-shrink:0; width:76px; border-radius:10px; overflow:hidden; position:relative; background:#121213; }
 .row-thumb.t916 { aspect-ratio:9/16; }
 .row-thumb.t169 { aspect-ratio:16/9; width:110px; }
-.row-thumb img { position:absolute; inset:0; width:100%; height:100%; }
+.row-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 .row-info { flex:1; min-width:0; }
 .row-info .p-cat { margin-bottom:.35rem; }
 .row-info h3 { font-family:var(--font-serif); font-size:1.15rem; font-weight:500; margin-bottom:.3rem; color:var(--text); }
@@ -90,11 +90,8 @@ main { max-width:1200px; margin:0 auto; padding:2rem 1.5rem 6rem; }
 .video-thumb { aspect-ratio:16/9; background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
 .video-thumb.tall { aspect-ratio:9/16; }
 .video-thumb > span { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; color:var(--text-dim); text-transform:uppercase; }
-/* Miniatura inteligente: frame completo centrado + fondo desenfocado */
-.thumb-bg,.thumb-fg,.thumb-media { position:absolute; inset:0; width:100%; height:100%; }
-.thumb-bg { object-fit:cover; filter:blur(16px) saturate(1.15); transform:scale(1.12); opacity:.6; }
-.thumb-fg { object-fit:contain; }
-.thumb-media { object-fit:cover; opacity:0; transition:opacity .35s ease; }
+.thumb-base,.thumb-media { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.thumb-media { opacity:0; transition:opacity .35s ease; }
 .video-card:hover .thumb-media { opacity:1; }
 .play { position:absolute; width:56px; height:56px; background:var(--white); color:var(--black); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; padding-left:4px; opacity:0; transform:scale(.8); transition:all .3s ease; z-index:2; }
 .video-card:hover .play { opacity:1; transform:scale(1); }
@@ -231,10 +228,10 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
 let VIDEOS=[];
 const VIDEOS_FALLBACK=[
   { titulo:"Business & Mindset", categoria:"short-form", formato:"9:16", video:"https://vimeo.com/1218345311", thumb:"", hover:"", descripcion:"Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head." },
-  { titulo:"Finanzas & Estilo Dual", categoria:"short-form", formato:"9:16", video:"https://vimeo.com/1219288477", thumb:"", hover:"", descripcion:"Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes." },
+  { titulo:"Finanzas & Estilo Dual", categoria:"short-form", formato:"9:16", video:"https://vimeo.com/1219288477", thumb:"img/portada-finanzas.jpg", hover:"", descripcion:"Edición dinámica con división de pantalla. Estilo Victor Heras, incorpora subtítulos animados, gráficos contextuales y un contraste visual marcado entre personajes." },
   { titulo:"Podcast — La Historia de Aurelio", categoria:["long-form","podcast"], formato:"16:9", video:"https://www.youtube.com/watch?v=bSUGpEIaEmg", thumb:"", hover:"", descripcion:"Edición de formato largo para podcast: narrativa sostenida, ritmo y tratamiento de audio." },
   { titulo:"Long-Form 02", categoria:"long-form", formato:"16:9", video:"https://www.youtube.com/watch?v=ScMzIvxBSi4", thumb:"", hover:"", descripcion:"En YouTube la miniatura se carga sola automáticamente." },
-  { titulo:"AI Generated UGC Ad", categoria:"ads", formato:"9:16", video:"https://vimeo.com/1219288461", thumb:"", hover:"", descripcion:"Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro." }
+  { titulo:"AI Generated UGC Ad", categoria:"ads", formato:"9:16", video:"https://vimeo.com/1219288461", thumb:"img/portada-ugc-ia.jpg", hover:"", descripcion:"Anuncio orientado a conversión: hook directo, ritmo publicitario y CTA claro." }
 ];
 let CATEGORIAS={};
 const CATS_FALLBACK={ "short-form":"Short-Form", "long-form":"Long-Form", "podcast":"Podcast", "ads":"Ads" };
@@ -283,16 +280,12 @@ function pintarFiltros(){
     filtersBox.appendChild(b);
   }
 }
-/* Miniatura inteligente: dos capas con la misma imagen:
-   - thumb-bg: recortada y desenfocada rellena el hueco
-   - thumb-fg: frame COMPLETO centrado (contain), sin zoom */
+/* Portada: si hay portada propia (vertical) se usa esa → 9:16 perfecto.
+   Si no, miniatura automática de la plataforma a sangre completa. */
 function thumbBaseHTML(v){
-  if(v.thumb)return '<img class="thumb-bg" src="'+v.thumb+'" alt=""><img class="thumb-fg" src="'+v.thumb+'" alt="">';
-  if(v._tipo==="youtube"){
-    const s='https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg';
-    return '<img class="thumb-bg" data-yt="'+v._id+'" src="'+s+'" alt=""><img class="thumb-fg" data-yt="'+v._id+'" src="'+s+'" alt="">';
-  }
-  return '<img class="thumb-bg" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease"><img class="thumb-fg" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">';
+  if(v.thumb)return '<img class="thumb-base" src="'+v.thumb+'" alt="">';
+  if(v._tipo==="youtube")return '<img class="thumb-base" data-yt="'+v._id+'" src="https://i.ytimg.com/vi/'+v._id+'/maxresdefault.jpg" alt="">';
+  return '<img class="thumb-base" data-vimeo="'+v._id+'" alt="" style="opacity:0;transition:opacity .4s ease">';
 }
 function revisarThumbsYT(container){
   container.querySelectorAll("img[data-yt]").forEach(img=>{
@@ -311,21 +304,17 @@ function vimeoHQ(url){
   return url.replace(/_\d+x\d+/,"_"+Math.round(w*scale)+"x"+Math.round(h*scale));
 }
 function cargarThumbsVimeo(container){
-  const groups={};
-  container.querySelectorAll("img[data-vimeo]").forEach(img=>{ (groups[img.dataset.vimeo]=groups[img.dataset.vimeo]||[]).push(img); });
-  Object.keys(groups).forEach(async id=>{
+  container.querySelectorAll("img[data-vimeo]").forEach(async img=>{
     try{
-      const res=await fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+id));
-      const data=await res.json();
+      const url="https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+img.dataset.vimeo);
+      const res=await fetch(url); const data=await res.json();
       if(data.thumbnail_url){
         const base=data.thumbnail_url;
         const lis=[vimeoHQ(base),base].filter((v,i,a)=>a.indexOf(v)===i);
-        groups[id].forEach(img=>{
-          let i=0;
-          img.onload=()=>{ img.style.opacity=img.classList.contains("thumb-bg")?"0.6":"1"; };
-          img.onerror=()=>{ i++; if(i<lis.length)img.src=lis[i]; };
-          img.src=lis[0];
-        });
+        let i=0;
+        img.onload=()=>{img.style.opacity=1;};
+        img.onerror=()=>{i++;if(i<lis.length)img.src=lis[i];};
+        img.src=lis[0];
       }
     }catch(e){}
   });
