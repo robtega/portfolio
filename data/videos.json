@@ -22,7 +22,7 @@
       "descripcion": "Video intro para Youtube con Motion Graphics"
     },
     {
-      "titulo": "REEL COMERCIAL",
+      "titulo": "E-Commerce Reel",
       "categoria": [
         "short-form"
       ],
@@ -30,7 +30,7 @@
       "video": "https://vimeo.com/1219693642",
       "thumb": "",
       "hover": "",
-      "destacado": false,
+      "destacado": true,
       "descripcion": "Reel de producto para e-commerce: encuadre orgánico en depósito, tomas B-roll de estantería, subtítulos resaltados con acento de color y ritmo enfocado en beneficios clave."
     },
     {
@@ -66,7 +66,7 @@
       "video": "https://vimeo.com/1219693845",
       "thumb": "",
       "hover": "",
-      "destacado": false,
+      "destacado": true,
       "descripcion": "Edición limpia y elegante para psicología y bienestar emocional. Combina plano de set con B-roll conceptual, diseño de sonido inmersivo y un subtitulado sobrio de estilo editorial."
     },
     {
