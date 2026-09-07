@@ -79,7 +79,7 @@ section { max-width:1120px; margin:0 auto; padding:6rem 1.5rem; }
 .design-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; text-decoration:none; color:inherit; display:block; transition:all .3s ease; }
 .design-card:hover { transform:translateY(-4px); border-color:var(--border-strong); }
 .design-card .design-thumb { aspect-ratio:4/5; }
-.design-thumb { background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.design-thumb { aspect-ratio:16/9; background-color:#121213; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:24px 24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
 .design-thumb span { font-family:var(--font-mono); font-size:.75rem; letter-spacing:.1em; color:var(--text-dim); }
 .design-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
 .design-card:hover .design-thumb img { transform:scale(1.05); }
@@ -96,7 +96,16 @@ section { max-width:1120px; margin:0 auto; padding:6rem 1.5rem; }
 .contact-box { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:4.5rem 2rem; text-align:center; }
 .contact-box h3 { font-family:var(--font-serif); font-size:clamp(1.6rem,3vw,2.2rem); font-weight:500; margin-bottom:1rem; }
 .contact-box p { color:var(--text-muted); max-width:560px; margin:0 auto 2.5rem; }
-.contact-links { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+.contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; max-width:800px; margin:0 auto; }
+.contact-card { background:var(--surface-2); border:1px solid var(--border-strong); border-radius:16px; padding:1.8rem 1.5rem; text-align:left; transition:all .25s ease; text-decoration:none; color:inherit; display:block; position:relative; }
+.contact-card:hover { transform:translateY(-4px); border-color:#4a4a4e; background:var(--surface); }
+.contact-card-icon { width:48px; height:48px; background:var(--surface); border:1px solid var(--border-strong); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:1.2rem; color:var(--text-soft); }
+.contact-card h4 { font-family:var(--font-serif); font-size:1.15rem; font-weight:500; margin-bottom:.5rem; }
+.contact-card .contact-label { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); display:block; margin-bottom:.8rem; }
+.contact-card .contact-value { font-family:var(--font-mono); font-size:.92rem; color:var(--text-soft); word-break:break-all; }
+.contact-copy { position:absolute; top:1.2rem; right:1.2rem; background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; padding:.4rem .7rem; font-family:var(--font-mono); font-size:.7rem; letter-spacing:.05em; color:var(--text-muted); cursor:pointer; transition:all .2s ease; }
+.contact-copy:hover { background:var(--white); color:var(--black); border-color:var(--white); }
+.contact-copy.copied { background:var(--white); color:var(--black); border-color:var(--white); }
 footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; font-family:var(--font-mono); font-size:.78rem; color:var(--text-dim); }
 @media (max-width:900px) {
   .menu-toggle { display:flex; } .logo-badge { display:none; }
@@ -112,6 +121,7 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
   .contact-box { padding:3rem 1.5rem; }
   .stack-grid { grid-template-columns:repeat(2,1fr); }
   .nav-container { padding:1rem 1.25rem; }
+  .contact-grid { grid-template-columns:1fr; }
 }
 @media (max-width:420px) { .btn-small { padding:.5rem 1rem; font-size:.85rem; } .stack-grid { grid-template-columns:1fr 1fr; gap:.75rem; } }
 </style>
@@ -219,9 +229,32 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
     <span class="section-tag">// Contacto</span>
     <h3 id="contact-title">¿Tienes un proyecto en mente?</h3>
     <p id="contact-desc">Ya sea para edición de video, diseño de alto impacto o creación de estrategia audiovisual, conversemos.</p>
-    <div class="contact-links" id="contact-links">
-      <a href="https://linkedin.com" class="btn btn-dark" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>LinkedIn</a>
-      <a href="https://instagram.com" class="btn btn-dark" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</a>
+    <div class="contact-grid" id="contact-grid">
+      <a href="mailto:robtegacontact@gmail.com" class="contact-card">
+        <div class="contact-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+        <span class="contact-label">Propuestas y contratos</span>
+        <h4>Email</h4>
+        <span class="contact-value">robtegacontact@gmail.com</span>
+        <button class="contact-copy" onclick="copyEmail(event)">Copiar</button>
+      </a>
+      <a href="https://wa.me/584243306937?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto." target="_blank" rel="noopener" class="contact-card">
+        <div class="contact-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></div>
+        <span class="contact-label">Respuesta &lt; 24h</span>
+        <h4>WhatsApp</h4>
+        <span class="contact-value">+58 424 330 6937</span>
+      </a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-card" id="contact-linkedin">
+        <div class="contact-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>
+        <span class="contact-label">Networking y empleo</span>
+        <h4>LinkedIn</h4>
+        <span class="contact-value">Perfil profesional</span>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="contact-card" id="contact-instagram">
+        <div class="contact-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+        <span class="contact-label">Trabajo visual</span>
+        <h4>Instagram</h4>
+        <span class="contact-value">@robert</span>
+      </a>
     </div>
   </div>
 </section>
@@ -232,6 +265,17 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
 const toggle=document.getElementById("menu-toggle"), links=document.getElementById("nav-links");
 toggle.addEventListener("click",()=>{ const open=links.classList.toggle("open"); toggle.classList.toggle("open",open); toggle.setAttribute("aria-expanded",open); });
 links.querySelectorAll("a").forEach(a=>{ a.addEventListener("click",()=>{ links.classList.remove("open"); toggle.classList.remove("open"); toggle.setAttribute("aria-expanded","false"); }); });
+
+function copyEmail(e){
+  e.preventDefault();
+  e.stopPropagation();
+  navigator.clipboard.writeText("robtegacontact@gmail.com").then(()=>{
+    const btn=e.target;
+    btn.textContent="¡Copiado!";
+    btn.classList.add("copied");
+    setTimeout(()=>{ btn.textContent="Copiar"; btn.classList.remove("copied"); },2000);
+  });
+}
 </script>
 
 <script>
@@ -287,8 +331,10 @@ const ICONOS=[
 '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>',
 '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>',
 '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>'];
-const SVG_LI='<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>';
-const SVG_IG='<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+const SVG_LI='<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>';
+const SVG_IG='<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+const SVG_WA='<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
+const SVG_MAIL='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>';
 
 function aplicarVisibilidad(vis){
   vis=vis||{};
@@ -328,9 +374,52 @@ function renderSite(d){
   if(d.contacto){
     document.getElementById("contact-title").textContent=d.contacto.titulo||"";
     document.getElementById("contact-desc").textContent=d.contacto.descripcion||"";
-    document.getElementById("contact-links").innerHTML='<a href="'+esc(d.contacto.linkedin)+'" class="btn btn-dark" target="_blank" rel="noopener">'+SVG_LI+' LinkedIn</a><a href="'+esc(d.contacto.instagram)+'" class="btn btn-dark" target="_blank" rel="noopener">'+SVG_IG+' Instagram</a>';
+    const email=d.contacto.email||"robtegacontact@gmail.com";
+    const wa=d.contacto.whatsapp||"+58 424 330 6937";
+    const waLink=d.contacto.whatsappLink||"https://wa.me/584243306937?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto.";
+    const li=d.contacto.linkedin||"https://linkedin.com";
+    const ig=d.contacto.instagram||"https://instagram.com";
+    const igUser=d.contacto.instagramUser||"@robert";
+    
+    document.getElementById("contact-grid").innerHTML=
+      '<a href="mailto:'+esc(email)+'" class="contact-card">'+
+        '<div class="contact-card-icon">'+SVG_MAIL+'</div>'+
+        '<span class="contact-label">Propuestas y contratos</span>'+
+        '<h4>Email</h4>'+
+        '<span class="contact-value">'+esc(email)+'</span>'+
+        '<button class="contact-copy" onclick="copyEmail(event,\''+esc(email)+'\')">Copiar</button>'+
+      '</a>'+
+      '<a href="'+esc(waLink)+'" target="_blank" rel="noopener" class="contact-card">'+
+        '<div class="contact-card-icon">'+SVG_WA+'</div>'+
+        '<span class="contact-label">Respuesta &lt; 24h</span>'+
+        '<h4>WhatsApp</h4>'+
+        '<span class="contact-value">'+esc(wa)+'</span>'+
+      '</a>'+
+      '<a href="'+esc(li)+'" target="_blank" rel="noopener" class="contact-card">'+
+        '<div class="contact-card-icon">'+SVG_LI+'</div>'+
+        '<span class="contact-label">Networking y empleo</span>'+
+        '<h4>LinkedIn</h4>'+
+        '<span class="contact-value">Perfil profesional</span>'+
+      '</a>'+
+      '<a href="'+esc(ig)+'" target="_blank" rel="noopener" class="contact-card">'+
+        '<div class="contact-card-icon">'+SVG_IG+'</div>'+
+        '<span class="contact-label">Trabajo visual</span>'+
+        '<h4>Instagram</h4>'+
+        '<span class="contact-value">'+esc(igUser)+'</span>'+
+      '</a>';
   }
   aplicarVisibilidad(d.visibilidad);
+}
+
+function copyEmail(e,email){
+  e.preventDefault();
+  e.stopPropagation();
+  navigator.clipboard.writeText(email||"robtegacontact@gmail.com").then(()=>{
+    const btn=e.target;
+    btn.textContent="¡Copiado!";
+    btn.classList.add("copied");
+    setTimeout(()=>{ btn.textContent="Copiar"; btn.classList.remove("copied"); },2000);
+  });
 }
 
 function renderVideos(videos,cats){
