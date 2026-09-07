@@ -94,5 +94,23 @@
     "videos": true,
     "diseno": false,
     "stack": true
-  }
+  },
+  "stats": [
+    {
+      "valor": "+120",
+      "label": "Clientes atendidos"
+    },
+    {
+      "valor": "+50",
+      "label": "Proyectos entregados"
+    },
+    {
+      "valor": "+1M",
+      "label": "Vistas generadas"
+    },
+    {
+      "valor": "<24h",
+      "label": "Tiempo de respuesta"
+    }
+  ]
 }
