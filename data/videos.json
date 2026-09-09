@@ -5,9 +5,23 @@
     "podcast": "Podcast",
     "ads": "Ads",
     "vsl": "VSL",
-    "motion-graphics": "Motion Graphics"
+    "motion-graphics": "Motion Graphics",
+    "vox-style": "Vox Style"
   },
   "videos": [
+    {
+      "titulo": "Vox Style + IA",
+      "categoria": [
+        "short-form",
+        "vox-style"
+      ],
+      "formato": "9:16",
+      "video": "https://vimeo.com/1225277554",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": ""
+    },
     {
       "titulo": "Intro Youtube",
       "categoria": [
