@@ -93,7 +93,7 @@
   "visibilidad": {
     "especialidades": true,
     "videos": true,
-    "diseno": false,
+    "diseno": true,
     "stack": true
   },
   "stats": [
