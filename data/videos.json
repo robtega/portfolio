@@ -10,6 +10,19 @@
   },
   "videos": [
     {
+      "titulo": "Podcast Roca Project",
+      "categoria": [
+        "short-form",
+        "podcast"
+      ],
+      "formato": "9:16",
+      "video": "https://vimeo.com/1227019239",
+      "thumb": "",
+      "hover": "",
+      "destacado": false,
+      "descripcion": "Edición minimalista tipo Podcast"
+    },
+    {
       "titulo": "Vox + Collage Style",
       "categoria": [
         "short-form",
