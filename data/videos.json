@@ -8,7 +8,8 @@
     "motion-graphics": "Motion Graphics",
     "vox-style": "Vox Style",
     "fitness": "Fitness",
-    "ai": "AI"
+    "ai": "AI",
+    "coach": "Coach"
   },
   "videos": [
     {
@@ -161,7 +162,8 @@
     {
       "titulo": "Coach Business",
       "categoria": [
-        "short-form"
+        "short-form",
+        "coach"
       ],
       "video": "https://vimeo.com/1218345311",
       "thumb": "",
