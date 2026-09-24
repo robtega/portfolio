@@ -116,7 +116,8 @@
     {
       "titulo": "Finance Coach",
       "categoria": [
-        "short-form"
+        "short-form",
+        "coach"
       ],
       "formato": "9:16",
       "video": "https://vimeo.com/1219694173",
@@ -173,7 +174,8 @@
     {
       "titulo": "Coach de Finanzas",
       "categoria": [
-        "short-form"
+        "short-form",
+        "coach"
       ],
       "video": "https://vimeo.com/1219288477",
       "thumb": "",
