@@ -1,22 +1,22 @@
 {
   "hero": {
-    "pre": "Creación de contenidos, ",
-    "enfasis": "edición de video",
-    "post": " & diseños que venden.",
-    "sub": "Editor de video y diseñador gráfico: postproducción, miniaturas y piezas para redes que conectan con tu audiencia."
+    "pre": "Tú grabas. ",
+    "enfasis": "Yo me encargo",
+    "post": " del resto.",
+    "sub": "Edición, subtítulos, ganchos y miniaturas para coaches, marcas personales y e-commerce que quieren publicar constante y vender con su contenido, sin perder horas editando."
   },
   "especialidades": [
     {
-      "titulo": "Edición & Postproducción",
-      "descripcion": "Edición dinámica, ritmo narrativo, corte preciso y tratamiento de audio enfocado en mantener la atención del espectador."
+      "titulo": "Edición que retiene",
+      "descripcion": "Ganchos en los primeros 3 segundos, ritmo, subtítulos dinámicos y B-roll para que vean el video completo."
     },
     {
-      "titulo": "Diseño Gráfico & Branding",
-      "descripcion": "Creación de identidades visuales, miniaturas orientadas al CTR y recursos gráficos de alto impacto estético."
+      "titulo": "Anuncios y VSL que venden",
+      "descripcion": "Meta Ads, VSL y UGC con estructura de venta: gancho, problema, prueba y llamado a la acción."
     },
     {
-      "titulo": "Guiones & Estrategia",
-      "descripcion": "Estructuración de hooks, desarrollo de escaletas y narrativas pensadas para maximizar la retención en redes."
+      "titulo": "Guiones y estrategia",
+      "descripcion": "Te ayudo a decidir qué publicar, con ganchos, escaletas y formatos que ya funcionan en tu nicho."
     }
   ],
   "diseno": [
@@ -84,13 +84,13 @@
     }
   ],
   "contacto": {
-    "titulo": "¿Tienes un proyecto en mente?",
-    "descripcion": "Ya sea para edición de video, diseño o creación de tu estrategia en redes, escríbeme.",
+    "titulo": "¿Listo para delegar tu edición?",
+    "descripcion": "Cuéntame qué vendes y cuántos videos necesitas al mes. Te respondo en menos de 24 h con una propuesta.",
     "linkedin": "https://www.linkedin.com/in/robtega/",
     "instagram": "https://www.instagram.com/robtega.visual",
     "instagramUser": "@robtega.visual",
-    "whatsapp": "",
-    "whatsappLink": "https://wa.me/?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto."
+    "whatsapp": "+58 424 330 6937",
+    "whatsappLink": "https://wa.me/584243306937?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto."
   },
   "visibilidad": {
     "especialidades": true,
