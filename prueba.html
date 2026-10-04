@@ -102,7 +102,7 @@ nav.scrolled { background:rgba(9,9,10,.72); backdrop-filter:blur(14px); -webkit-
 .marquee { border-top:1px solid var(--line); border-bottom:1px solid var(--line); overflow:hidden; padding:1.3rem 0; background:var(--bg-2); }
 .marquee-track { display:flex; width:max-content; animation:marquee 40s linear infinite; }
 .marquee span { font-family:var(--serif); font-size:clamp(1.6rem,3.5vw,2.6rem); font-style:italic; color:var(--text-soft); padding:0 1.6rem; white-space:nowrap; display:flex; align-items:center; gap:3.2rem; }
-.marquee span::after { content:'✦'; font-style:normal; font-size:.6em; color:var(--gold); }
+.marquee span::after { content:''; width:7px; height:7px; border-radius:50%; background:var(--gold); flex-shrink:0; }
 @keyframes marquee { to { transform:translateX(-50%); } }
 
 /* Secciones */
