@@ -70,7 +70,9 @@ nav.scrolled { background:rgba(9,9,10,.72); backdrop-filter:blur(14px); -webkit-
 .eyebrow::before { content:''; width:28px; height:1px; background:var(--gold); }
 .hero h1 { font-family:var(--serif); font-weight:400; font-size:clamp(3.2rem,11vw,9.5rem); line-height:.92; letter-spacing:-.03em; max-width:12ch; }
 .hero h1 em { font-style:italic; color:var(--gold); }
-.hero h1 .w { display:inline-block; overflow:hidden; vertical-align:bottom; padding-bottom:.06em; margin-bottom:-.06em; }
+.hero h1 .w { display:inline-block; overflow:hidden; vertical-align:bottom; padding:0 .12em .06em; margin:0 -.12em -.06em; }
+/* Las itálicas sobresalen de su caja: al terminar la entrada se quita el recorte */
+.done .hero h1 .w { overflow:visible; }
 .hero h1 .w > span { display:inline-block; transform:translateY(105%); transition:transform 1.1s var(--ease); }
 .ready .hero h1 .w > span { transform:none; }
 .hero-row { display:flex; justify-content:space-between; align-items:flex-end; gap:2rem; flex-wrap:wrap; margin-top:2.2rem; }
@@ -506,6 +508,7 @@ Promise.allSettled([
   if(v.status==="fulfilled"){ VIDEOS=v.value.videos||[]; CATS=v.value.categorias||{}; }
   splitTitle(); renderMarquee(); renderWall(); renderWork(); countUp(); observeReveals();
   requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
+  setTimeout(()=>document.body.classList.add("done"),2200);
 });
 </script>
 </body>
