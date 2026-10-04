@@ -353,9 +353,12 @@ function mountPreview(tile,id){
   tile.appendChild(f);
 }
 function unmountPreview(tile){ const f=tile.querySelector("iframe"); if(f)f.remove(); }
-function setThumb(tile,id){
-  const img=tile.querySelector("img"); if(!img||!id)return;
-  vimeoThumb(id).then(u=>{ if(!u)return; img.onload=()=>img.classList.add("on"); img.src=u; });
+function setThumb(tile,id,propia){
+  const img=tile.querySelector("img"); if(!img)return;
+  img.onload=()=>img.classList.add("on");
+  if(propia){ img.src=propia; return; }
+  if(!id)return;
+  vimeoThumb(id).then(u=>{ if(u)img.src=u; });
 }
 
 /* HERO: muro de reels */
@@ -370,12 +373,12 @@ function renderWall(){
     col.style.animationDuration=(24+c*3)+"s";
     for(let r=0;r<perCol;r++){
       const v=pick[k++%pick.length];
-      const t=document.createElement("div"); t.className="tile"; t.dataset.id=vimeoId(v);
+      const t=document.createElement("div"); t.className="tile"; t.dataset.id=vimeoId(v); t.dataset.thumb=v.thumb||"";
       t.innerHTML='<img alt="">'; col.appendChild(t);
     }
     wall.appendChild(col);
   }
-  wall.querySelectorAll(".tile").forEach(t=>setThumb(t,t.dataset.id));
+  wall.querySelectorAll(".tile").forEach(t=>setThumb(t,t.dataset.id,t.dataset.thumb));
   // Video en movimiento solo en la fila central de las columnas visibles (liviano en celular)
   if(!reduce) addEventListener("load",()=>{
     const visibles=[...wall.querySelectorAll(".wall-col")].filter(c=>getComputedStyle(c).display!=="none");
@@ -405,7 +408,7 @@ function renderWork(){
       '<div class="card-meta"><span>'+esc(catLabel(v))+'</span><h3>'+esc(v.titulo)+'</h3></div>';
     b.onclick=()=>openLB(v);
     box.appendChild(b);
-    const tile=b.querySelector(".tile"); setThumb(tile,id);
+    const tile=b.querySelector(".tile"); setThumb(tile,id,v.thumb);
     if(finePointer&&!reduce){
       b.addEventListener("mouseenter",()=>mountPreview(tile,id));
       b.addEventListener("mouseleave",()=>unmountPreview(tile));
