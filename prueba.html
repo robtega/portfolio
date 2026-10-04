@@ -189,12 +189,6 @@ footer { border-top:1px solid var(--line); padding:2rem var(--gutter); display:f
 .lb-close { position:absolute; top:1rem; right:var(--gutter); width:44px; height:44px; border-radius:50%; border:1px solid var(--line-strong); background:none; color:var(--text); font-size:1rem; cursor:pointer; transition:background .2s ease, color .2s ease; }
 .lb-close:hover { background:var(--text); color:var(--bg); }
 
-/* Cursor personalizado (solo mouse) */
-.cursor { position:fixed; top:0; left:0; z-index:150; pointer-events:none; width:10px; height:10px; margin:-5px 0 0 -5px; border-radius:50%; background:var(--gold); transition:width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background .35s ease; display:none; align-items:center; justify-content:center; }
-.cursor span { font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; color:#141109; opacity:0; transition:opacity .2s ease; }
-.cursor.big { width:84px; height:84px; margin:-42px 0 0 -42px; }
-.cursor.big span { opacity:1; }
-@media (hover:hover) and (pointer:fine) { .cursor { display:flex; opacity:0; } .cursor.live { opacity:1; } }
 
 .toast { position:fixed; left:50%; bottom:1.5rem; transform:translate(-50%,20px); background:var(--text); color:var(--bg); font-size:.85rem; font-weight:500; padding:.7rem 1.2rem; border-radius:999px; opacity:0; transition:opacity .3s ease, transform .3s var(--ease); z-index:210; pointer-events:none; }
 .toast.on { opacity:1; transform:translate(-50%,0); }
@@ -208,7 +202,6 @@ footer { border-top:1px solid var(--line); padding:2rem var(--gutter); display:f
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<div class="cursor" id="cursor" aria-hidden="true"><span>VER</span></div>
 
 <nav id="nav">
   <a href="#" class="brand">Robert<i>.</i></a>
@@ -503,14 +496,6 @@ addEventListener("scroll",()=>$("#nav").classList.toggle("scrolled",scrollY>40),
 /* Copiar email */
 $("#copy-mail").onclick=()=>{ navigator.clipboard&&navigator.clipboard.writeText(EMAIL).then(()=>{ const t=$("#toast"); t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),1800); }); };
 
-/* Cursor */
-if(finePointer&&!reduce){
-  const cur=$("#cursor"); let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
-  addEventListener("mousemove",e=>{x=e.clientX;y=e.clientY;cur.classList.add("live");},{passive:true});
-  document.addEventListener("mouseleave",()=>cur.classList.remove("live"));
-  (function loop(){ cx+=(x-cx)*.18; cy+=(y-cy)*.18; cur.style.transform="translate("+cx+"px,"+cy+"px)"; requestAnimationFrame(loop); })();
-  document.addEventListener("mouseover",e=>cur.classList.toggle("big",!!e.target.closest(".card")));
-}
 
 /* Arranque */
 Promise.allSettled([
