@@ -10,6 +10,10 @@ const CORREO_DESTINO = "robtegacontact@gmail.com";
 const GUARDAR_EN_HOJA = true;
 const NOMBRE_HOJA = "Contactos del portafolio";
 
+const COLUMNAS = ["Fecha", "Nombre", "Marca / Instagram", "Email", "WhatsApp", "Qué necesita", "Videos al mes", "Presupuesto", "Mensaje", "Estado"];
+const ANCHOS = [125, 160, 170, 230, 145, 170, 110, 150, 420, 140];
+const ESTADOS = ["Nuevo", "Respondido", "En conversación", "Cliente", "Descartado"];
+
 function doPost(e) {
   const p = (e && e.parameter) || {};
 
@@ -65,17 +69,73 @@ function enviarCorreo(x) {
   MailApp.sendEmail(opciones);
 }
 
-function guardarEnHoja(x) {
+/* ---------- Hoja de Google Sheets ---------- */
+
+// Sheets convierte en fórmula lo que empieza con = + - @ (por ejemplo "+58 424…").
+// El apóstrofo inicial lo guarda como texto y evita que alguien meta fórmulas desde el formulario.
+function comoTexto(v) {
+  v = String(v || "");
+  return /^[=+\-@]/.test(v) ? "'" + v : v;
+}
+
+function obtenerHoja() {
   const props = PropertiesService.getScriptProperties();
-  let id = props.getProperty("HOJA_ID");
+  const id = props.getProperty("HOJA_ID");
   let libro = null;
   if (id) { try { libro = SpreadsheetApp.openById(id); } catch (err) { libro = null; } }
   if (!libro) {
     libro = SpreadsheetApp.create(NOMBRE_HOJA);
-    libro.getSheets()[0].appendRow(["Fecha", "Nombre", "Marca / Instagram", "Email", "WhatsApp", "Qué necesita", "Videos al mes", "Presupuesto", "Mensaje"]);
     props.setProperty("HOJA_ID", libro.getId());
+    darFormato(libro.getSheets()[0]);
   }
-  libro.getSheets()[0].appendRow([x.fecha, x.nombre, x.marca, x.email, x.whatsapp, x.servicios, x.videos, x.presupuesto, x.mensaje]);
+  return libro.getSheets()[0];
+}
+
+function guardarEnHoja(x) {
+  const hoja = obtenerHoja();
+  hoja.appendRow([
+    x.fecha, comoTexto(x.nombre), comoTexto(x.marca), comoTexto(x.email), comoTexto(x.whatsapp),
+    comoTexto(x.servicios), comoTexto(x.videos), comoTexto(x.presupuesto), comoTexto(x.mensaje), "Nuevo",
+  ]);
+}
+
+function darFormato(hoja) {
+  const n = COLUMNAS.length, filas = hoja.getMaxRows();
+  hoja.getRange(1, 1, 1, n).setValues([COLUMNAS])
+    .setFontWeight("bold").setFontColor("#F2EDE3").setBackground("#151312")
+    .setVerticalAlignment("middle");
+  hoja.setRowHeight(1, 34);
+  hoja.setFrozenRows(1);
+  ANCHOS.forEach((w, i) => hoja.setColumnWidth(i + 1, w));
+  if (filas > 1) {
+    hoja.getRange(2, 1, filas - 1, n).setVerticalAlignment("top").setWrapStrategy(SpreadsheetApp.WrapStrategy.CLIP);
+    hoja.getRange(2, 1, filas - 1, 1).setNumberFormat("dd/mm/yyyy hh:mm");
+    hoja.getRange(2, 9, filas - 1, 1).setWrapStrategy(SpreadsheetApp.WrapStrategy.WRAP); // Mensaje completo
+    const estado = hoja.getRange(2, 10, filas - 1, 1);
+    estado.setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(ESTADOS, true).setAllowInvalid(false).build());
+    const reglas = [
+      ["Nuevo", "#F24D2F", "#FFFFFF"], ["Respondido", "#E8E2D6", "#151312"], ["En conversación", "#F2D9A6", "#151312"],
+      ["Cliente", "#CFE8D2", "#14361C"], ["Descartado", "#EEEEEE", "#8C857C"],
+    ].map(([t, fondo, letra]) => SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo(t)
+      .setBackground(fondo).setFontColor(letra).setRanges([estado]).build());
+    hoja.setConditionalFormatRules(reglas);
+  }
+}
+
+// Ejecuta esta función una vez para ordenar la hoja que ya existe:
+// da formato, corrige los #ERROR! de WhatsApp, borra los envíos de prueba de example.com y marca el estado.
+function arreglarHoja() {
+  const hoja = obtenerHoja();
+  darFormato(hoja);
+  const ultima = hoja.getLastRow();
+  for (let f = ultima; f >= 2; f--) {
+    const email = String(hoja.getRange(f, 4).getValue());
+    if (/@example\.com$/i.test(email)) { hoja.deleteRow(f); continue; }
+    const celda = hoja.getRange(f, 5), formula = celda.getFormula();
+    if (formula) celda.setValue("'" + formula.replace(/^=/, ""));
+    const est = hoja.getRange(f, 10);
+    if (!est.getValue()) est.setValue("Nuevo");
+  }
 }
 
 function respuesta(obj) {
@@ -87,7 +147,7 @@ function doGet() {
   return respuesta({ ok: true, mensaje: "Formulario de robtega.visual activo" });
 }
 
-// Ejecuta esta función una vez desde el editor para dar permisos y recibir un correo de prueba
+// Ejecuta esta función desde el editor para recibir un correo de prueba
 function probar() {
   doPost({ parameter: {
     nombre: "Prueba", marca: "@marca_de_prueba", email: CORREO_DESTINO, whatsapp: "+58 000 000 0000",
