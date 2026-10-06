@@ -5,32 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" href="img/icon.png">
-<title>Panel de Contenido — Robert</title>
+<title>Panel — robtega.visual</title>
+<meta name="theme-color" content="#151312">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,500;0,700;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root { --bg:#0a0a0a; --surface:#141415; --surface-2:#1a1a1c; --border:#232325; --border-strong:#333336; --text:#f5f5f5; --text-soft:#d4d4d4; --text-muted:#9b9ba3; --text-dim:#6f6f76; --white:#fafafa; --black:#0a0a0a; --font-sans:'Inter',system-ui,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',ui-monospace,monospace; }
+:root { --bg:#151312; --surface:#1D1A19; --surface-2:#24201E; --border:#2C2826; --border-strong:#3D3734; --text:#F2EDE3; --text-soft:#C9C2B8; --text-muted:#8C857C; --text-dim:#6B645E; --white:#F2EDE3; --black:#151312; --rec:#F24D2F; --ox:#7A1E1E; --font-sans:'Inter',system-ui,-apple-system,sans-serif; --font-serif:'Inter Tight','Helvetica Neue',Arial,sans-serif; --font-mono:'Inter Tight','Helvetica Neue',Arial,sans-serif; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:var(--font-sans); line-height:1.6; }
 nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:100; }
 .nav-c { max-width:900px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; }
-.logo { font-family:var(--font-serif); font-size:1.15rem; color:var(--text); text-decoration:none; }
-.logo small { font-family:var(--font-mono); font-size:.68rem; color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; margin-left:.6rem; }
+.logo { display:flex; align-items:center; color:var(--text); text-decoration:none; }
+.logo small { font-family:var(--font-serif); font-weight:500; font-size:.86rem; color:var(--text-muted); margin-left:.7rem; }
 .nav-c a.link { color:var(--text-muted); text-decoration:none; font-size:.88rem; }
 .wrap { max-width:900px; margin:0 auto; padding:6.5rem 1.5rem 5rem; }
-.tag { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); display:block; margin-bottom:.6rem; }
-h1 { font-family:var(--font-serif); font-weight:500; font-size:clamp(1.7rem,4vw,2.4rem); margin-bottom:1.2rem; }
-.box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:1.4rem; }
-label { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim); display:block; margin:.9rem 0 .35rem; }
-input,textarea,select { width:100%; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text); border-radius:10px; padding:.7rem .9rem; font-family:var(--font-sans); font-size:.92rem; }
-input:focus,textarea:focus,select:focus { outline:none; border-color:#4a4a4e; }
+.tag { margin-bottom:.8rem; }
+h1 { font-family:var(--font-serif); font-weight:900; font-size:clamp(1.9rem,4vw,2.6rem); line-height:1; margin-bottom:1.2rem; }
+.box { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:1.5rem; margin-bottom:1.4rem; }
+label { font-family:var(--font-serif); font-weight:500; font-size:.8rem; letter-spacing:.01em; color:var(--text-muted); display:block; margin:.9rem 0 .35rem; }
+input,textarea,select { width:100%; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text); border-radius:4px; padding:.7rem .9rem; font-family:var(--font-sans); font-size:.92rem; }
+input:focus,textarea:focus,select:focus { outline:none; border-color:var(--text-muted); }
 textarea { min-height:70px; resize:vertical; }
 select { cursor:pointer; }
 .row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 @media (max-width:640px){ .row { grid-template-columns:1fr; } }
-.btn { display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.9rem; padding:.7rem 1.3rem; border-radius:10px; border:1px solid transparent; cursor:pointer; font-family:var(--font-sans); transition:all .25s ease; }
-.btn-white { background:var(--white); color:var(--black); }
+.btn { display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.9rem; padding:.7rem 1.3rem; border-radius:999px; border:1px solid transparent; cursor:pointer; font-family:var(--font-sans); transition:all .25s ease; }
+.btn-white { background:var(--rec); color:var(--black); }
+.btn-white:hover { background:#FF6448; }
 .btn-white:hover { transform:translateY(-2px); }
 .btn-dark { background:var(--surface); border-color:var(--border-strong); color:var(--text); }
 .btn-dark:hover { background:var(--surface-2); }
@@ -46,7 +48,7 @@ button.chip.on { background:var(--white); color:var(--black); border-color:var(-
 .star:hover { border-color:#4a4a4e; color:var(--text-soft); }
 .star.on { background:var(--white); color:var(--black); border-color:var(--white); font-weight:600; }
 .vhead { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:.4rem; }
-.vhead strong { font-family:var(--font-serif); font-weight:500; font-size:1.1rem; }
+.vhead strong { font-family:var(--font-serif); font-weight:700; font-size:1.1rem; letter-spacing:-.02em; }
 .del { background:none; border:1px solid var(--border-strong); color:var(--text-muted); border-radius:8px; padding:.35rem .7rem; cursor:pointer; font-size:.8rem; }
 .del:hover { color:#ff6b6b; border-color:#ff6b6b; }
 .status { font-family:var(--font-mono); font-size:.8rem; color:var(--text-muted); min-height:1.4em; margin-bottom:1rem; }
@@ -60,14 +62,21 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
 .tab { background:var(--surface); border:1px solid var(--border-strong); color:var(--text-soft); border-radius:999px; padding:.55rem 1.2rem; font-size:.9rem; font-weight:600; cursor:pointer; font-family:var(--font-sans); transition:all .2s ease; }
 .tab.on { background:var(--white); color:var(--black); border-color:var(--white); }
 .note { font-size:.8rem; color:var(--text-dim); padding:.7rem 0; }
+
+/* Marca robtega.visual */
+h1, h2 { font-family:var(--font-serif) !important; font-weight:900 !important; letter-spacing:-.035em !important; }
+h1 em, h2 em { font-style:normal !important; color:inherit !important; }
+.brand-label { font-family:var(--font-serif); font-weight:500; font-size:.86rem; letter-spacing:.01em; text-transform:none; color:var(--text); display:inline-flex; gap:.3rem; align-items:baseline; }
+.brand-label sup { color:var(--rec); font-size:.68rem; }
+.logo svg { display:block; overflow:visible; }
 </style>
 </head>
 <body>
-<nav><div class="nav-c"><span class="logo">Robert <small>Panel de Contenido</small></span><a class="link" href="index.html">← Ver sitio</a></div></nav>
+<nav><div class="nav-c"><span class="logo"><svg viewBox="-2 -2 377 439" width="18" aria-hidden="true"><path fill="#F2EDE3" d="M0 10H152V78C176 28 220 0 265 0C282 0 295 2 305 4V137C292 134 270 132 245 132C185 132 152 167 152 242V434H0Z"/><circle fill="#F24D2F" cx="308" cy="370" r="65"/></svg><small>Panel de contenido</small></span><a class="link" href="index.html">← Ver sitio</a></div></nav>
 <div class="wrap">
 
   <section id="setup">
-    <span class="tag">// Panel de Contenido</span>
+    <span class="tag brand-label"><sup>(00)</sup>Panel de contenido</span>
     <h1>Conecta tu repositorio</h1>
     <div class="box">
       <label>Repositorio (owner/repo)</label>
@@ -88,7 +97,7 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
 
   <section id="editor" hidden>
     <div class="topbar">
-      <div><span class="tag">// Panel de Contenido</span><h1 style="margin:0;">Edita tu portafolio</h1></div>
+      <div><span class="tag brand-label"><sup>(00)</sup>Panel de contenido</span><h1 style="margin:0;">Edita tu portafolio</h1></div>
       <div class="actions">
         <button class="btn btn-dark" onclick="cargar()">Recargar</button>
         <button class="btn btn-dark" onclick="backup()">Descargar copias</button>
@@ -99,9 +108,9 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
     <p class="status" id="status"></p>
 
     <div class="tabs">
-      <button class="tab on" data-tab="videos">🎬 Videos</button>
-      <button class="tab" data-tab="diseno">🎨 Diseño</button>
-      <button class="tab" data-tab="inicio">🏠 Inicio</button>
+      <button class="tab on" data-tab="videos">Videos</button>
+      <button class="tab" data-tab="diseno">Diseño</button>
+      <button class="tab" data-tab="inicio">Inicio</button>
     </div>
 
     <section id="tab-videos">
@@ -135,13 +144,13 @@ details ol { margin:.7rem 0 0 1.3rem; line-height:1.9; }
         <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
         <div class="chips" id="vis-list"></div>
       </div>
-      <div class="box"><label style="margin-top:0;">Franja de cifras (stats del hero)</label><div id="stats-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStat()">+ Stat</button></div>
+      <div class="box"><label style="margin-top:0;">Números (clientes, proyectos, vistas)</label><div id="stats-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStat()">+ Stat</button></div>
       <div class="box">
-        <label style="margin-top:0;">Hero — frase (parte normal / parte en cursiva / parte final)</label>
-        <input id="s-pre" placeholder="Texto antes de la cursiva">
-        <input id="s-enf" style="margin-top:.5rem;" placeholder="Texto en cursiva (énfasis)">
-        <input id="s-post" style="margin-top:.5rem;" placeholder="Texto después de la cursiva">
-        <label>Hero — subtítulo</label>
+        <label style="margin-top:0;">Título principal (inicio / parte central / final). Si termina en punto, el punto sale en rojo como en el logo.</label>
+        <input id="s-pre" placeholder="Inicio, ej: Tú grabas.">
+        <input id="s-enf" style="margin-top:.5rem;" placeholder="Parte central, ej: Yo me encargo">
+        <input id="s-post" style="margin-top:.5rem;" placeholder="Final, ej: del resto.">
+        <label>Texto bajo los números</label>
         <textarea id="s-sub"></textarea>
       </div>
       <div class="box"><label style="margin-top:0;">Especialidades</label><div id="esp-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button></div>

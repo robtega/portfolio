@@ -4,28 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="img/icon.png">
-<title>Diseño — Robert</title>
+<title>Diseño — robtega.visual</title>
+<meta name="theme-color" content="#151312">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,500;0,700;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root { --bg:#0a0a0a; --surface:#141415; --surface-2:#1a1a1c; --border:#232325; --border-strong:#333336; --text:#f5f5f5; --text-soft:#d4d4d4; --text-muted:#9b9ba3; --text-dim:#6f6f76; --white:#fafafa; --black:#0a0a0a; --font-sans:'Inter',system-ui,-apple-system,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; }
+:root { --bg:#151312; --surface:#1D1A19; --surface-2:#24201E; --border:#2C2826; --border-strong:#3D3734; --text:#F2EDE3; --text-soft:#C9C2B8; --text-muted:#8C857C; --text-dim:#6B645E; --white:#F2EDE3; --black:#151312; --rec:#F24D2F; --ox:#7A1E1E; --font-sans:'Inter',system-ui,-apple-system,sans-serif; --font-serif:'Inter Tight','Helvetica Neue',Arial,sans-serif; --font-mono:'Inter Tight','Helvetica Neue',Arial,sans-serif; }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body { background:var(--bg); color:var(--text); font-family:var(--font-sans); line-height:1.6; overflow-x:hidden; }
-::selection { background:var(--white); color:var(--black); }
+::selection { background:var(--rec); color:var(--black); }
 nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:100; }
 .nav-container { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; gap:1rem; }
 .logo { display:flex; align-items:center; gap:.75rem; text-decoration:none; color:var(--text); }
 .logo-name { font-family:var(--font-serif); font-size:1.25rem; font-weight:500; }
 .logo-badge { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.3rem .6rem; border-radius:6px; white-space:nowrap; }
-.btn { display:inline-flex; align-items:center; gap:.6rem; font-weight:600; font-size:.95rem; padding:.9rem 1.6rem; border-radius:12px; text-decoration:none; border:1px solid transparent; transition:all .25s ease; cursor:pointer; font-family:var(--font-sans); }
+.btn { display:inline-flex; align-items:center; gap:.6rem; font-weight:600; font-size:.95rem; padding:.9rem 1.6rem; border-radius:999px; text-decoration:none; border:1px solid transparent; transition:all .25s ease; cursor:pointer; font-family:var(--font-sans); }
 .btn-dark { background:var(--surface); border-color:var(--border-strong); color:var(--text); }
 .btn-dark:hover { background:var(--surface-2); border-color:#4a4a4e; transform:translateY(-2px); }
-.btn-small { padding:.6rem 1.3rem; border-radius:10px; font-size:.88rem; }
-.page-hero { padding:10rem 1.5rem 3rem; text-align:center; background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.05), transparent 70%); }
-.section-tag { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); letter-spacing:.05em; display:block; margin-bottom:1rem; }
-.page-hero h1 { font-family:var(--font-serif); font-size:clamp(2.2rem,5vw,3.6rem); font-weight:500; line-height:1.15; margin-bottom:1rem; }
+.btn-small { padding:.6rem 1.3rem; border-radius:999px; font-size:.88rem; }
+.page-hero { padding:10rem 1.5rem 3rem; text-align:center;  }
+.section-tag { margin-bottom:1.2rem; }
+.page-hero h1 { font-family:var(--font-serif); font-size:clamp(2.6rem,7vw,4.6rem); font-weight:900; line-height:.95; margin-bottom:1rem; }
 .page-hero h1 em { font-style:italic; }
 .count { font-family:var(--font-mono); font-size:.8rem; color:var(--text-dim); margin-bottom:2.5rem; }
 .filters { display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; max-width:800px; margin:0 auto; }
@@ -35,7 +36,7 @@ nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,.85); backdrop
 main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 /* Masonry: las piezas conviven con formatos distintos sin huecos */
 .d-grid { columns:2; column-gap:1rem; }
-.d-card { break-inside:avoid; margin-bottom:1rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; cursor:pointer; transition:all .3s ease; animation:fadeIn .4s ease both; }
+.d-card { break-inside:avoid; margin-bottom:1rem; background:var(--surface); border:1px solid var(--border); border-radius:4px; overflow:hidden; cursor:pointer; transition:all .3s ease; animation:fadeIn .4s ease both; }
 .d-card:hover { transform:translateY(-4px); border-color:var(--border-strong); }
 @media (min-width:700px){ .d-grid { columns:3; column-gap:1.5rem; } .d-card { margin-bottom:1.5rem; } }
 @media (min-width:1000px){ .d-grid { columns:4; } }
@@ -50,20 +51,20 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 .d-card:hover .d-thumb img { transform:scale(1.05); }
 .d-body { padding:1.4rem; }
 .d-tag { display:inline-block; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-soft); background:var(--surface-2); border:1px solid var(--border-strong); padding:.25rem .6rem; border-radius:6px; margin-bottom:.9rem; }
-.d-body h3 { font-family:var(--font-serif); font-size:1.2rem; font-weight:500; margin-bottom:.5rem; }
+.d-body h3 { font-family:var(--font-serif); font-size:1.15rem; font-weight:700; letter-spacing:-.02em; margin-bottom:.5rem; }
 .d-body p { color:var(--text-muted); font-size:.92rem; }
 .empty { text-align:center; padding:5rem 1rem; font-family:var(--font-mono); font-size:.85rem; color:var(--text-dim); }
 .lb { position:fixed; inset:0; background:rgba(5,5,5,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:300; display:none; align-items:center; justify-content:center; padding:1.5rem; }
 .lb.open { display:flex; }
 .lb-inner { position:relative; max-width:min(560px,92vw); width:100%; }
-.lb-imgwrap { background:#000; border:1px solid var(--border-strong); border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.lb-imgwrap { background:#000; border:1px solid var(--border-strong); border-radius:4px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
 .lb-imgwrap.r45 { aspect-ratio:4/5; } .lb-imgwrap.r169 { aspect-ratio:16/9; } .lb-imgwrap.r11 { aspect-ratio:1/1; } .lb-imgwrap.r916 { aspect-ratio:9/16; }
 .lb-imgwrap img { width:100%; height:100%; object-fit:contain; }
 .lb-info { margin-top:1rem; text-align:center; }
 .lb-info .d-tag { margin-bottom:.6rem; }
-.lb-info h3 { font-family:var(--font-serif); font-size:1.3rem; font-weight:500; margin-bottom:.3rem; }
+.lb-info h3 { font-family:var(--font-serif); font-size:1.3rem; font-weight:700; letter-spacing:-.02em; margin-bottom:.3rem; }
 .lb-info p { color:var(--text-muted); font-size:.92rem; }
-.lb-btn { position:absolute; width:44px; height:44px; background:rgba(20,20,21,.85); border:1px solid var(--border-strong); border-radius:12px; color:var(--text); font-size:1.05rem; cursor:pointer; transition:all .25s ease; z-index:5; }
+.lb-btn { position:absolute; width:44px; height:44px; background:rgba(20,20,21,.85); border:1px solid var(--border-strong); border-radius:4px; color:var(--text); font-size:1.05rem; cursor:pointer; transition:all .25s ease; z-index:5; }
 .lb-btn:hover { background:var(--white); color:var(--black); }
 .lb-close { top:-14px; right:-14px; }
 .lb-prev { left:-60px; top:50%; transform:translateY(-50%); }
@@ -75,18 +76,25 @@ main { max-width:1200px; margin:0 auto; padding:3rem 1.5rem 6rem; }
 }
 footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; font-family:var(--font-mono); font-size:.78rem; color:var(--text-dim); }
 @media (max-width:600px) { .logo-badge { display:none; } .nav-container { padding:1rem 1.25rem; } }
+
+/* Marca robtega.visual */
+h1, h2 { font-family:var(--font-serif) !important; font-weight:900 !important; letter-spacing:-.035em !important; }
+h1 em, h2 em { font-style:normal !important; color:inherit !important; }
+.brand-label { font-family:var(--font-serif); font-weight:500; font-size:.86rem; letter-spacing:.01em; text-transform:none; color:var(--text); display:inline-flex; gap:.3rem; align-items:baseline; }
+.brand-label sup { color:var(--rec); font-size:.68rem; }
+.logo svg { display:block; overflow:visible; }
 </style>
 </head>
 <body>
 <nav>
   <div class="nav-container">
-    <a href="index.html" class="logo"><span class="logo-name">Robert</span><span class="logo-badge">Video Editor & Graphic Designer</span></a>
+    <a href="index.html" class="logo" aria-label="robtega.visual, inicio"><svg viewBox="-2 -2 377 439" width="18" aria-hidden="true"><path fill="#F2EDE3" d="M0 10H152V78C176 28 220 0 265 0C282 0 295 2 305 4V137C292 134 270 132 245 132C185 132 152 167 152 242V434H0Z"/><circle fill="#F24D2F" cx="308" cy="370" r="65"/></svg></a>
     <a href="index.html" class="btn btn-dark btn-small">← Volver al inicio</a>
   </div>
 </nav>
 
 <header class="page-hero">
-  <span class="section-tag">// Diseño & Social Media</span>
+  <span class="section-tag brand-label"><sup>(02)</sup>Diseño y social media</span>
   <h1 id="page-title">Proyectos de <em>diseño</em></h1>
   <p class="count" id="page-count"></p>
   <div class="filters" id="filters"></div>
@@ -97,7 +105,7 @@ footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:c
   <div class="empty" id="empty" style="display:none;">-- Aún no hay proyectos en esta categoría. Vuelve pronto. --</div>
 </main>
 
-<footer>© 2026 Robert — Video Editor & Graphic Designer</footer>
+<footer>© 2026 robtega.visual</footer>
 
 <div class="lb" id="lb">
   <div class="lb-inner">
@@ -159,7 +167,7 @@ function ir(k){
 function pintarGrid(){
   listaActual=DISENO.piezas.filter(p=>p.categoria===current);
   pageTitle.innerHTML="Proyectos de <em>"+(DISENO.categorias[current]||"diseño")+"</em>";
-  pageCount.textContent="// "+String(listaActual.length).padStart(2,"0")+(listaActual.length===1?" proyecto":" proyectos");
+  pageCount.textContent=""+String(listaActual.length).padStart(2,"0")+(listaActual.length===1?" proyecto":" proyectos");
   empty.style.display=listaActual.length?"none":"block";
   grid.innerHTML="";
   listaActual.forEach((p,i)=>{
