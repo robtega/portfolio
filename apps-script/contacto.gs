@@ -1,5 +1,5 @@
 /**
- * Formulario de contacto de robtega.visual
+ * Formulario de contacto de robtegavisual
  * Recibe los envíos del portafolio, te manda un correo y guarda cada respuesta en una hoja de Google Sheets.
  *
  * Se pega en script.google.com y se publica como "Aplicación web" (ver pasos en el chat).
@@ -64,7 +64,7 @@ function enviarCorreo(x) {
     "Recibido el " + Utilities.formatDate(x.fecha, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm"),
   ];
   const valido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.email);
-  const opciones = { to: CORREO_DESTINO, subject: asunto, body: lineas.join("\n"), name: "Portafolio robtega.visual" };
+  const opciones = { to: CORREO_DESTINO, subject: asunto, body: lineas.join("\n"), name: "Portafolio robtegavisual" };
   if (valido) opciones.replyTo = x.email; // Al pulsar "Responder" en Gmail le contestas al cliente
   MailApp.sendEmail(opciones);
 }
@@ -144,7 +144,7 @@ function respuesta(obj) {
 
 // Abrir el link en el navegador muestra esto: sirve para comprobar que está publicado
 function doGet() {
-  return respuesta({ ok: true, mensaje: "Formulario de robtega.visual activo" });
+  return respuesta({ ok: true, mensaje: "Formulario de robtegavisual activo" });
 }
 
 // Ejecuta esta función desde el editor para recibir un correo de prueba
