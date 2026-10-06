@@ -91,7 +91,8 @@
     "instagramUser": "@robtega.visual",
     "whatsapp": "+58 424 330 6937",
     "whatsappLink": "https://wa.me/584243306937?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto.",
-    "email": "robtegacontact@gmail.com"
+    "email": "robtegacontact@gmail.com",
+    "formulario": "https://script.google.com/macros/s/AKfycbyNkXHiTFUb4kEAmHhOKG77p_QrgxQE-Q5e4mSXPwcCRawHXYe8S51jz6rB6zhpybYTMA/exec"
   },
   "visibilidad": {
     "especialidades": true,
