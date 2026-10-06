@@ -69,6 +69,27 @@ h1 em, h2 em { font-style:normal !important; color:inherit !important; }
 .brand-label { font-family:var(--font-serif); font-weight:500; font-size:.86rem; letter-spacing:.01em; text-transform:none; color:var(--text); display:inline-flex; gap:.3rem; align-items:baseline; }
 .brand-label sup { color:var(--rec); font-size:.68rem; }
 .logo svg { display:block; overflow:visible; }
+
+/* Lista compacta de videos: una fila por video, se despliega al tocar */
+.vfilter { display:grid; grid-template-columns:1fr auto; gap:.6rem; margin-bottom:.9rem; }
+.vfilter select { width:auto; }
+.vcount { font-size:.8rem; color:var(--text-muted); margin-bottom:.6rem; }
+.vitem { background:var(--surface); border:1px solid var(--border); border-radius:4px; margin-bottom:.5rem; }
+.vitem[open] { border-color:var(--border-strong); }
+.vitem > summary { list-style:none; display:grid; grid-template-columns:40px minmax(0,1fr) auto; gap:.9rem; align-items:center; padding:.6rem .9rem .6rem .6rem; cursor:pointer; }
+.vitem > summary::-webkit-details-marker { display:none; }
+.vthumb { width:40px; aspect-ratio:9/16; border-radius:3px; background:var(--surface-2) center/cover no-repeat; }
+.vthumb.h { aspect-ratio:16/9; align-self:center; }
+.vinfo { min-width:0; display:grid; gap:.1rem; }
+.vinfo b { font-family:var(--font-serif); font-weight:700; font-size:.98rem; letter-spacing:-.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.vinfo span { font-size:.76rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.vmeta { display:flex; align-items:center; gap:.6rem; font-size:.76rem; color:var(--text-muted); }
+.vmeta .st { color:var(--rec); }
+.vmeta .arrow { transition:transform .2s ease; }
+.vitem[open] .vmeta .arrow { transform:rotate(180deg); }
+.vbody { padding:0 1.2rem 1.2rem; border-top:1px solid var(--border); }
+.catbox > summary { cursor:pointer; font-family:var(--font-serif); font-weight:500; font-size:.86rem; color:var(--text-muted); }
+.catbox[open] > summary { margin-bottom:.8rem; }
 </style>
 </head>
 <body>
@@ -114,15 +135,20 @@ h1 em, h2 em { font-style:normal !important; color:inherit !important; }
     </div>
 
     <section id="tab-videos">
-      <div class="box">
-        <label style="margin-top:0;">Categorías de videos</label>
+      <details class="box catbox">
+        <summary>Categorías de videos (toca para editarlas)</summary>
         <div class="chips" id="cats"></div>
         <div class="row" style="margin-top:1rem;">
           <input id="newcat" placeholder="Nueva categoría (ej: Documental)">
           <button class="btn btn-dark" onclick="addCat()">+ Agregar categoría</button>
         </div>
-      </div>
+      </details>
       <div class="topbar"><h1 style="margin:0; font-size:1.4rem;">Videos</h1><button class="btn btn-dark" onclick="addVideo()">+ Agregar video</button></div>
+      <div class="vfilter">
+        <input id="vsearch" placeholder="Buscar video por título">
+        <select id="vcat"><option value="">Todas las categorías</option></select>
+      </div>
+      <p class="vcount" id="vcount"></p>
       <div id="list"></div>
     </section>
 
@@ -297,19 +323,53 @@ function addCat(){
 }
 function addVideo(){
   const primera=Object.keys(DATA.categorias)[0];
-  DATA.videos.unshift({titulo:"Nuevo video",categoria:primera?[primera]:[],formato:"9:16",video:"",thumb:"",hover:"",destacado:false,descripcion:""});
+  const nuevo={titulo:"Nuevo video",categoria:primera?[primera]:[],formato:"9:16",video:"",thumb:"",hover:"",destacado:false,descripcion:""};
+  DATA.videos.unshift(nuevo); ABIERTOS.add(nuevo);
+  $("#vsearch").value=""; $("#vcat").value="";
   renderList(); status("Video agregado arriba. Complétalo y ⬆ Publicar.");
 }
+/* Qué videos están desplegados (se recuerda al volver a dibujar la lista) */
+const ABIERTOS=new WeakSet();
+const thumbCache={};
+function miniatura(v,el){
+  if(v.thumb){ el.style.backgroundImage="url('"+v.thumb+"')"; return; }
+  const raw=String(v.video||"");
+  const yt=raw.match(/(?:v=|youtu\.be\/|\/shorts\/|\/embed\/)([A-Za-z0-9_-]{11})/);
+  if(yt){ el.style.backgroundImage="url('https://i.ytimg.com/vi/"+yt[1]+"/mqdefault.jpg')"; return; }
+  const vm=raw.match(/vimeo\.com\/(?:video\/)?(\d+)/); if(!vm)return;
+  if(!thumbCache[vm[1]]) thumbCache[vm[1]]=fetch("https://vimeo.com/api/oembed.json?width=200&url="+encodeURIComponent("https://vimeo.com/"+vm[1])).then(r=>r.json()).then(d=>d.thumbnail_url||"").catch(()=>"");
+  thumbCache[vm[1]].then(u=>{ if(u)el.style.backgroundImage="url('"+u+"')"; });
+}
+function pintarFiltroCats(){
+  const sel=$("#vcat"), prev=sel.value;
+  sel.innerHTML='<option value="">Todas las categorías</option>'+Object.keys(DATA.categorias).map(k=>'<option value="'+k+'">'+esc(DATA.categorias[k])+'</option>').join("");
+  sel.value=DATA.categorias[prev]?prev:"";
+}
+$("#vsearch").addEventListener("input",()=>renderList());
+$("#vcat").addEventListener("change",()=>renderList());
 function renderList(){
+  pintarFiltroCats();
+  const q=$("#vsearch").value.trim().toLowerCase(), fc=$("#vcat").value;
   const box=$("#list"); box.innerHTML="";
+  let visibles=0;
   DATA.videos.forEach((v,i)=>{
-    const el=document.createElement("div"); el.className="box";
+    if(q&&!String(v.titulo||"").toLowerCase().includes(q))return;
+    if(fc&&!cats(v).includes(fc))return;
+    visibles++;
+    const el=document.createElement("details"); el.className="vitem";
+    if(ABIERTOS.has(v))el.open=true;
+    el.addEventListener("toggle",()=>{ if(el.open)ABIERTOS.add(v); else ABIERTOS.delete(v); });
     let chips="";
     for(const k in DATA.categorias){
       chips+='<button type="button" class="chip cat-chip'+(cats(v).includes(k)?" on":"")+'" data-c="'+k+'" data-i="'+i+'">'+esc(DATA.categorias[k])+'</button>';
     }
+    const catTxt=cats(v).map(c=>DATA.categorias[c]||c).join(" · ")||"Sin categoría";
     el.innerHTML=
-      '<div class="vhead"><strong>'+esc(v.titulo||"Sin título")+'</strong><button class="del" data-i="'+i+'">Eliminar</button></div>'+
+      '<summary><span class="vthumb'+(fmtDe(v)==="16:9"?" h":"")+'"></span>'+
+      '<span class="vinfo"><b class="vt">'+esc(v.titulo||"Sin título")+'</b><span>'+esc(catTxt)+'</span></span>'+
+      '<span class="vmeta">'+(v.destacado?'<span class="st" title="Destacado en el inicio">★</span>':'')+'<span>'+fmtDe(v)+'</span><span class="arrow">▾</span></span></summary>'+
+      '<div class="vbody">'+
+      '<div class="vhead" style="margin-top:1rem;"><span></span><button class="del" data-i="'+i+'">Eliminar</button></div>'+
       '<div class="row"><div><label>Título</label><input data-f="titulo" data-i="'+i+'" value="'+esc(v.titulo)+'"></div>'+
       '<div><label>Link del video (pégalo tal cual)</label><input data-f="video" data-i="'+i+'" value="'+esc(v.video)+'" placeholder="https://youtube.com/watch?v=… o https://vimeo.com/…"></div></div>'+
       '<label>Categorías — toca para activar / desactivar</label><div class="chips">'+chips+'</div>'+
@@ -320,11 +380,18 @@ function renderList(){
       '<button type="button" class="star'+(v.destacado?" on":"")+'" data-star data-i="'+i+'">'+(v.destacado?"★":"☆")+'&nbsp;Destacado en el inicio</button>'+
       '<label>Descripción</label><textarea data-f="descripcion" data-i="'+i+'">'+esc(v.descripcion)+'</textarea>'+
       '<div class="row"><div><label>Portada propia (opcional, vertical 1080×1920)</label><input data-f="thumb" data-i="'+i+'" value="'+esc(v.thumb)+'" placeholder="img/portada-mi-reel.jpg"></div>'+
-      '<div><label>Hover preview (opcional)</label><input data-f="hover" data-i="'+i+'" value="'+esc(v.hover)+'" placeholder="URL de GIF o MP4"></div></div>';
+      '<div><label>Hover preview (opcional)</label><input data-f="hover" data-i="'+i+'" value="'+esc(v.hover)+'" placeholder="URL de GIF o MP4"></div></div>'+
+      '</div>';
     box.appendChild(el);
+    miniatura(v,el.querySelector(".vthumb"));
   });
+  const total=DATA.videos.length;
+  $("#vcount").textContent=(visibles===total?total+" videos":visibles+" de "+total+" videos")+". Toca uno para editarlo.";
   box.querySelectorAll("input[data-f], textarea[data-f]").forEach(inp=>{
-    inp.addEventListener("input",()=>{DATA.videos[inp.dataset.i][inp.dataset.f]=inp.value;});
+    inp.addEventListener("input",()=>{
+      DATA.videos[inp.dataset.i][inp.dataset.f]=inp.value;
+      if(inp.dataset.f==="titulo"){ const t=inp.closest(".vitem").querySelector(".vt"); if(t)t.textContent=inp.value||"Sin título"; }
+    });
   });
   box.querySelectorAll(".cat-chip").forEach(b=>{
     b.onclick=()=>{ const v=DATA.videos[+b.dataset.i]; let arr=cats(v).slice(); const k=b.dataset.c;
@@ -337,7 +404,9 @@ function renderList(){
   });
   box.querySelectorAll("[data-star]").forEach(b=>{
     b.onclick=()=>{ const v=DATA.videos[+b.dataset.i]; v.destacado=!v.destacado;
-      b.classList.toggle("on",v.destacado); b.innerHTML=(v.destacado?"★":"☆")+"&nbsp;Destacado en el inicio"; };
+      b.classList.toggle("on",v.destacado); b.innerHTML=(v.destacado?"★":"☆")+"&nbsp;Destacado en el inicio";
+      const m=b.closest(".vitem").querySelector(".vmeta"); const st=m.querySelector(".st");
+      if(v.destacado&&!st)m.insertAdjacentHTML("afterbegin",'<span class="st" title="Destacado en el inicio">★</span>'); else if(!v.destacado&&st)st.remove(); };
   });
   box.querySelectorAll(".del").forEach(b=>{
     b.onclick=()=>{ if(confirm("¿Eliminar este video?")){ DATA.videos.splice(+b.dataset.i,1); renderList(); status("Video eliminado. Recuerda ⬆ Publicar."); } };
