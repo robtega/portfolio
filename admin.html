@@ -90,6 +90,22 @@ h1 em, h2 em { font-style:normal !important; color:inherit !important; }
 .vbody { padding:0 1.2rem 1.2rem; border-top:1px solid var(--border); }
 .catbox > summary { cursor:pointer; font-family:var(--font-serif); font-weight:500; font-size:.86rem; color:var(--text-muted); }
 .catbox[open] > summary { margin-bottom:.8rem; }
+
+/* Secciones plegables de las pestañas Diseño e Inicio */
+.sec { padding:0; }
+.sec > summary { list-style:none; display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 1.3rem; cursor:pointer; }
+.sec > summary::-webkit-details-marker { display:none; }
+.sec > summary b { font-family:var(--font-serif); font-weight:700; font-size:1.02rem; letter-spacing:-.02em; }
+.sec > summary span.pv { font-size:.78rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; text-align:right; }
+.sec > summary .arrow { color:var(--text-muted); font-size:.76rem; transition:transform .2s ease; flex:none; }
+.sec[open] > summary .arrow { transform:rotate(180deg); }
+.sec > .secbody { padding:0 1.3rem 1.3rem; border-top:1px solid var(--border); }
+.sec > .secbody > label:first-child { margin-top:1rem; }
+.sec .vitem { background:var(--surface-2); }
+/* Filas cortas en una sola línea: valor, etiqueta, borrar */
+.line { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto; gap:.5rem; align-items:center; margin-top:.5rem; }
+.line .del { white-space:nowrap; }
+.addrow { margin-top:.9rem; }
 </style>
 </head>
 <body>
@@ -153,53 +169,77 @@ h1 em, h2 em { font-style:normal !important; color:inherit !important; }
     </section>
 
     <section id="tab-diseno" hidden>
-      <div class="box">
-        <label style="margin-top:0;">Categorías de diseño</label>
+      <details class="box catbox">
+        <summary>Categorías de diseño (toca para editarlas)</summary>
         <div class="chips" id="discats"></div>
         <div class="row" style="margin-top:1rem;">
           <input id="newdiscat" placeholder="Nueva categoría (ej: Branding)">
           <button class="btn btn-dark" onclick="addDisCat()">+ Agregar categoría</button>
         </div>
-      </div>
+      </details>
       <div class="topbar"><h1 style="margin:0; font-size:1.4rem;">Piezas de diseño</h1><button class="btn btn-dark" onclick="addPieza()">+ Agregar pieza</button></div>
+      <div class="vfilter">
+        <input id="psearch" placeholder="Buscar pieza por título">
+        <select id="pcat"><option value="">Todas las categorías</option></select>
+      </div>
+      <p class="vcount" id="pcount"></p>
       <div id="piezas-list"></div>
     </section>
 
     <section id="tab-inicio" hidden>
-      <div class="box">
-        <label style="margin-top:0;">Secciones visibles en el inicio — toca para mostrar / ocultar</label>
-        <div class="chips" id="vis-list"></div>
-      </div>
-      <div class="box"><label style="margin-top:0;">Números (clientes, proyectos, vistas)</label><div id="stats-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStat()">+ Stat</button></div>
-      <div class="box">
-        <label style="margin-top:0;">Título principal (inicio / parte central / final). Si termina en punto, el punto sale en rojo como en el logo.</label>
-        <input id="s-pre" placeholder="Inicio, ej: Tú grabas.">
-        <input id="s-enf" style="margin-top:.5rem;" placeholder="Parte central, ej: Yo me encargo">
-        <input id="s-post" style="margin-top:.5rem;" placeholder="Final, ej: del resto.">
-        <label>Texto bajo los números</label>
-        <textarea id="s-sub"></textarea>
-      </div>
-      <div class="box"><label style="margin-top:0;">Especialidades</label><div id="esp-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addEsp()">+ Especialidad</button></div>
-      <div class="box"><label style="margin-top:0;">Teaser de Diseño en el inicio (cards)</label><div id="dis-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addTeaser()">+ Card</button></div>
-      <div class="box"><label style="margin-top:0;">Stack</label><div id="stack-list"></div><button class="btn btn-dark" style="margin-top:.9rem;" onclick="addStack()">+ Herramienta</button></div>
-      <div class="box">
-        <label style="margin-top:0;">Contacto — título</label>
-        <input id="c-tit">
-        <label>Contacto — descripción</label>
-        <textarea id="c-desc"></textarea>
-        <div class="row" style="margin-top:.5rem;">
-          <div><label>Email</label><input id="c-email" placeholder="tucorreo@gmail.com"></div>
-          <div><label>WhatsApp (con código de país)</label><input id="c-wa" placeholder="+58 424 330 6937"></div>
+      <p class="vcount">Toca una sección para editarla.</p>
+      <details class="box sec">
+        <summary><b>Título principal</b><span class="pv" id="pv-hero"></span><span class="arrow">▾</span></summary>
+        <div class="secbody">
+          <label>Frase en tres partes (inicio / parte central / final). Si termina en punto, el punto sale en rojo como en el logo.</label>
+          <input id="s-pre" placeholder="Inicio, ej: Tú grabas.">
+          <input id="s-enf" style="margin-top:.5rem;" placeholder="Parte central, ej: Yo me encargo">
+          <input id="s-post" style="margin-top:.5rem;" placeholder="Final, ej: del resto.">
+          <label>Texto bajo los números</label>
+          <textarea id="s-sub"></textarea>
         </div>
-        <div class="row" style="margin-top:.5rem;">
-          <div><label>Usuario Instagram (visible)</label><input id="c-ig-user" placeholder="@robert"></div>
-          <div><label>URL LinkedIn</label><input id="c-li"></div>
+      </details>
+      <details class="box sec">
+        <summary><b>Números</b><span class="pv" id="pv-stats"></span><span class="arrow">▾</span></summary>
+        <div class="secbody"><label>Valor y etiqueta (ej: +30 / Clientes atendidos)</label><div id="stats-list"></div><button class="btn btn-dark addrow" onclick="addStat()">+ Número</button></div>
+      </details>
+      <details class="box sec">
+        <summary><b>Servicios</b><span class="pv" id="pv-esp"></span><span class="arrow">▾</span></summary>
+        <div class="secbody"><label>Toca un servicio para editarlo</label><div id="esp-list"></div><button class="btn btn-dark addrow" onclick="addEsp()">+ Servicio</button></div>
+      </details>
+      <details class="box sec">
+        <summary><b>Herramientas</b><span class="pv" id="pv-stack"></span><span class="arrow">▾</span></summary>
+        <div class="secbody"><label>Herramienta y para qué la usas</label><div id="stack-list"></div><button class="btn btn-dark addrow" onclick="addStack()">+ Herramienta</button></div>
+      </details>
+      <details class="box sec">
+        <summary><b>Contacto</b><span class="pv" id="pv-contacto"></span><span class="arrow">▾</span></summary>
+        <div class="secbody">
+          <label>Título</label>
+          <input id="c-tit">
+          <label>Descripción</label>
+          <textarea id="c-desc"></textarea>
+          <div class="row" style="margin-top:.5rem;">
+            <div><label>Email</label><input id="c-email" placeholder="tucorreo@gmail.com"></div>
+            <div><label>WhatsApp (con código de país)</label><input id="c-wa" placeholder="+58 424 330 6937"></div>
+          </div>
+          <div class="row" style="margin-top:.5rem;">
+            <div><label>Usuario Instagram (visible)</label><input id="c-ig-user" placeholder="@robtega.visual"></div>
+            <div><label>URL LinkedIn</label><input id="c-li"></div>
+          </div>
+          <div class="row" style="margin-top:.5rem;">
+            <div><label>URL Instagram</label><input id="c-ig"></div>
+            <div><div class="note">El link de WhatsApp se genera solo, con un mensaje listo para el cliente.</div></div>
+          </div>
         </div>
-        <div class="row" style="margin-top:.5rem;">
-          <div><label>URL Instagram</label><input id="c-ig"></div>
-          <div><div class="note">El link de WhatsApp se genera automáticamente con un mensaje prellenado para el cliente.</div></div>
-        </div>
-      </div>
+      </details>
+      <details class="box sec">
+        <summary><b>Secciones visibles</b><span class="pv" id="pv-vis"></span><span class="arrow">▾</span></summary>
+        <div class="secbody"><label>Toca para mostrar u ocultar en el inicio</label><div class="chips" id="vis-list"></div></div>
+      </details>
+      <details class="box sec">
+        <summary><b>Tarjetas de diseño</b><span class="pv">No se muestran en el inicio actual</span><span class="arrow">▾</span></summary>
+        <div class="secbody"><label>Se guardan por si vuelves a mostrar diseño en el inicio</label><div id="dis-list"></div><button class="btn btn-dark addrow" onclick="addTeaser()">+ Tarjeta</button></div>
+      </details>
     </section>
   </section>
 </div>
@@ -434,38 +474,77 @@ function addDisCat(){
   renderDisCats(); renderPiezas(); status("Categoría de diseño agregada. Recuerda ⬆ Publicar.");
 }
 function addPieza(){
-  DIS.piezas.unshift({titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",formato:"4:5",img:"",descripcion:""});
+  const nueva={titulo:"Nueva pieza",categoria:Object.keys(DIS.categorias)[0]||"",formato:"4:5",img:"",descripcion:""};
+  DIS.piezas.unshift(nueva); ABIERTOS.add(nueva);
+  $("#psearch").value=""; $("#pcat").value="";
   renderPiezas(); status("Pieza agregada arriba. Complétala y ⬆ Publicar.");
 }
+function pintarFiltroDis(){
+  const sel=$("#pcat"), prev=sel.value;
+  sel.innerHTML='<option value="">Todas las categorías</option>'+Object.keys(DIS.categorias).map(k=>'<option value="'+k+'">'+esc(DIS.categorias[k])+'</option>').join("");
+  sel.value=DIS.categorias[prev]?prev:"";
+}
+$("#psearch").addEventListener("input",()=>renderPiezas());
+$("#pcat").addEventListener("change",()=>renderPiezas());
 function renderPiezas(){
+  pintarFiltroDis();
+  const q=$("#psearch").value.trim().toLowerCase(), fc=$("#pcat").value;
   const box=$("#piezas-list"); box.innerHTML="";
+  let visibles=0;
   DIS.piezas.forEach((p,i)=>{
+    if(q&&!String(p.titulo||"").toLowerCase().includes(q))return;
+    if(fc&&p.categoria!==fc)return;
+    visibles++;
     let opts="";
     for(const k in DIS.categorias){ opts+='<option value="'+k+'"'+((p.categoria||"")===k?" selected":"")+'>'+esc(DIS.categorias[k])+"</option>"; }
-    const el=document.createElement("div"); el.className="box";
+    const el=document.createElement("details"); el.className="vitem";
+    if(ABIERTOS.has(p))el.open=true;
+    el.addEventListener("toggle",()=>{ if(el.open)ABIERTOS.add(p); else ABIERTOS.delete(p); });
+    const f=p.formato||"4:5", horiz=f==="16:9"||f==="1:1";
     el.innerHTML=
-      '<div class="vhead"><strong>'+esc(p.titulo||"Sin título")+'</strong><button class="del" data-i="'+i+'">Eliminar</button></div>'+
+      '<summary><span class="vthumb'+(horiz?" h":"")+'"></span>'+
+      '<span class="vinfo"><b class="vt">'+esc(p.titulo||"Sin título")+'</b><span class="vc">'+esc(DIS.categorias[p.categoria]||"Sin categoría")+'</span></span>'+
+      '<span class="vmeta"><span class="vf">'+f+'</span><span class="arrow">▾</span></span></summary>'+
+      '<div class="vbody">'+
+      '<div class="vhead" style="margin-top:1rem;"><span></span><button class="del">Eliminar</button></div>'+
       '<div class="row"><div><label>Título</label><input class="p-t" value="'+esc(p.titulo)+'"></div>'+
       '<div><label>Categoría</label><select class="p-c">'+opts+'</select></div></div>'+
       '<label>Formato de la pieza</label><div class="chips">'+
-        ["4:5","16:9","1:1","9:16"].map(f=>'<button type="button" class="chip pfmt-chip'+((p.formato||"4:5")===f?" on":"")+'" data-f="'+f+'" data-i="'+i+'">'+f+'</button>').join("")+
+        ["4:5","16:9","1:1","9:16"].map(x=>'<button type="button" class="chip pfmt-chip'+(f===x?" on":"")+'" data-f="'+x+'">'+x+'</button>').join("")+
       '</div>'+
       '<label>Imagen (ruta o URL)</label><input class="p-i" value="'+esc(p.img)+'" placeholder="img/diseno/mi-pieza.jpg">'+
-      '<label>Descripción</label><textarea class="p-d">'+esc(p.descripcion)+'</textarea>';
-    el.querySelector(".p-t").addEventListener("input",ev=>p.titulo=ev.target.value);
-    el.querySelector(".p-c").addEventListener("change",ev=>p.categoria=ev.target.value);
-    el.querySelector(".p-i").addEventListener("input",ev=>p.img=ev.target.value);
+      '<label>Descripción</label><textarea class="p-d">'+esc(p.descripcion)+'</textarea>'+
+      '</div>';
+    const th=el.querySelector(".vthumb"); if(p.img)th.style.backgroundImage="url('"+p.img+"')";
+    el.querySelector(".p-t").addEventListener("input",ev=>{ p.titulo=ev.target.value; el.querySelector(".vt").textContent=p.titulo||"Sin título"; });
+    el.querySelector(".p-c").addEventListener("change",ev=>{ p.categoria=ev.target.value; el.querySelector(".vc").textContent=DIS.categorias[p.categoria]||"Sin categoría"; });
+    el.querySelector(".p-i").addEventListener("input",ev=>{ p.img=ev.target.value; th.style.backgroundImage=p.img?"url('"+p.img+"')":""; });
     el.querySelector(".p-d").addEventListener("input",ev=>p.descripcion=ev.target.value);
+    el.querySelectorAll(".pfmt-chip").forEach(b=>{
+      b.onclick=()=>{ p.formato=b.dataset.f; el.querySelectorAll(".pfmt-chip").forEach(x=>x.classList.toggle("on",x===b));
+        el.querySelector(".vf").textContent=p.formato; th.classList.toggle("h",p.formato==="16:9"||p.formato==="1:1"); };
+    });
     el.querySelector(".del").onclick=()=>{ if(confirm("¿Eliminar esta pieza?")){ DIS.piezas.splice(i,1); renderPiezas(); status("Pieza eliminada. Recuerda ⬆ Publicar."); } };
     box.appendChild(el);
   });
-  box.querySelectorAll(".pfmt-chip").forEach(b=>{
-    b.onclick=()=>{ const p=DIS.piezas[+b.dataset.i]; p.formato=b.dataset.f;
-      box.querySelectorAll('.pfmt-chip[data-i="'+b.dataset.i+'"]').forEach(x=>x.classList.toggle("on",x.dataset.f===p.formato)); };
-  });
+  const total=DIS.piezas.length;
+  $("#pcount").textContent=(visibles===total?total+" piezas":visibles+" de "+total+" piezas")+". Toca una para editarla.";
 }
 
 /* ---------- INICIO ---------- */
+function resumenes(){
+  if(!SITE)return;
+  const h=SITE.hero||{};
+  $("#pv-hero").textContent=((h.pre||"")+(h.enfasis||"")+(h.post||"")).trim();
+  $("#pv-stats").textContent=(SITE.stats||[]).map(x=>x.valor).join(" · ");
+  $("#pv-esp").textContent=(SITE.especialidades||[]).length+" servicios";
+  $("#pv-stack").textContent=(SITE.stack||[]).length+" herramientas";
+  const c=SITE.contacto||{}; $("#pv-contacto").textContent=c.email||c.whatsapp||"";
+  const v=SITE.visibilidad||{}, nom={especialidades:"Servicios",videos:"Videos",stack:"Herramientas"};
+  $("#pv-vis").textContent=Object.keys(nom).filter(k=>v[k]!==false).map(k=>nom[k]).join(" · ");
+}
+document.addEventListener("input",e=>{ if(e.target.closest("#tab-inicio"))resumenes(); });
+document.addEventListener("click",e=>{ if(e.target.closest("#vis-list"))setTimeout(resumenes,0); });
 function bindSiteInputs(){
   $("#s-pre").oninput=e=>SITE.hero.pre=e.target.value;
   $("#s-enf").oninput=e=>SITE.hero.enfasis=e.target.value;
@@ -482,33 +561,31 @@ function bindSiteInputs(){
 function renderVis(){
   SITE.visibilidad=Object.assign({especialidades:true,videos:true,diseno:false,stack:true},SITE.visibilidad||{});
   const box=$("#vis-list"); box.innerHTML="";
-  const nombres={especialidades:"Especialidades",videos:"Videos",diseno:"Diseño",stack:"Stack"};
+  const nombres={especialidades:"Servicios",videos:"Videos",stack:"Herramientas"};
   for(const k in nombres){
     const on=SITE.visibilidad[k]!==false;
     const b=document.createElement("button"); b.type="button";
     b.className="chip"+(on?" on":"");
-    b.textContent=(on?"👁 ":"🚫 ")+nombres[k];
+    b.textContent=nombres[k]+(on?" · visible":" · oculto");
     b.onclick=()=>{ SITE.visibilidad[k]=!SITE.visibilidad[k];
       const ahora=SITE.visibilidad[k]!==false;
-      b.classList.toggle("on",ahora); b.textContent=(ahora?"👁 ":" ")+nombres[k]; };
+      b.classList.toggle("on",ahora); b.textContent=nombres[k]+(ahora?" · visible":" · oculto"); };
     box.appendChild(b);
   }
 }
 function renderStats(){
-  if(!SITE.stats)SITE.stats=[{valor:"+133",label:"Clientes atendidos"},{valor:"+250",label:"Proyectos entregados"},{valor:"+40M",label:"Vistas generadas"},{valor:"<24h",label:"Tiempo de respuesta"}];
+  if(!SITE.stats)SITE.stats=[];
   const box=$("#stats-list"); box.innerHTML="";
-  SITE.stats.forEach((s,i)=>{
-    const d=document.createElement("div"); d.className="sub";
-    d.innerHTML='<div class="row"><div><label>Valor</label><input class="s-v" value="'+esc(s.valor)+'"></div>'+
-      '<div><label>Etiqueta</label><input class="s-l" value="'+esc(s.label)+'"></div></div>'+
-      '<div style="margin-top:.6rem;"><button class="del">Eliminar</button></div>';
-    d.querySelector(".s-v").addEventListener("input",ev=>s.valor=ev.target.value);
-    d.querySelector(".s-l").addEventListener("input",ev=>s.label=ev.target.value);
-    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.stats.splice(i,1);renderStats();}};
+  SITE.stats.forEach((x,i)=>{
+    const d=document.createElement("div"); d.className="line";
+    d.innerHTML='<input class="s-v" value="'+esc(x.valor)+'" placeholder="+30"><input class="s-l" value="'+esc(x.label)+'" placeholder="Clientes atendidos"><button class="del">Eliminar</button>';
+    d.querySelector(".s-v").addEventListener("input",ev=>x.valor=ev.target.value);
+    d.querySelector(".s-l").addEventListener("input",ev=>x.label=ev.target.value);
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.stats.splice(i,1);renderStats();resumenes();}};
     box.appendChild(d);
   });
 }
-function addStat(){SITE.stats=SITE.stats||[];SITE.stats.push({valor:"+0",label:"Nuevo dato"});renderStats();}
+function addStat(){SITE.stats=SITE.stats||[];SITE.stats.push({valor:"+0",label:"Nuevo dato"});renderStats();resumenes();}
 function renderSiteEditor(){
   $("#s-pre").value=SITE.hero.pre||""; $("#s-enf").value=SITE.hero.enfasis||"";
   $("#s-post").value=SITE.hero.post||""; $("#s-sub").value=SITE.hero.sub||"";
@@ -516,27 +593,34 @@ function renderSiteEditor(){
   $("#c-email").value=SITE.contacto.email||""; $("#c-wa").value=SITE.contacto.whatsapp||"";
   $("#c-ig-user").value=SITE.contacto.instagramUser||""; $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";
   if(!SITE.contacto.whatsappLink&&SITE.contacto.whatsapp)SITE.contacto.whatsappLink=waLinkFrom(SITE.contacto.whatsapp);
-  renderEsp(); renderTeaser(); renderStack(); renderVis(); renderStats();
+  renderEsp(); renderTeaser(); renderStack(); renderVis(); renderStats(); resumenes();
+}
+function filaPlegable(obj,titulo,sub){
+  const d=document.createElement("details"); d.className="vitem"; d.style.marginTop=".5rem";
+  if(ABIERTOS.has(obj))d.open=true;
+  d.addEventListener("toggle",()=>{ if(d.open)ABIERTOS.add(obj); else ABIERTOS.delete(obj); });
+  d.innerHTML='<summary style="grid-template-columns:minmax(0,1fr) auto;padding:.7rem .9rem;"><span class="vinfo"><b class="vt">'+esc(titulo)+'</b><span>'+esc(sub)+'</span></span><span class="vmeta"><span class="arrow">▾</span></span></summary><div class="vbody"></div>';
+  return d;
 }
 function renderEsp(){
   const box=$("#esp-list"); box.innerHTML="";
   SITE.especialidades.forEach((e,i)=>{
-    const d=document.createElement("div"); d.className="sub";
-    d.innerHTML='<div class="vhead"><strong>'+esc(e.titulo||"Especialidad")+'</strong><button class="del">Eliminar</button></div>'+
+    const d=filaPlegable(e,e.titulo||"Servicio",e.descripcion||"");
+    d.querySelector(".vbody").innerHTML='<div class="vhead" style="margin-top:1rem;"><span></span><button class="del">Eliminar</button></div>'+
       '<label>Título</label><input class="e-t" value="'+esc(e.titulo)+'">'+
       '<label>Descripción</label><textarea class="e-d">'+esc(e.descripcion)+'</textarea>';
-    d.querySelector(".e-t").addEventListener("input",ev=>e.titulo=ev.target.value);
+    d.querySelector(".e-t").addEventListener("input",ev=>{ e.titulo=ev.target.value; d.querySelector(".vt").textContent=e.titulo||"Servicio"; });
     d.querySelector(".e-d").addEventListener("input",ev=>e.descripcion=ev.target.value);
-    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.especialidades.splice(i,1);renderEsp();}};
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.especialidades.splice(i,1);renderEsp();resumenes();}};
     box.appendChild(d);
   });
 }
-function addEsp(){SITE.especialidades.push({titulo:"Nueva especialidad",descripcion:""});renderEsp();}
+function addEsp(){const n={titulo:"Nuevo servicio",descripcion:""};SITE.especialidades.push(n);ABIERTOS.add(n);renderEsp();resumenes();}
 function renderTeaser(){
   const box=$("#dis-list"); box.innerHTML="";
   SITE.diseno.forEach((c,i)=>{
-    const d=document.createElement("div"); d.className="sub";
-    d.innerHTML='<div class="vhead"><strong>'+esc(c.titulo||"Card")+'</strong><button class="del">Eliminar</button></div>'+
+    const d=filaPlegable(c,c.titulo||"Tarjeta",c.tag||"");
+    d.querySelector(".vbody").innerHTML='<div class="vhead" style="margin-top:1rem;"><span></span><button class="del">Eliminar</button></div>'+
       '<div class="row"><div><label>Etiqueta superior</label><input class="f-et" value="'+esc(c.etiqueta)+'"></div>'+
       '<div><label>Tag</label><input class="f-tag" value="'+esc(c.tag)+'"></div></div>'+
       '<label>Título</label><input class="f-t" value="'+esc(c.titulo)+'">'+
@@ -545,7 +629,7 @@ function renderTeaser(){
       '<div><label>Link</label><input class="f-l" value="'+esc(c.link)+'"></div></div>';
     d.querySelector(".f-et").addEventListener("input",ev=>c.etiqueta=ev.target.value);
     d.querySelector(".f-tag").addEventListener("input",ev=>c.tag=ev.target.value);
-    d.querySelector(".f-t").addEventListener("input",ev=>c.titulo=ev.target.value);
+    d.querySelector(".f-t").addEventListener("input",ev=>{ c.titulo=ev.target.value; d.querySelector(".vt").textContent=c.titulo||"Tarjeta"; });
     d.querySelector(".f-d").addEventListener("input",ev=>c.descripcion=ev.target.value);
     d.querySelector(".f-img").addEventListener("input",ev=>c.img=ev.target.value);
     d.querySelector(".f-l").addEventListener("input",ev=>c.link=ev.target.value);
@@ -556,18 +640,16 @@ function renderTeaser(){
 function addTeaser(){SITE.diseno.push({etiqueta:"NUEVO",tag:"Tag",titulo:"Nueva card",descripcion:"",img:"img/portada.jpg",link:"diseno.html"});renderTeaser();}
 function renderStack(){
   const box=$("#stack-list"); box.innerHTML="";
-  SITE.stack.forEach((s,i)=>{
-    const d=document.createElement("div"); d.className="sub";
-    d.innerHTML='<div class="row"><div><label>Herramienta</label><input class="f-n" value="'+esc(s.nombre)+'"></div>'+
-      '<div><label>Rol</label><input class="f-r" value="'+esc(s.rol)+'"></div></div>'+
-      '<div style="margin-top:.6rem;"><button class="del">Eliminar</button></div>';
-    d.querySelector(".f-n").addEventListener("input",ev=>s.nombre=ev.target.value);
-    d.querySelector(".f-r").addEventListener("input",ev=>s.rol=ev.target.value);
-    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.stack.splice(i,1);renderStack();}};
+  SITE.stack.forEach((x,i)=>{
+    const d=document.createElement("div"); d.className="line";
+    d.innerHTML='<input class="f-n" value="'+esc(x.nombre)+'" placeholder="Premiere Pro"><input class="f-r" value="'+esc(x.rol)+'" placeholder="Edición de video"><button class="del">Eliminar</button>';
+    d.querySelector(".f-n").addEventListener("input",ev=>x.nombre=ev.target.value);
+    d.querySelector(".f-r").addEventListener("input",ev=>x.rol=ev.target.value);
+    d.querySelector(".del").onclick=()=>{if(confirm("¿Eliminar?")){SITE.stack.splice(i,1);renderStack();resumenes();}};
     box.appendChild(d);
   });
 }
-function addStack(){SITE.stack.push({nombre:"Herramienta",rol:"Rol"});renderStack();}
+function addStack(){SITE.stack.push({nombre:"Herramienta",rol:"Rol"});renderStack();resumenes();}
 
 /* ---------- RESTAURAR / PUBLICAR / BACKUP ---------- */
 function restaurar(){
