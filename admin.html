@@ -214,6 +214,8 @@ h1 em, h2 em { font-style:normal !important; color:inherit !important; }
       <details class="box sec">
         <summary><b>Contacto</b><span class="pv" id="pv-contacto"></span><span class="arrow">▾</span></summary>
         <div class="secbody">
+          <label>Link del formulario (programa de Google Apps Script). Si lo dejas vacío, el inicio muestra los botones de WhatsApp y email.</label>
+          <input id="c-form" placeholder="https://script.google.com/macros/s/…/exec">
           <label>Título</label>
           <input id="c-tit">
           <label>Descripción</label>
@@ -539,7 +541,7 @@ function resumenes(){
   $("#pv-stats").textContent=(SITE.stats||[]).map(x=>x.valor).join(" · ");
   $("#pv-esp").textContent=(SITE.especialidades||[]).length+" servicios";
   $("#pv-stack").textContent=(SITE.stack||[]).length+" herramientas";
-  const c=SITE.contacto||{}; $("#pv-contacto").textContent=c.email||c.whatsapp||"";
+  const c=SITE.contacto||{}; $("#pv-contacto").textContent=(c.formulario?"Formulario activo · ":"")+(c.email||c.whatsapp||"");
   const v=SITE.visibilidad||{}, nom={especialidades:"Servicios",videos:"Videos",stack:"Herramientas"};
   $("#pv-vis").textContent=Object.keys(nom).filter(k=>v[k]!==false).map(k=>nom[k]).join(" · ");
 }
@@ -551,6 +553,7 @@ function bindSiteInputs(){
   $("#s-post").oninput=e=>SITE.hero.post=e.target.value;
   $("#s-sub").oninput=e=>SITE.hero.sub=e.target.value;
   $("#c-tit").oninput=e=>SITE.contacto.titulo=e.target.value;
+  $("#c-form").oninput=e=>SITE.contacto.formulario=e.target.value.trim();
   $("#c-desc").oninput=e=>SITE.contacto.descripcion=e.target.value;
   $("#c-email").oninput=e=>SITE.contacto.email=e.target.value;
   $("#c-wa").oninput=e=>{ SITE.contacto.whatsapp=e.target.value; SITE.contacto.whatsappLink=waLinkFrom(e.target.value); };
@@ -589,6 +592,7 @@ function addStat(){SITE.stats=SITE.stats||[];SITE.stats.push({valor:"+0",label:"
 function renderSiteEditor(){
   $("#s-pre").value=SITE.hero.pre||""; $("#s-enf").value=SITE.hero.enfasis||"";
   $("#s-post").value=SITE.hero.post||""; $("#s-sub").value=SITE.hero.sub||"";
+  $("#c-form").value=SITE.contacto.formulario||"";
   $("#c-tit").value=SITE.contacto.titulo||""; $("#c-desc").value=SITE.contacto.descripcion||"";
   $("#c-email").value=SITE.contacto.email||""; $("#c-wa").value=SITE.contacto.whatsapp||"";
   $("#c-ig-user").value=SITE.contacto.instagramUser||""; $("#c-li").value=SITE.contacto.linkedin||""; $("#c-ig").value=SITE.contacto.instagram||"";

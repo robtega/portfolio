@@ -42,6 +42,7 @@ a { color:inherit; text-decoration:none; }
 img { display:block; max-width:100%; }
 a:focus-visible, button:focus-visible { outline:1px solid var(--rec); outline-offset:4px; }
 svg { display:block; overflow:visible; }
+[hidden] { display:none !important; }
 
 /* Etiqueta tipo "(01) Sobre mí" */
 .label { font-family:var(--display); font-weight:500; font-size:.86rem; letter-spacing:.01em; display:inline-flex; align-items:baseline; gap:.3rem; }
@@ -151,6 +152,38 @@ section { padding:clamp(6rem,14vw,11rem) var(--gutter); }
 .contact-links a, .contact-links button { background:none; border:0; color:inherit; font:inherit; cursor:pointer; border-bottom:1px solid var(--line-strong); padding-bottom:3px; transition:color .2s ease, border-color .2s ease; }
 .contact-links a:hover, .contact-links button:hover { color:var(--fg); border-color:var(--fg); }
 @media (max-width:520px) { .ctas { flex-direction:column; } }
+
+/* Formulario de contacto: líneas finas, mucho aire, el rojo solo en el botón */
+.form { max-width:680px; margin:0 auto; text-align:left; display:grid; gap:2rem; }
+.f-row { display:grid; grid-template-columns:1fr 1fr; gap:2rem 1.6rem; }
+@media (max-width:600px) { .f-row { grid-template-columns:1fr; } }
+.field { display:grid; gap:.5rem; min-width:0; align-content:start; }
+.field > span, .field legend { font-family:var(--display); font-weight:500; font-size:.82rem; color:var(--muted); padding:0; }
+.field > span em, .field legend em { font-style:normal; color:var(--rec); }
+.field input, .field select, .field textarea { width:100%; background:transparent; border:0; border-bottom:1px solid var(--line-strong); color:var(--fg); font-family:var(--sans); font-size:1rem; padding:.55rem 0; border-radius:0; transition:border-color .2s ease; }
+.field select { cursor:pointer; -webkit-appearance:none; appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(-45deg,transparent 50%,var(--muted) 50%); background-position:calc(100% - 9px) 55%,calc(100% - 4px) 55%; background-size:5px 5px; background-repeat:no-repeat; }
+.field select option { background:var(--surface); color:var(--fg); }
+.field textarea { min-height:90px; resize:vertical; }
+.field input::placeholder, .field textarea::placeholder { color:var(--dim); }
+.field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--fg); }
+fieldset.field { border:0; margin:0; padding:0; min-width:0; }
+.opts { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.2rem; }
+.opt { position:relative; }
+.opt input { position:absolute; opacity:0; pointer-events:none; }
+.opt span { display:inline-block; font-family:var(--display); font-weight:500; font-size:.88rem; padding:.55rem 1rem; border:1px solid var(--line-strong); border-radius:999px; color:var(--fg); cursor:pointer; transition:background .2s ease, color .2s ease, border-color .2s ease; }
+.opt span:hover { border-color:var(--fg); }
+.opt input:checked + span { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.opt input:focus-visible + span { outline:1px solid var(--rec); outline-offset:3px; }
+.trampa { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.f-foot { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+.f-msg { font-size:.84rem; color:var(--muted); }
+.f-msg.err { color:var(--rec); }
+.btn[disabled] { opacity:.6; cursor:wait; }
+.f-ok { max-width:680px; margin:0 auto; padding-block:2rem; display:grid; gap:1rem; justify-items:center; }
+.f-ok b { font-family:var(--display); font-weight:900; font-size:clamp(2rem,5vw,3rem); letter-spacing:-.035em; line-height:1; }
+.f-ok b i { font-style:normal; color:var(--rec); }
+.f-ok p { color:var(--muted); font-size:.92rem; }
+@media (max-width:520px) { .f-foot .btn { width:100%; } }
 
 footer { padding:2.5rem var(--gutter) calc(2.5rem + env(safe-area-inset-bottom,0px)); display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; font-size:.76rem; color:var(--dim); }
 footer svg { width:14px; height:auto; }
@@ -269,11 +302,52 @@ footer svg { width:14px; height:auto; }
     <div class="label reveal"><sup>(05)</sup>Contacto</div>
     <h2 class="mega reveal" id="contact-title" style="margin-top:1.2rem">¿Listo para delegar tu edición?</h2>
     <p class="small reveal" id="contact-desc">Cuéntame qué vendes y cuántos videos necesitas al mes. Te respondo en menos de 24 h con una propuesta.</p>
-    <div class="ctas reveal">
+    <form class="form reveal" id="form" hidden novalidate>
+      <div class="f-row">
+        <label class="field"><span>Nombre <em>*</em></span><input id="f-nombre" name="nombre" autocomplete="name" required maxlength="120"></label>
+        <label class="field"><span>Marca o Instagram</span><input id="f-marca" name="marca" placeholder="@tumarca" maxlength="160"></label>
+      </div>
+      <div class="f-row">
+        <label class="field"><span>Email <em>*</em></span><input id="f-email" name="email" type="email" autocomplete="email" required maxlength="160"></label>
+        <label class="field"><span>WhatsApp</span><input id="f-wa" name="whatsapp" type="tel" autocomplete="tel" placeholder="+58 …" maxlength="40"></label>
+      </div>
+      <fieldset class="field">
+        <legend>Qué necesitas</legend>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" name="servicios" value="Reels"><span>Reels</span></label>
+          <label class="opt"><input type="checkbox" name="servicios" value="Anuncios"><span>Anuncios</span></label>
+          <label class="opt"><input type="checkbox" name="servicios" value="VSL"><span>VSL</span></label>
+          <label class="opt"><input type="checkbox" name="servicios" value="Podcast"><span>Podcast</span></label>
+          <label class="opt"><input type="checkbox" name="servicios" value="YouTube"><span>YouTube</span></label>
+          <label class="opt"><input type="checkbox" name="servicios" value="Guiones"><span>Guiones</span></label>
+        </div>
+      </fieldset>
+      <div class="f-row">
+        <label class="field"><span>Videos al mes</span>
+          <select id="f-videos" name="videos"><option value="">Elige una opción</option><option>1 a 4</option><option>5 a 10</option><option>11 a 20</option><option>Más de 20</option><option>Un proyecto puntual</option></select>
+        </label>
+        <fieldset class="field">
+          <legend>Presupuesto mensual</legend>
+          <div class="opts" id="f-pres"></div>
+        </fieldset>
+      </div>
+      <label class="field"><span>Cuéntame de tu proyecto</span><textarea id="f-msj" name="mensaje" maxlength="3000" placeholder="Qué vendes, a quién le hablas y un video que te guste como referencia."></textarea></label>
+      <label class="trampa" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="f-foot">
+        <p class="f-msg" id="f-msg" role="status">Te respondo en menos de 24 h.</p>
+        <button type="submit" class="btn btn-rec" id="f-btn">Enviar proyecto</button>
+      </div>
+    </form>
+    <div class="f-ok" id="f-ok" hidden>
+      <b>Recibido<i>.</i></b>
+      <p>Gracias. Te escribo en menos de 24 h con una propuesta.</p>
+    </div>
+    <div class="ctas reveal" id="ctas">
       <a id="wa-btn" href="https://wa.me/584243306937?text=Hola%20Robert%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto." target="_blank" rel="noopener" class="btn btn-rec">Escríbeme por WhatsApp</a>
       <a id="mail-btn" href="mailto:robtegacontact@gmail.com" class="btn btn-line">Enviar un email</a>
     </div>
     <div class="contact-links reveal">
+      <a id="wa-link" href="https://wa.me/584243306937" target="_blank" rel="noopener" hidden>WhatsApp ↗</a>
       <button type="button" id="copy-mail">robtegacontact@gmail.com · copiar</button>
       <a id="ig-link" href="https://www.instagram.com/robtega.visual" target="_blank" rel="noopener">Instagram ↗</a>
       <a id="li-link" href="https://www.linkedin.com/in/robtega/" target="_blank" rel="noopener">LinkedIn ↗</a>
@@ -403,6 +477,7 @@ function renderSite(d){
   if(/wa\.me\/\d{6,}/.test(c.whatsappLink||""))$("#wa-btn").href=c.whatsappLink; else if(c.whatsappLink!==undefined)$("#wa-btn").style.display="none";
   if(c.instagram)$("#ig-link").href=c.instagram;
   if(c.linkedin)$("#li-link").href=c.linkedin;
+  activarFormulario(c);
   aplicarVisibilidad(d.visibilidad);
 }
 function aplicarVisibilidad(vis){
@@ -412,6 +487,35 @@ function aplicarVisibilidad(vis){
   ver('#trabajo, .top-links a[href="#trabajo"]',on("videos"));
   ver('#servicios, .top-links a[href="#servicios"]',on("especialidades"));
   ver('#tools, #tools-label',on("stack"));
+}
+
+/* Formulario: se activa cuando el panel tiene el link del programa de Google */
+const RANGOS=["Menos de 300 USD","300 a 800 USD","Más de 800 USD","Aún no lo sé"];
+function activarFormulario(c){
+  const url=String(c.formulario||"").trim();
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(url))return;
+  $("#f-pres").innerHTML=RANGOS.map(r=>'<label class="opt"><input type="radio" name="presupuesto" value="'+esc(r)+'"><span>'+esc(r)+'</span></label>').join("");
+  $("#form").hidden=false; $("#ctas").hidden=true;
+  const wa=$("#wa-btn").getAttribute("href"); const wl=$("#wa-link");
+  if($("#wa-btn").style.display!=="none"){ wl.href=wa; wl.hidden=false; }
+  $("#form").addEventListener("submit",ev=>enviarFormulario(ev,url));
+}
+function enviarFormulario(ev,url){
+  ev.preventDefault();
+  const f=ev.target, msg=$("#f-msg"), btn=$("#f-btn");
+  const nombre=f.nombre.value.trim(), email=f.email.value.trim();
+  msg.classList.remove("err");
+  if(!nombre){ msg.textContent="Escribe tu nombre."; msg.classList.add("err"); f.nombre.focus(); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent="Revisa tu email, parece incompleto."; msg.classList.add("err"); f.email.focus(); return; }
+  const datos=new URLSearchParams();
+  ["nombre","marca","email","whatsapp","videos","mensaje","sitio_web"].forEach(k=>datos.append(k,(f[k]&&f[k].value||"").trim()));
+  datos.append("servicios",[...f.querySelectorAll('input[name="servicios"]:checked')].map(x=>x.value).join(", "));
+  const p=f.querySelector('input[name="presupuesto"]:checked'); datos.append("presupuesto",p?p.value:"");
+  btn.disabled=true; btn.textContent="Enviando…"; msg.textContent="Enviando tu proyecto…";
+  // Google no deja leer la respuesta desde otro sitio: se envía en modo "no-cors" y se confirma si la conexión no falla
+  fetch(url,{method:"POST",mode:"no-cors",body:datos})
+    .then(()=>{ f.hidden=true; $("#f-ok").hidden=false; $("#f-ok").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"}); })
+    .catch(()=>{ btn.disabled=false; btn.textContent="Enviar proyecto"; msg.textContent="No se pudo enviar. Revisa tu conexión o escríbeme por WhatsApp."; msg.classList.add("err"); });
 }
 
 /* El punto final de los titulares va en rojo, como el del logo */
