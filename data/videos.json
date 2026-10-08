@@ -65,16 +65,16 @@
       "descripcion": "Video intro para Youtube con Motion Graphics"
     },
     {
-      "titulo": "E-Commerce Reel",
+      "titulo": "Coach Business",
       "categoria": [
-        "short-form"
+        "short-form",
+        "coach"
       ],
-      "formato": "9:16",
-      "video": "https://vimeo.com/1219693642",
+      "video": "https://vimeo.com/1218345311",
       "thumb": "",
       "hover": "",
-      "destacado": true,
-      "descripcion": "Reel de producto para e-commerce: encuadre orgánico en depósito, tomas B-roll de estantería, subtítulos resaltados con acento de color y ritmo enfocado en beneficios clave."
+      "descripcion": "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head.",
+      "destacado": true
     },
     {
       "titulo": "Meta Ads & Digital Product",
@@ -161,15 +161,16 @@
       "descripcion": "Edición de VSL corto para Meta Ads, con gráficos, B-roll, subtitulos dinámicos y CTA para embudo de ventas."
     },
     {
-      "titulo": "Coach Business",
+      "titulo": "E-Commerce Reel",
       "categoria": [
-        "short-form",
-        "coach"
+        "short-form"
       ],
-      "video": "https://vimeo.com/1218345311",
+      "formato": "9:16",
+      "video": "https://vimeo.com/1219693642",
       "thumb": "",
       "hover": "",
-      "descripcion": "Edición dinámica orientada a la retención de audiencia. Incluye subtítulos animados, B-roll contextual, efectos visuales y cortes rápidos sobre formato talking head."
+      "destacado": false,
+      "descripcion": "Reel de producto para e-commerce: encuadre orgánico en depósito, tomas B-roll de estantería, subtítulos resaltados con acento de color y ritmo enfocado en beneficios clave."
     },
     {
       "titulo": "Coach de Finanzas",

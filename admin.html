@@ -85,6 +85,10 @@ h1 em, h2 em { font-style:normal !important; color:inherit !important; }
 .vinfo span { font-size:.76rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .vmeta { display:flex; align-items:center; gap:.6rem; font-size:.76rem; color:var(--text-muted); }
 .vmeta .st { color:var(--rec); }
+.vmeta .pos { font-weight:600; color:var(--text-soft); border:1px solid var(--border-strong); border-radius:999px; padding:.1rem .5rem; white-space:nowrap; }
+.vmeta .mv { width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text-soft); border-radius:6px; cursor:pointer; font-size:.85rem; padding:0; }
+.vmeta .mv:hover:not(:disabled) { border-color:var(--white); color:var(--white); }
+.vmeta .mv:disabled { opacity:.3; cursor:default; }
 .vmeta .arrow { transition:transform .2s ease; }
 .vitem[open] .vmeta .arrow { transform:rotate(180deg); }
 .vbody { padding:0 1.2rem 1.2rem; border-top:1px solid var(--border); }
@@ -262,6 +266,14 @@ const b64dec=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
 const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 const cats=v=>Array.isArray(v.categoria)?v.categoria:[v.categoria];
 const fmtDe=v=>v.formato||(cats(v).some(c=>c==="short-form"||c==="ads")?"9:16":"16:9");
+// Misma regla que la portada (index.html): primero los destacados en el orden de la lista, luego los verticales; máx. 8
+function posInicio(){
+  const vid=v=>{ const m=String(v.video||"").match(/vimeo\.com\/(?:video\/)?(\d+)/); return m?m[1]:""; };
+  const vids=DATA.videos.filter(vid), ord=[...vids.filter(v=>v.destacado),...vids.filter(v=>!v.destacado&&fmtDe(v)==="9:16")];
+  const seen=new Set(), pos=new Map();
+  for(const v of ord){ const id=vid(v); if(seen.has(id))continue; seen.add(id); pos.set(v,pos.size+1); if(pos.size===8)break; }
+  return pos;
+}
 const status=t=>{$("#status").textContent=t;};
 function waLinkFrom(num){
   const d=String(num||"").replace(/\D/g,"");
@@ -394,6 +406,7 @@ function renderList(){
   const q=$("#vsearch").value.trim().toLowerCase(), fc=$("#vcat").value;
   const box=$("#list"); box.innerHTML="";
   let visibles=0;
+  const POS=posInicio();
   DATA.videos.forEach((v,i)=>{
     if(q&&!String(v.titulo||"").toLowerCase().includes(q))return;
     if(fc&&!cats(v).includes(fc))return;
@@ -409,7 +422,10 @@ function renderList(){
     el.innerHTML=
       '<summary><span class="vthumb'+(fmtDe(v)==="16:9"?" h":"")+'"></span>'+
       '<span class="vinfo"><b class="vt">'+esc(v.titulo||"Sin título")+'</b><span>'+esc(catTxt)+'</span></span>'+
-      '<span class="vmeta">'+(v.destacado?'<span class="st" title="Destacado en el inicio">★</span>':'')+'<span>'+fmtDe(v)+'</span><span class="arrow">▾</span></span></summary>'+
+      '<span class="vmeta">'+(POS.has(v)?'<span class="pos" title="Posición en el inicio">Inicio '+String(POS.get(v)).padStart(2,"0")+'</span>':'')+(v.destacado?'<span class="st" title="Destacado en el inicio">★</span>':'')+'<span>'+fmtDe(v)+'</span>'+
+        '<button type="button" class="mv" data-mv="-1" data-i="'+i+'" title="Subir"'+(i===0?" disabled":"")+'>↑</button>'+
+        '<button type="button" class="mv" data-mv="1" data-i="'+i+'" title="Bajar"'+(i===DATA.videos.length-1?" disabled":"")+'>↓</button>'+
+        '<span class="arrow">▾</span></span></summary>'+
       '<div class="vbody">'+
       '<div class="vhead" style="margin-top:1rem;"><span></span><button class="del" data-i="'+i+'">Eliminar</button></div>'+
       '<div class="row"><div><label>Título</label><input data-f="titulo" data-i="'+i+'" value="'+esc(v.titulo)+'"></div>'+
@@ -428,7 +444,7 @@ function renderList(){
     miniatura(v,el.querySelector(".vthumb"));
   });
   const total=DATA.videos.length;
-  $("#vcount").textContent=(visibles===total?total+" videos":visibles+" de "+total+" videos")+". Toca uno para editarlo.";
+  $("#vcount").textContent=(visibles===total?total+" videos":visibles+" de "+total+" videos")+". Toca uno para editarlo. Con ↑ ↓ cambias el orden: en el inicio salen primero los destacados (★) en este mismo orden.";
   box.querySelectorAll("input[data-f], textarea[data-f]").forEach(inp=>{
     inp.addEventListener("input",()=>{
       DATA.videos[inp.dataset.i][inp.dataset.f]=inp.value;
@@ -448,7 +464,14 @@ function renderList(){
     b.onclick=()=>{ const v=DATA.videos[+b.dataset.i]; v.destacado=!v.destacado;
       b.classList.toggle("on",v.destacado); b.innerHTML=(v.destacado?"★":"☆")+"&nbsp;Destacado en el inicio";
       const m=b.closest(".vitem").querySelector(".vmeta"); const st=m.querySelector(".st");
-      if(v.destacado&&!st)m.insertAdjacentHTML("afterbegin",'<span class="st" title="Destacado en el inicio">★</span>'); else if(!v.destacado&&st)st.remove(); };
+      if(v.destacado&&!st)m.insertAdjacentHTML("afterbegin",'<span class="st" title="Destacado en el inicio">★</span>'); else if(!v.destacado&&st)st.remove();
+      renderList(); };
+  });
+  box.querySelectorAll(".mv").forEach(b=>{
+    b.onclick=e=>{ e.preventDefault(); e.stopPropagation();
+      const i=+b.dataset.i, j=i+(+b.dataset.mv); if(j<0||j>=DATA.videos.length)return;
+      const a=DATA.videos; [a[i],a[j]]=[a[j],a[i]];
+      renderList(); status("Orden cambiado. Recuerda ⬆ Publicar."); };
   });
   box.querySelectorAll(".del").forEach(b=>{
     b.onclick=()=>{ if(confirm("¿Eliminar este video?")){ DATA.videos.splice(+b.dataset.i,1); renderList(); status("Video eliminado. Recuerda ⬆ Publicar."); } };
